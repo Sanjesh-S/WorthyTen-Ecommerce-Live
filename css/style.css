@@ -1904,6 +1904,140 @@ select:disabled {
 
 .search-bar-container {
   margin-bottom: 40px;
+  position: relative;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Search Suggestions Dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  margin-top: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.search-suggestions.show {
+  display: block;
+}
+
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f5f5f5;
+  text-decoration: none;
+  color: inherit;
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item:focus {
+  background-color: #f8f9fa;
+  outline: none;
+}
+
+.search-suggestion-item.active {
+  background-color: #e8f4fd;
+}
+
+.search-suggestion-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #f5f5f5;
+  flex-shrink: 0;
+}
+
+.search-suggestion-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-suggestion-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-suggestion-meta {
+  font-size: 13px;
+  color: #6e6e73;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-suggestion-brand {
+  font-weight: 500;
+}
+
+.search-suggestion-category {
+  color: #8e8e93;
+}
+
+.search-suggestion-price {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--brand);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.search-suggestion-no-results {
+  padding: 20px;
+  text-align: center;
+  color: #6e6e73;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .search-suggestions {
+    border-radius: 12px;
+    max-height: 350px;
+  }
+
+  .search-suggestion-item {
+    padding: 14px 16px;
+  }
+
+  .search-suggestion-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .search-suggestion-name {
+    font-size: 14px;
+  }
+
+  .search-suggestion-meta {
+    font-size: 12px;
+  }
+
+  .search-suggestion-price {
+    font-size: 13px;
+  }
 }
 
 .hero-features {

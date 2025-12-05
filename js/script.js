@@ -542,7 +542,21 @@ function handleSearch() {
   if (!searchInput) {
     return;
   }
-  const searchTerm = searchInput.value.toLowerCase();
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  const suggestionsContainer = document.getElementById('search-suggestions');
+
+  // If on homepage and search term exists, show product suggestions
+  if (!categorySelection.classList.contains('hidden') && searchTerm.length >= 2 && productsLoaded) {
+    showSearchSuggestions(searchTerm, suggestionsContainer);
+    return;
+  }
+
+  // Hide suggestions if search is too short or products not loaded
+  if (suggestionsContainer) {
+    suggestionsContainer.classList.remove('show');
+    suggestionsContainer.style.display = 'none';
+    searchInput.setAttribute('aria-expanded', 'false');
+  }
 
   // Figure out which grid is active
   if (!categorySelection.classList.contains('hidden')) {
@@ -563,6 +577,79 @@ function handleSearch() {
   }
 }
 
+// Show search suggestions dropdown
+function showSearchSuggestions(searchTerm, container) {
+  if (!container || !allProducts || allProducts.length === 0) {
+    return;
+  }
+
+  // Search through all products
+  const matches = allProducts
+    .filter(product => {
+      if (!product.price || product.price <= 0 || isNaN(Number(product.price))) {
+        return false;
+      }
+      const nameMatch = product.name && product.name.toLowerCase().includes(searchTerm);
+      const brandMatch = product.brand && product.brand.toLowerCase().includes(searchTerm);
+      const categoryMatch = product.category && product.category.toLowerCase().includes(searchTerm);
+      return nameMatch || brandMatch || categoryMatch;
+    })
+    .slice(0, 8); // Limit to 8 results
+
+  if (matches.length === 0) {
+    container.innerHTML =
+      '<div class="search-suggestion-no-results">No products found. Try a different search term.</div>';
+    container.classList.add('show');
+    container.style.display = 'block';
+    searchInput.setAttribute('aria-expanded', 'true');
+    return;
+  }
+
+  // Build suggestions HTML
+  container.innerHTML = matches
+    .map(product => {
+      const price = Number(product.price);
+      const needsVariants = window.supportsVariants && window.supportsVariants(product.category);
+      const targetPage = needsVariants ? 'variant-selection.html' : 'quote.html';
+      const href = `${targetPage}?model=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.brand)}&category=${encodeURIComponent(product.category)}&image=${encodeURIComponent(product.image || '')}&price=${encodeURIComponent(price)}`;
+
+      return `
+      <a href="${href}" class="search-suggestion-item" role="option" aria-label="Search result: ${product.name}">
+        <img src="${product.image || 'https://via.placeholder.com/40?text=' + encodeURIComponent(product.name)}" 
+             alt="${product.name}" 
+             class="search-suggestion-icon" 
+             loading="lazy"
+             onerror="this.src='https://via.placeholder.com/40?text=' + encodeURIComponent('${product.name}')">
+        <div class="search-suggestion-content">
+          <div class="search-suggestion-name">${highlightMatch(product.name, searchTerm)}</div>
+          <div class="search-suggestion-meta">
+            <span class="search-suggestion-brand">${product.brand || 'N/A'}</span>
+            <span class="search-suggestion-category">• ${product.category || 'N/A'}</span>
+          </div>
+        </div>
+        <div class="search-suggestion-price">₹${price.toLocaleString('en-IN')}</div>
+      </a>
+    `;
+    })
+    .join('');
+
+  container.classList.add('show');
+  container.style.display = 'block';
+  searchInput.setAttribute('aria-expanded', 'true');
+}
+
+// Highlight matching text in search results
+function highlightMatch(text, searchTerm) {
+  if (!text || !searchTerm) {
+    return text;
+  }
+  const regex = new RegExp(`(${searchTerm})`, 'gi');
+  return text.replace(
+    regex,
+    '<mark style="background: #fff3cd; padding: 2px 0; border-radius: 2px;">$1</mark>'
+  );
+}
+
 // Helper function to filter any grid
 function filterGrid(cards, searchTerm, getName) {
   cards.forEach(card => {
@@ -575,9 +662,88 @@ function filterGrid(cards, searchTerm, getName) {
   });
 }
 
-// Attach search listener
+// Attach search listener with debounce
+let searchTimeout;
 if (searchInput) {
-  searchInput.addEventListener('input', handleSearch);
+  searchInput.addEventListener('input', e => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      handleSearch();
+    }, 300); // Debounce for 300ms
+  });
+
+  // Hide suggestions when clicking outside
+  document.addEventListener('click', e => {
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    if (
+      suggestionsContainer &&
+      !searchInput.contains(e.target) &&
+      !suggestionsContainer.contains(e.target)
+    ) {
+      suggestionsContainer.classList.remove('show');
+      suggestionsContainer.style.display = 'none';
+      searchInput.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Handle keyboard navigation
+  searchInput.addEventListener('keydown', e => {
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    const suggestions = suggestionsContainer?.querySelectorAll('.search-suggestion-item');
+
+    if (!suggestions || suggestions.length === 0) {
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const active = suggestionsContainer.querySelector('.search-suggestion-item.active');
+      if (active) {
+        active.classList.remove('active');
+        const next = active.nextElementSibling;
+        if (next) {
+          next.classList.add('active');
+          next.focus();
+        } else {
+          suggestions[0].classList.add('active');
+          suggestions[0].focus();
+        }
+      } else {
+        suggestions[0].classList.add('active');
+        suggestions[0].focus();
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const active = suggestionsContainer.querySelector('.search-suggestion-item.active');
+      if (active) {
+        active.classList.remove('active');
+        const prev = active.previousElementSibling;
+        if (prev) {
+          prev.classList.add('active');
+          prev.focus();
+        } else {
+          suggestions[suggestions.length - 1].classList.add('active');
+          suggestions[suggestions.length - 1].focus();
+        }
+      } else {
+        suggestions[suggestions.length - 1].classList.add('active');
+        suggestions[suggestions.length - 1].focus();
+      }
+    } else if (e.key === 'Enter') {
+      const active = suggestionsContainer.querySelector('.search-suggestion-item.active');
+      if (active) {
+        e.preventDefault();
+        active.click();
+      }
+    } else if (e.key === 'Escape') {
+      if (suggestionsContainer) {
+        suggestionsContainer.classList.remove('show');
+        suggestionsContainer.style.display = 'none';
+        searchInput.setAttribute('aria-expanded', 'false');
+        searchInput.focus();
+      }
+    }
+  });
 }
 
 // ===== INITIAL PAGE LOAD =====
