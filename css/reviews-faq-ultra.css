@@ -6,20 +6,14 @@
 /* ========== REVIEWS ULTRA SECTION ========== */
 .reviews-ultra {
   position: relative;
-  background: linear-gradient(180deg, #16213e 0%, #1a1a2e 50%, #0f0f1e 100%);
-  padding: 140px 40px;
+  background: #ffffff;
+  padding: 80px 20px;
   overflow: hidden;
 }
 
-/* Animated Background Orbs */
+/* Animated Background Orbs - Hidden for performance */
 .reviews-bg-animated {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  overflow: hidden;
+  display: none;
 }
 
 .review-orb {
@@ -87,19 +81,18 @@
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
   border-radius: 100px;
   padding: 12px 32px;
   margin-bottom: 32px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
 }
 
 .rating-badge:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+  transform: scale(1.02);
+  background: #f1f3f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .rating-stars {
@@ -109,25 +102,23 @@
 .rating-number {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
+  color: #1d1d1f;
 }
 
 .reviews-title {
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.03em;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
   margin-bottom: 20px;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .gradient-text-alt {
-  background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #38bdf8 100%);
-  background-size: 200% 200%;
+  background: linear-gradient(135deg, #0071e3 0%, #00c896 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradientFlow 4s ease infinite;
 }
 
 @keyframes gradientFlow {
@@ -141,8 +132,8 @@
 }
 
 .reviews-subtitle {
-  font-size: 22px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  color: #6e6e73;
   font-weight: 400;
 }
 
@@ -163,60 +154,37 @@
 /* Ultra Review Cards */
 .review-card-ultra {
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(40px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 28px;
-  padding: 48px;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.3s ease;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .card-glow {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-  opacity: 0;
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
-  pointer-events: none;
-}
-
-.review-card-ultra:hover .card-glow {
-  opacity: 1;
-  transform: translate(10%, 10%);
+  display: none;
 }
 
 .review-card-ultra:hover {
-  transform: translateY(-12px) scale(1.02);
-  border-color: rgba(168, 85, 247, 0.3);
-  box-shadow:
-    0 40px 100px rgba(168, 85, 247, 0.25),
-    0 0 80px rgba(236, 72, 153, 0.15),
-    inset 0 0 60px rgba(255, 255, 255, 0.03);
+  transform: translateY(-4px);
+  border-color: #d1d1d6;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .review-quote-mark {
-  font-size: 120px;
+  font-size: 80px;
   line-height: 1;
-  color: rgba(168, 85, 247, 0.15);
+  color: #e5e5e7;
   font-family: Georgia, serif;
   position: absolute;
   top: 20px;
   left: 30px;
   font-weight: bold;
   pointer-events: none;
-  transition: all 0.6s ease;
-}
-
-.review-card-ultra:hover .review-quote-mark {
-  color: rgba(168, 85, 247, 0.25);
-  transform: scale(1.1) rotate(-5deg);
+  opacity: 0.5;
 }
 
 .review-content-ultra {
@@ -226,9 +194,9 @@
 }
 
 .review-text {
-  font-size: 20px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1d1d1f;
   font-weight: 400;
   margin: 0;
 }
@@ -263,23 +231,23 @@
 .author-name {
   font-size: 17px;
   font-weight: 700;
-  color: #ffffff;
+  color: #1d1d1f;
   margin-bottom: 4px;
 }
 
 .author-location {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6e6e73;
 }
 
 .review-device {
   padding: 8px 20px;
-  background: rgba(168, 85, 247, 0.15);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 600;
-  color: #a855f7;
+  color: #0071e3;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -306,52 +274,36 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: #d1d1d6;
   border: none;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
   position: relative;
 }
 
 .nav-dot::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(168, 85, 247, 0.4);
-  transition: all 0.4s ease;
+  display: none;
 }
 
-.nav-dot:hover::before,
-.nav-dot.active::before {
-  width: 28px;
-  height: 28px;
+.nav-dot:hover {
+  background: #8e8e93;
 }
 
 .nav-dot.active {
-  background: #a855f7;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+  background: #0071e3;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
 }
 
 /* ========== FAQ ULTRA SECTION ========== */
 .faq-ultra {
   position: relative;
-  background: linear-gradient(180deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
-  padding: 140px 40px;
+  background: #ffffff;
+  padding: 80px 20px;
   overflow: hidden;
 }
 
 .faq-bg-elements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+  display: none;
 }
 
 .faq-grid-pattern {
@@ -378,17 +330,17 @@
 }
 
 .faq-title {
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.03em;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
   margin-bottom: 20px;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .faq-subtitle {
-  font-size: 22px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  color: #6e6e73;
   font-weight: 400;
 }
 
@@ -400,23 +352,23 @@
 }
 
 .faq-item-ultra {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .faq-item-ultra:hover {
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.15);
+  border-color: #d1d1d6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .faq-item-ultra.active {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow: 0 30px 80px rgba(56, 189, 248, 0.2);
+  background: #ffffff;
+  border-color: #0071e3;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.12);
 }
 
 .faq-question {
@@ -447,24 +399,25 @@
 }
 
 .faq-toggle {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(56, 189, 248, 0.1);
-  border: 2px solid rgba(56, 189, 248, 0.3);
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
   position: relative;
+  flex-shrink: 0;
 }
 
 .faq-toggle::before,
 .faq-toggle::after {
   content: '';
   position: absolute;
-  background: #38bdf8;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #6e6e73;
+  transition: all 0.3s ease;
   border-radius: 2px;
 }
 
@@ -479,10 +432,14 @@
 }
 
 .faq-item-ultra.active .faq-toggle {
-  background: rgba(56, 189, 248, 0.2);
-  border-color: #38bdf8;
+  background: #0071e3;
+  border-color: #0071e3;
   transform: rotate(180deg);
-  box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+}
+
+.faq-item-ultra.active .faq-toggle::before,
+.faq-item-ultra.active .faq-toggle::after {
+  background: #ffffff;
 }
 
 .faq-item-ultra.active .faq-toggle::after {
@@ -506,57 +463,56 @@
 }
 
 .faq-answer-text {
-  font-size: 18px;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.7);
-  padding: 24px;
-  background: rgba(56, 189, 248, 0.05);
-  border-radius: 16px;
-  border-left: 4px solid #38bdf8;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6e6e73;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #0071e3;
 }
 
 /* Still Have Questions CTA */
 .faq-cta {
   text-align: center;
-  margin-top: 80px;
-  padding: 60px 40px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 32px;
+  margin-top: 60px;
+  padding: 40px;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
 }
 
 .faq-cta-title {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 16px;
+  color: #1d1d1f;
+  margin-bottom: 12px;
 }
 
 .faq-cta-text {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 32px;
+  font-size: 16px;
+  color: #6e6e73;
+  margin-bottom: 24px;
 }
 
 .faq-cta-button {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 18px 48px;
-  background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #0071e3 0%, #00c896 100%);
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  border-radius: 50px;
+  border-radius: 12px;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 40px rgba(56, 189, 248, 0.4);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
 }
 
 .faq-cta-button:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
 }
 
 /* ========== Reveal Animations ========== */
