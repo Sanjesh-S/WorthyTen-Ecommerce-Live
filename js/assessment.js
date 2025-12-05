@@ -233,14 +233,9 @@ document.addEventListener("DOMContentLoaded", () => {
     valuationData.assessmentAnswers = userAnswers;
     sessionStorage.setItem('valuationData', JSON.stringify(valuationData));
 
-    // Conditional navigation based on category and lens question answer
-    const supportsLens = window.supportsLensSelection ? window.supportsLensSelection(category) : false;
-    
-    if (supportsLens && valuationData.hasAdditionalLens === true) {
-      window.location.href = 'lens-selection.html';
-    } else {
-      window.location.href = 'physical-condition.html';
-    }
+    // Navigate to physical condition assessment
+    // Note: Lens selection is now handled inline in the assessment flow
+    window.location.href = 'physical-condition.html';
   });
 
   // Initial render

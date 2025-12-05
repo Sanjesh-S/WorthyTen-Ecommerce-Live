@@ -8,21 +8,10 @@
     document.dispatchEvent(new Event('headerLoaded'));
   }
 
-  // Inject header HTML if not present already (for standalone pages)
-  if (!document.querySelector('.site-header')) {
-    fetch('header.html')
-      .then(r => r.text())
-      .then(html => {
-        const holder = document.getElementById('header');
-        if (holder) holder.innerHTML = html;
-        runInit(); // Call after injection
-      })
-      .catch(() => {
-        runInit(); // Call even on failure
-      });
-  } else {
-    runInit(); // Call if header was already present
-  }
+  // Header injection removed - all pages now use inline headers
+  // If a page has <div id="header"></div>, it will remain empty
+  // All main pages (index.html, etc.) have inline headers
+  runInit();
 
   // Simple step progress setup based on <body data-step="">
   function injectProgress() {

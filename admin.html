@@ -3,9 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorthyTen - Admin Dashboard</title>
+    <title>Admin Dashboard - WorthyTen</title>
+    <meta name="description" content="Admin dashboard for managing WorthyTen platform"/>
+    <meta name="robots" content="noindex, nofollow"/>
+    <link rel="canonical" href="https://worthyten.com/admin.html"/>
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="css/style.css" rel="stylesheet"/>
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
     <style>
         /* Styles for the admin page */
         .admin-header {
@@ -262,116 +267,118 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <div class="admin-header">
+    <header class="admin-header" role="banner">
         <div>
             <h1 style="margin: 0;">Admin Dashboard</h1>
-            <div id="user-role-badge" style="margin-top: 4px;"></div>
+            <div id="user-role-badge" role="status" aria-live="polite" style="margin-top: 4px;"></div>
         </div>
-        <button id="logout-button" class="logout-btn">Logout</button>
-    </div>
+        <button id="logout-button" class="logout-btn" aria-label="Log out of admin dashboard">Logout</button>
+    </header>
 
-    <div class="admin-tabs">
-        <button id="showPickupsBtn" class="tab-btn active">Pickup Requests</button>
-        <button id="showProductsBtn" class="tab-btn">Manage Products</button>
-        <button id="showUsersBtn" class="tab-btn" style="display: none;">User Management</button>
-    </div>
+    <nav class="admin-tabs" role="tablist" aria-label="Admin dashboard sections">
+        <button id="showPickupsBtn" class="tab-btn active" role="tab" aria-selected="true" aria-controls="pickupsPanel">Pickup Requests</button>
+        <button id="showProductsBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="productsPanel">Manage Products</button>
+        <button id="showUsersBtn" class="tab-btn" role="tab" aria-selected="false" aria-controls="usersPanel" style="display: none;">User Management</button>
+    </nav>
 
-    <div id="pickupsPanel" class="admin-panel active">
+    <main id="main-content">
+    <div id="pickupsPanel" class="admin-panel active" role="tabpanel" aria-labelledby="showPickupsBtn">
         <div class="pickup-table-container">
-            <table id="pickup-table">
+            <table id="pickup-table" role="grid" aria-label="Pickup requests list">
                 <thead>
-                    <tr>
-                        <th>Customer</th>
-                        <th>Device</th>
-                        <th>Price</th>
-                        <th>Slot</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Customer</th>
+                        <th role="columnheader" scope="col">Device</th>
+                        <th role="columnheader" scope="col">Price</th>
+                        <th role="columnheader" scope="col">Slot</th>
+                        <th role="columnheader" scope="col">Status</th>
+                        <th role="columnheader" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="pickup-list-body">
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">Loading requests...</td>
+                    <tr role="row">
+                        <td colspan="6" style="text-align: center; padding: 20px;" role="status">Loading requests...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="productsPanel" class="admin-panel">
+    <div id="productsPanel" class="admin-panel" role="tabpanel" aria-labelledby="showProductsBtn" aria-hidden="true">
         <h2>Add New Product</h2>
-        <form id="product-form">
+        <form id="product-form" aria-label="Add new product form">
             <div class="product-form-grid">
                 <div class="form-group">
                     <label for="product-category">Category</label>
-                    <input type="text" id="product-category" class="form-input" placeholder="e.g., DSLR Cameras" required />
+                    <input type="text" id="product-category" class="form-input" placeholder="e.g., DSLR Cameras" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="product-brand">Brand</label>
-                    <input type="text" id="product-brand" class="form-input" placeholder="e.g., Canon" required />
+                    <input type="text" id="product-brand" class="form-input" placeholder="e.g., Canon" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="product-name">Model Name</label>
-                    <input type="text" id="product-name" class="form-input" placeholder="e.g., Canon 90D" required />
+                    <input type="text" id="product-name" class="form-input" placeholder="e.g., Canon 90D" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="product-price">Base Price</label>
-                    <input type="number" id="product-price" class="form-input" placeholder="e.g., 10000" required />
+                    <input type="number" id="product-price" class="form-input" placeholder="e.g., 10000" required aria-required="true" />
                 </div>
                 <div class="form-group full-width">
                     <label for="product-image">Image URL</label>
-                    <input type="text" id="product-image" class="form-input" placeholder="Paste Firebase Storage URL here" required />
+                    <input type="text" id="product-image" class="form-input" placeholder="Paste Firebase Storage URL here" required aria-required="true" />
                 </div>
                 <div class="form-actions">
-                    <p id="product-form-status"></p>
-                    <button type="submit" id="save-product-btn" class="cta-button save-btn">Save Product</button>
+                    <p id="product-form-status" role="status" aria-live="polite"></p>
+                    <button type="submit" id="save-product-btn" class="cta-button save-btn" aria-label="Save new product">Save Product</button>
                 </div>
             </div>
         </form>
         
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;">
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;" role="separator">
         
         <h2>Existing Products</h2>
         <div class="product-table-container">
-            <table id="product-table">
+            <table id="product-table" role="grid" aria-label="Existing products list">
                 <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Brand</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Actions</th>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Category</th>
+                        <th role="columnheader" scope="col">Brand</th>
+                        <th role="columnheader" scope="col">Name</th>
+                        <th role="columnheader" scope="col">Price</th>
+                        <th role="columnheader" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="product-list-body">
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 20px;">Loading products...</td>
+                    <tr role="row">
+                        <td colspan="5" style="text-align: center; padding: 20px;" role="status">Loading products...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="usersPanel" class="admin-panel">
+    <div id="usersPanel" class="admin-panel" role="tabpanel" aria-labelledby="showUsersBtn" aria-hidden="true">
         <h2>Add New Staff User</h2>
-        <form id="user-form">
+        <form id="user-form" aria-label="Add new staff user form">
             <div class="product-form-grid">
                 <div class="form-group">
                     <label for="user-email">Email</label>
-                    <input type="email" id="user-email" class="form-input" placeholder="staff@example.com" required />
+                    <input type="email" id="user-email" class="form-input" placeholder="staff@example.com" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="user-password">Password</label>
-                    <input type="password" id="user-password" class="form-input" placeholder="Minimum 6 characters" minlength="6" required />
+                    <input type="password" id="user-password" class="form-input" placeholder="Minimum 6 characters" minlength="6" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="user-displayname">Display Name</label>
-                    <input type="text" id="user-displayname" class="form-input" placeholder="John Doe" required />
+                    <input type="text" id="user-displayname" class="form-input" placeholder="John Doe" required aria-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="user-role">Role</label>
-                    <select id="user-role" class="form-input" required>
+                    <select id="user-role" class="form-input" required aria-required="true">
                         <option value="">Select Role</option>
                         <option value="staff">Staff</option>
                         <option value="manager">Manager</option>
@@ -379,36 +386,41 @@
                     </select>
                 </div>
                 <div class="form-actions">
-                    <p id="user-form-status"></p>
-                    <button type="submit" id="save-user-btn" class="cta-button save-btn">Create User</button>
+                    <p id="user-form-status" role="status" aria-live="polite"></p>
+                    <button type="submit" id="save-user-btn" class="cta-button save-btn" aria-label="Create new staff user">Create User</button>
                 </div>
             </div>
         </form>
         
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;">
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;" role="separator">
         
         <h2>Staff Users</h2>
         <div class="user-table-container">
-            <table id="user-table">
+            <table id="user-table" role="grid" aria-label="Staff users list">
                 <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Display Name</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Last Login</th>
-                        <th>Actions</th>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Email</th>
+                        <th role="columnheader" scope="col">Display Name</th>
+                        <th role="columnheader" scope="col">Role</th>
+                        <th role="columnheader" scope="col">Status</th>
+                        <th role="columnheader" scope="col">Last Login</th>
+                        <th role="columnheader" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="user-list-body">
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 20px;">Loading users...</td>
+                    <tr role="row">
+                        <td colspan="6" style="text-align: center; padding: 20px;" role="status">Loading users...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    </main>
+    
+    <!-- Aria live region for dynamic updates -->
+    <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
 
+    <script src="js/lazy-loading.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -417,6 +429,6 @@
     <script defer src="js/rbac.js"></script>
     <script defer src="js/user-management.js"></script>
     <script defer src="js/admin-dashboard.js"></script>
-    <script src="js/product-data.js"></script>
+    <script defer src="js/product-data.js"></script>
 </body>
 </html>

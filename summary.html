@@ -34,6 +34,37 @@
   "url": "https://worthyten.com/summary.html"
 }
 </script>
+<!-- Product Schema (dynamically updated by JS) -->
+<script type="application/ld+json" id="product-schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Device",
+  "description": "Sell your device on WorthyTen",
+  "brand": {
+    "@type": "Brand",
+    "name": "Various"
+  },
+  "category": "Electronics",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR",
+    "availability": "https://schema.org/InStock",
+    "priceValidUntil": "2024-12-31",
+    "seller": {
+      "@type": "Organization",
+      "name": "WorthyTen",
+      "url": "https://worthyten.com"
+    }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "3250"
+  }
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 <link href="css/style.css" rel="stylesheet"/>
@@ -403,12 +434,13 @@
 <!-- Aria live region for dynamic updates -->
 <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
 
-<script src="js/state-helper.js"></script>
-<script src="js/analytics.js"></script>
-<script src="js/error-tracking.js"></script>
-<script src="js/performance.js"></script>
-<script src="js/lens-compatibility.js"></script>
-<script src="js/summary.js"></script>
+<script src="js/state-helper.js" defer></script>
+<script src="js/lazy-loading.js"></script>
+<script src="js/analytics.js" defer></script>
+<script src="js/error-tracking.js" defer></script>
+<script src="js/performance.js" defer></script>
+<script src="js/lens-compatibility.js" defer></script>
+<script src="js/summary.js" defer></script>
 
 </body>
 </html>

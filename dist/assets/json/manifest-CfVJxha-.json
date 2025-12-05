@@ -1,0 +1,45 @@
+{
+  "name": "WorthyTen - Sell Your Device Instantly",
+  "short_name": "WorthyTen",
+  "description": "Sell your old devices instantly and get the best price. Fast, secure, and hassle-free device selling experience.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1b4c87",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "business", "finance"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Sell Device",
+      "short_name": "Sell",
+      "description": "Start selling your device",
+      "url": "./",
+      "icons": [{ "src": "./images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Account",
+      "short_name": "Account",
+      "description": "View your account",
+      "url": "./account.html",
+      "icons": [{ "src": "./images/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
+
+
+
