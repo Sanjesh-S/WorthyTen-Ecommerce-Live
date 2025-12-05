@@ -588,47 +588,48 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
+  background: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 20px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .category-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  border-color: var(--brand);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .category-card:active {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .category-image-container {
   width: 100%;
   aspect-ratio: 1;
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+  background: #e0f2f1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-4);
+  margin-bottom: 16px;
+  padding: 20px;
 }
 
 .category-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 
 .category-card:hover .category-image {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 /* Category Icon Container */
@@ -658,9 +659,10 @@ a:hover {
 .category-name {
   font-size: 18px;
   font-weight: 700;
-  color: var(--text);
+  color: #111111;
   text-align: center;
-  margin-top: var(--space-2);
+  margin: 0;
+  line-height: 1.4;
 }
 
 .brand-logo-img {
@@ -1389,14 +1391,16 @@ select:disabled {
 
 @media (max-width: 768px) {
   .brand-divider {
-    margin: 24px auto 20px;
+    margin: 32px auto 24px;
+    text-align: center;
   }
 
   .brand-divider .divider-text {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     color: #1d1d1f;
     padding: 0;
+    letter-spacing: -0.3px;
   }
 }
 
@@ -2683,27 +2687,26 @@ textarea.form-input {
 
 @media (max-width: 768px) {
   .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 0 16px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 20px;
     margin: 24px auto 0;
   }
 
   .category-card {
-    padding: 20px 16px;
+    padding: 20px;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .category-card img {
-    height: 100px;
-    max-width: 140px;
-    margin-bottom: 12px;
+  .category-image-container {
+    margin-bottom: 16px;
+    padding: 16px;
   }
 
-  .category-card h3 {
-    font-size: 16px;
-    font-weight: 600;
+  .category-name {
+    font-size: 18px;
+    font-weight: 700;
   }
 
   .category-card:hover {
@@ -2715,30 +2718,20 @@ textarea.form-input {
 @media (max-width: 480px) {
   .category-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 20px;
     padding: 0 20px;
   }
 
   .category-card {
-    padding: 24px 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    gap: 20px;
+    padding: 20px;
   }
 
-  .category-card img {
-    width: 80px;
-    height: 80px;
-    max-width: 80px;
-    margin-bottom: 0;
-    flex-shrink: 0;
+  .category-image-container {
+    padding: 16px;
   }
 
-  .category-card h3 {
+  .category-name {
     font-size: 18px;
-    margin: 0;
   }
 }
 /* ---------- NEW: Quote Page Layout Styles ---------- */
