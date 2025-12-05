@@ -214,17 +214,7 @@
 }
 
 .step-connector {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00bfa5 0%, #667eea 100%);
-  box-shadow: 0 0 0 0 rgba(0, 191, 165, 0.7);
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  z-index: 2;
+  display: none;
 }
 
 @keyframes pulse {
@@ -283,11 +273,7 @@
 
 /* ========== Step Media with Advanced Animations ========== */
 .step-media {
-  position: relative;
-  min-height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 }
 
 /* Device Showcase - Step 1 */
