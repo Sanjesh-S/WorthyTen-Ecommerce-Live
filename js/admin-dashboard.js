@@ -75,6 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setupPickupListeners();
         setupProductFormListener();
         setupProductListListeners();
+        setupDropdownListeners();
+
+        // Populate dropdowns when products panel is shown
+        populateCategoryDropdown();
+        populateBrandDropdown();
 
         // Initialize user management if permitted
         if (window.RBAC.canManageUsers() && window.UserManagement) {
@@ -151,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showUsersBtn.classList.remove('active');
       }
       loadProducts(); // Load product data
+      populateCategoryDropdown(); // Refresh dropdowns
+      populateBrandDropdown();
     });
 
     // User Management Tab (only if available)
@@ -526,6 +533,158 @@ document.addEventListener('DOMContentLoaded', () => {
   // MANAGE PRODUCTS LOGIC (Section 5)
   // ===========================================
 
+  // Populate Category Dropdown
+  async function populateCategoryDropdown() {
+    if (!db || !productCategory) {
+      return;
+    }
+
+    try {
+      const snap = await db.collection('products').get();
+      const categories = new Set();
+
+      snap.forEach(doc => {
+        const data = doc.data();
+        if (data.category) {
+          categories.add(data.category);
+        }
+      });
+
+      // Clear existing options except the first one
+      productCategory.innerHTML = '<option value="">Select Category...</option>';
+
+      // Add existing categories
+      Array.from(categories)
+        .sort()
+        .forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat;
+          option.textContent = cat;
+          productCategory.appendChild(option);
+        });
+
+      // Add "Add New Category" option
+      const addNewOption = document.createElement('option');
+      addNewOption.value = '__ADD_NEW__';
+      addNewOption.textContent = '+ Add New Category...';
+      productCategory.appendChild(addNewOption);
+    } catch (error) {
+      if (window.Logger) {
+        window.Logger.error('Error populating category dropdown:', error);
+      }
+    }
+  }
+
+  // Populate Brand Dropdown
+  async function populateBrandDropdown() {
+    if (!db || !productBrand) {
+      return;
+    }
+
+    try {
+      const snap = await db.collection('products').get();
+      const brands = new Set();
+      const selectedCategory = productCategory ? productCategory.value : null;
+
+      snap.forEach(doc => {
+        const data = doc.data();
+        // If category is selected, filter brands by category
+        if (selectedCategory && selectedCategory !== '' && selectedCategory !== '__ADD_NEW__') {
+          if (data.brand && data.category === selectedCategory) {
+            brands.add(data.brand);
+          }
+        } else if (data.brand) {
+          brands.add(data.brand);
+        }
+      });
+
+      // Clear existing options except the first one
+      productBrand.innerHTML = '<option value="">Select Brand...</option>';
+
+      // Add existing brands
+      Array.from(brands)
+        .sort()
+        .forEach(brand => {
+          const option = document.createElement('option');
+          option.value = brand;
+          option.textContent = brand;
+          productBrand.appendChild(option);
+        });
+
+      // Add "Add New Brand" option
+      const addNewOption = document.createElement('option');
+      addNewOption.value = '__ADD_NEW__';
+      addNewOption.textContent = '+ Add New Brand...';
+      productBrand.appendChild(addNewOption);
+    } catch (error) {
+      if (window.Logger) {
+        window.Logger.error('Error populating brand dropdown:', error);
+      }
+    }
+  }
+
+  // Setup dropdown listeners
+  function setupDropdownListeners() {
+    // Category dropdown - handle "Add New" option
+    if (productCategory) {
+      productCategory.addEventListener('change', async e => {
+        if (e.target.value === '__ADD_NEW__') {
+          const newCategory = prompt('Enter new category name:');
+          if (newCategory && newCategory.trim()) {
+            // Add the new category as an option
+            const option = document.createElement('option');
+            option.value = newCategory.trim();
+            option.textContent = newCategory.trim();
+            // Insert before the "Add New" option
+            const addNewOption = productCategory.querySelector('option[value="__ADD_NEW__"]');
+            if (addNewOption) {
+              productCategory.insertBefore(option, addNewOption);
+            } else {
+              productCategory.appendChild(option);
+            }
+            // Select the new category
+            productCategory.value = newCategory.trim();
+            // Repopulate brand dropdown based on new category
+            await populateBrandDropdown();
+          } else {
+            // Reset to empty if cancelled
+            productCategory.value = '';
+          }
+        } else if (e.target.value && e.target.value !== '') {
+          // Category changed, repopulate brands
+          await populateBrandDropdown();
+        }
+      });
+    }
+
+    // Brand dropdown - handle "Add New" option
+    if (productBrand) {
+      productBrand.addEventListener('change', async e => {
+        if (e.target.value === '__ADD_NEW__') {
+          const newBrand = prompt('Enter new brand name:');
+          if (newBrand && newBrand.trim()) {
+            // Add the new brand as an option
+            const option = document.createElement('option');
+            option.value = newBrand.trim();
+            option.textContent = newBrand.trim();
+            // Insert before the "Add New" option
+            const addNewOption = productBrand.querySelector('option[value="__ADD_NEW__"]');
+            if (addNewOption) {
+              productBrand.insertBefore(option, addNewOption);
+            } else {
+              productBrand.appendChild(option);
+            }
+            // Select the new brand
+            productBrand.value = newBrand.trim();
+          } else {
+            // Reset to empty if cancelled
+            productBrand.value = '';
+          }
+        }
+      });
+    }
+  }
+
   async function loadProducts() {
     if (!db) {
       productListBody.innerHTML = '<tr><td colspan="5">Error: Firestore not loaded.</td></tr>';
@@ -559,6 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let actionsHtml = '<td>';
         if (canEdit) {
           actionsHtml += `<button class="action-btn edit-btn" data-doc-id="${docId}" data-price="${d.price}">Edit Price</button>`;
+          actionsHtml += `<button class="action-btn edit-name-btn" data-doc-id="${docId}" data-name="${d.name || ''}">Edit Name</button>`;
         }
         if (canDelete) {
           actionsHtml += `<button class="action-btn delete-btn" data-doc-id="${docId}">Delete</button>`;
@@ -705,6 +865,33 @@ document.addEventListener('DOMContentLoaded', () => {
           loadProducts(); // Refresh list
         } catch (error) {
           alert('Error updating price: ' + error.message);
+          btn.disabled = false;
+        }
+      }
+
+      // --- Handle Edit Name ---
+      if (btn.classList.contains('edit-name-btn')) {
+        // Check permission
+        if (window.RBAC && !window.RBAC.canAddEditProducts()) {
+          alert('You do not have permission to edit products.');
+          return;
+        }
+
+        const currentName = btn.dataset.name;
+        const newName = prompt('Enter the new product name:', currentName);
+
+        if (newName === null || !newName.trim()) {
+          return; // User cancelled or entered empty name
+        }
+
+        btn.disabled = true;
+        try {
+          await db.collection('products').doc(docId).update({
+            name: newName.trim()
+          });
+          loadProducts(); // Refresh list
+        } catch (error) {
+          alert('Error updating name: ' + error.message);
           btn.disabled = false;
         }
       }
