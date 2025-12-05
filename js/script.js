@@ -241,7 +241,16 @@ function populateModelsForCamera(brandName) {
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
   models.sort((a, b) => collator.compare(a.name, b.name));
   
+  console.log(`📷 Showing ${models.length} camera models for brand: ${brandName}`);
+  
   models.forEach(model => {
+    // Debug: Check if price is missing
+    if (!model.price) {
+      console.error('❌ Model missing price:', model.name, 'Data:', model);
+    } else {
+      console.log('✅', model.name, '- Price:', model.price);
+    }
+    
     const cardHTML = `
       <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=DSLR/Lens&image=${encodeURIComponent(model.image)}&price=${encodeURIComponent(model.price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
         <img src="${model.image}" alt="${model.name}" class="model-image" loading="lazy">
@@ -524,7 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Map Firestore documents to our allProducts array
       allProducts = snapshot.docs.map(doc => {
         const data = doc.data();
-        return {
+        const product = {
           id: doc.id,
           name: data.name,
           brand: data.brand,
@@ -533,7 +542,19 @@ document.addEventListener("DOMContentLoaded", () => {
           image: data.image,
           subcategory: data.subcategory  // Important: for distinguishing cameras from lenses
         };
+        
+        // Debug: Log products with missing price
+        if (!product.price) {
+          console.warn('⚠️ Product missing price:', product.name, product);
+        }
+        
+        return product;
       });
+
+      // Log summary
+      console.log('✅ Loaded', allProducts.length, 'products from Firestore');
+      console.log('📊 Products with prices:', allProducts.filter(p => p.price).length);
+      console.log('⚠️ Products without prices:', allProducts.filter(p => !p.price).length);
 
       // Now that we have data, populate the categories
       populateCategories();
