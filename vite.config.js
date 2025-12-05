@@ -27,7 +27,9 @@ export default defineConfig({
         account: resolve(__dirname, 'account.html'),
         login: resolve(__dirname, 'login.html'),
         admin: resolve(__dirname, 'admin.html'),
-        'admin-login': resolve(__dirname, 'admin-login.html')
+        'admin-login': resolve(__dirname, 'admin-login.html'),
+        'privacy-policy': resolve(__dirname, 'privacy-policy.html'),
+        'terms-conditions': resolve(__dirname, 'terms-conditions.html')
       },
       output: {
         // Manual chunks for better caching
