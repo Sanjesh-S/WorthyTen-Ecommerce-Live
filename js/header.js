@@ -1,6 +1,5 @@
 // js/header.js (FIXED)
 (function injectHeader() {
-  
   // This function now runs *after* the HTML is loaded
   function runInit() {
     injectProgress();

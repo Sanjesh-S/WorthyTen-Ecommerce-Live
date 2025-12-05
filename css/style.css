@@ -1,11 +1,12 @@
-/* ===== WorthyTen Modern Minimal UI v2 =====
-   Professional, clean design with consistent spacing and components
+/* ===== WorthyTen Premium UI v3.0 =====
+   Modern, professional design inspired by Apple & Amazon
+   Premium aesthetics with exceptional user experience
 */
 
-/* ---------- Theme Variables ---------- */
+/* ---------- Premium Theme Variables ---------- */
 
 :root {
-  /* Spacing Scale (4px base unit) */
+  /* Spacing Scale (8px base unit - Apple-like) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -15,57 +16,71 @@
   --space-8: 32px;
   --space-10: 40px;
   --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
 
-  /* Colors */
+  /* Premium Color Palette - Apple/Amazon Inspired */
   --bg: #ffffff;
-  --bg-soft: #fafafa;
-  --bg-hover: #f5f5f5;
+  --bg-soft: #f8f9fa;
+  --bg-hover: #f1f3f5;
+  --bg-elevated: #ffffff;
   --card: #ffffff;
-  --line: #e5e5e5;
+  --line: #e9ecef;
 
-  --text: #1a1a1a;
-  --text-secondary: #4a4a4a;
-  --muted: #6b7280;
-  --muted-light: #9ca3af;
+  /* Text Colors - High Contrast */
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --muted: #8e8e93;
+  --muted-light: #c7c7cc;
 
-  /* Brand & Accent */
-  --brand: #1b4c87;    /* Deep blue */
-  --brand-2: #33c68d;  /* Teal green */
-  --brand-hover: #164a75;
-  --accent: #2eb5b9;   /* Aqua accent */
+  /* Premium Brand Colors - Sophisticated Gradient */
+  --brand: #0071e3;        /* Apple Blue */
+  --brand-dark: #0051d5;
+  --brand-light: #007aff;
+  --brand-2: #00c896;      /* Modern Teal */
+  --brand-hover: #007aff;
+  --accent: #5856d6;       /* Purple accent */
+  --accent-light: #af52de;
 
-  /* Status */
-  --ok: #10b981;
-  --ok-light: #d1fae5;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --danger: #ef4444;
+  /* Status Colors - Refined */
+  --ok: #34c759;
+  --ok-light: #d4edda;
+  --warning: #ff9500;
+  --warning-light: #fff3cd;
+  --danger: #ff3b30;
   --danger-light: #fee2e2;
 
-  /* Borders */
-  --border: rgba(0, 0, 0, 0.06);
-  --border-hover: rgba(0, 0, 0, 0.1);
-  --border-focus: rgba(27, 76, 135, 0.2);
+  /* Borders - Subtle & Refined */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --border-focus: rgba(0, 113, 227, 0.3);
+  --border-light: rgba(0, 0, 0, 0.04);
 
-  /* Radius */
+  /* Radius - Modern & Rounded */
   --radius-sm: 8px;
   --radius: 12px;
   --radius-md: 16px;
   --radius-lg: 20px;
+  --radius-xl: 24px;
   --radius-full: 999px;
 
-  /* Shadows - Refined System */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+  /* Premium Shadows - Layered Depth */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+  --shadow-brand: 0 8px 24px rgba(0, 113, 227, 0.25);
 
-  /* Focus Ring */
-  --ring: rgba(27, 76, 135, 0.2);
+  /* Focus Ring - Enhanced */
+  --ring: rgba(0, 113, 227, 0.3);
   --ring-width: 3px;
 
-  /* Typography */
+  /* Typography - Premium Scale */
   --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-base: 16px;
@@ -75,15 +90,23 @@
   --font-size-3xl: 28px;
   --font-size-4xl: 32px;
   --font-size-5xl: 40px;
+  --font-size-6xl: 48px;
+  --font-size-7xl: 56px;
 
-  --line-height-tight: 1.25;
+  --line-height-tight: 1.2;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
 
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition: 0.2s ease;
-  --transition-slow: 0.3s ease;
+  /* Premium Transitions - Smooth & Natural */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-blur: blur(20px);
 }
 
 
