@@ -61,12 +61,31 @@ document.addEventListener("DOMContentLoaded", () => {
     let price = basePrice;
     const age = document.querySelector('input[name="device_age"]:checked')?.value;
     const warrantyBonus = window.Config?.pricing?.warrantyBonusPercentage || 0.05;
-    if (age === "under_11" && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
+    
+    // Apply warranty bonus for devices under 12 months with valid bill
+    const warrantyEligible = ['0-3', '3-6', '6-12'];
+    if (warrantyEligible.includes(age) && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
       price *= (1 + warrantyBonus);
     }
+    
+    // Apply age-based deductions for older devices
+    const ageDeductions = {
+      '0-3': 0,      // No deduction - newest
+      '3-6': 0,      // No deduction
+      '6-12': 0,     // No deduction
+      '12-24': 0.05, // 5% deduction
+      '24-36': 0.10, // 10% deduction
+      '36+': 0.15    // 15% deduction for very old devices
+    };
+    
+    if (ageDeductions[age]) {
+      price *= (1 - ageDeductions[age]);
+    }
+    
     price = Math.round(price);
     if (finalEl) finalEl.textContent = `₹${price.toLocaleString("en-IN")}`;
     vd.priceAfterWarranty = price;
+    vd.deviceAge = age; // Store selected age
     try { sessionStorage.setItem("valuationData", JSON.stringify(vd)); } catch (e) {}
     try { window.updateOfferDrawer?.(vd); } catch {}
   }

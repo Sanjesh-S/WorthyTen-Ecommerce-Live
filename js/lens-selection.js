@@ -176,6 +176,37 @@ document.addEventListener("DOMContentLoaded", () => {
     updateEvaluationSidebar();
   });
 
+  // Search functionality for lenses
+  const lensSearchInput = document.getElementById('lensSearchInput');
+  if (lensSearchInput) {
+    lensSearchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      
+      // Clear and re-populate dropdown with filtered results
+      lensSelect.innerHTML = '';
+      
+      const filteredLenses = compatibleLenses.filter(lens => 
+        lens.name.toLowerCase().includes(searchTerm)
+      );
+      
+      if (filteredLenses.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = searchTerm ? 'No lenses match your search' : 'No compatible lenses found';
+        option.disabled = true;
+        lensSelect.appendChild(option);
+      } else {
+        filteredLenses.forEach(lens => {
+          const option = document.createElement('option');
+          option.value = lens.id;
+          option.textContent = lens.name;
+          option.selected = selected.has(lens.id);
+          lensSelect.appendChild(option);
+        });
+      }
+    });
+  }
+
   nextButton.addEventListener('click', (e) => {
     e.preventDefault();
     

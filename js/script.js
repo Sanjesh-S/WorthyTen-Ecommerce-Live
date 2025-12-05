@@ -137,20 +137,18 @@ function populateBrands(categoryName) {
         .filter(b => b)
     )].sort();
     
-    // Create brand list with cameras and lenses as SEPARATE options
+    // Create brand list with cameras only (lenses hidden from initial selection)
     const brandList = [];
     
-    // First, add all camera brands
+    // Add all camera brands only
     for (const brand of cameraBrands) {
       brandList.push({ name: brand, type: 'camera', displayName: brand });
     }
     
-    // Then, add all lens brands (as separate options)
-    for (const brand of lensBrands) {
-      brandList.push({ name: brand, type: 'lens', displayName: `${brand}-Lens` });
-    }
+    // Lens brands are hidden from initial selection
+    // Users can select lenses during the additional lens selection step
     
-    console.log(`Total brand options: ${brandList.length} (${cameraBrands.length} camera brands + ${lensBrands.length} lens brands)`);
+    console.log(`Total brand options: ${brandList.length} (${cameraBrands.length} camera brands, ${lensBrands.length} lens brands available in additional lens selection)`);
     
     // Render brand cards
     brandList.forEach(brandInfo => {
