@@ -76,13 +76,16 @@ function populateCategories() {
       'https://via.placeholder.com/400x400/667eea/ffffff?text=' + categoryName;
 
     // All categories now use images (no icons)
+    // Change display name for DSLR/Lens to "Sell DSLR"
+    const displayName = categoryName === 'DSLR/Lens' ? 'Sell DSLR' : `Sell ${categoryName}`;
+
     let cardContent;
     cardContent = `
       <a href="#" class="category-card" data-category="${categoryName}" aria-label="Select ${categoryName} category">
         <div class="category-image-container">
           <img src="${imageUrl}" alt="${categoryName}" class="category-image" loading="lazy">
         </div>
-        <span class="category-name">Sell ${categoryName}</span>
+        <span class="category-name">${displayName}</span>
       </a>
     `;
 
@@ -400,8 +403,10 @@ function populateProductTypes(brandName) {
 function populateModels(categoryName, brandName) {
   modelGrid.innerHTML = '';
 
-  // Get all models that match both category and brand
-  const models = allProducts.filter(p => p.category === categoryName && p.brand === brandName);
+  // Get all models that match both category and brand, excluding lenses
+  const models = allProducts.filter(
+    p => p.category === categoryName && p.brand === brandName && p.subcategory !== 'Lens'
+  );
 
   // Sort the models array naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
@@ -583,9 +588,13 @@ function showSearchSuggestions(searchTerm, container) {
     return;
   }
 
-  // Search through all products
+  // Search through all products, excluding lenses
   const matches = allProducts
     .filter(product => {
+      // Exclude lenses - only show cameras and other products
+      if (product.subcategory === 'Lens') {
+        return false;
+      }
       if (!product.price || product.price <= 0 || isNaN(Number(product.price))) {
         return false;
       }
