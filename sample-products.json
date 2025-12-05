@@ -1,0 +1,223 @@
+[
+  {
+    "name": "Canon EOS 5D Mark IV",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "price": 85000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Canon EOS 6D Mark II",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "price": 65000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Canon EOS 90D",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "price": 48000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Canon EOS 80D",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "price": 42000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon D850",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "price": 95000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon D750",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "price": 58000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon D7500",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "price": 45000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon D5600",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "price": 35000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Sony Alpha A7 III",
+    "brand": "Sony",
+    "category": "DSLR/Lens",
+    "price": 92000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Sony Alpha A6400",
+    "brand": "Sony",
+    "category": "DSLR/Lens",
+    "price": 55000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Fujifilm X-T4",
+    "brand": "Fujifilm",
+    "category": "DSLR/Lens",
+    "price": 72000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Fujifilm X-T30",
+    "brand": "Fujifilm",
+    "category": "DSLR/Lens",
+    "price": 48000,
+    "image": "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "iPhone 14 Pro Max",
+    "brand": "Apple",
+    "category": "Phone",
+    "price": 65000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "iPhone 14 Pro",
+    "brand": "Apple",
+    "category": "Phone",
+    "price": 58000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "iPhone 13 Pro",
+    "brand": "Apple",
+    "category": "Phone",
+    "price": 48000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "iPhone 13",
+    "brand": "Apple",
+    "category": "Phone",
+    "price": 38000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Samsung Galaxy S23 Ultra",
+    "brand": "Samsung",
+    "category": "Phone",
+    "price": 52000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Samsung Galaxy S23",
+    "brand": "Samsung",
+    "category": "Phone",
+    "price": 42000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Samsung Galaxy S22",
+    "brand": "Samsung",
+    "category": "Phone",
+    "price": 35000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "OnePlus 11",
+    "brand": "OnePlus",
+    "category": "Phone",
+    "price": 32000,
+    "image": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "MacBook Pro 16-inch M2",
+    "brand": "Apple",
+    "category": "Laptop",
+    "price": 125000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "MacBook Pro 14-inch M2",
+    "brand": "Apple",
+    "category": "Laptop",
+    "price": 95000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "MacBook Air M2",
+    "brand": "Apple",
+    "category": "Laptop",
+    "price": 68000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Dell XPS 15",
+    "brand": "Dell",
+    "category": "Laptop",
+    "price": 75000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Dell XPS 13",
+    "brand": "Dell",
+    "category": "Laptop",
+    "price": 62000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "HP Spectre x360",
+    "brand": "HP",
+    "category": "Laptop",
+    "price": 58000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Lenovo ThinkPad X1 Carbon",
+    "brand": "Lenovo",
+    "category": "Laptop",
+    "price": 72000,
+    "image": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Canon EF 50mm f/1.8 STM",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "subcategory": "Lens",
+    "price": 4500,
+    "image": "https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Canon EF 24-70mm f/2.8L II USM",
+    "brand": "Canon",
+    "category": "DSLR/Lens",
+    "subcategory": "Lens",
+    "price": 58000,
+    "image": "https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon AF-S 50mm f/1.8G",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "subcategory": "Lens",
+    "price": 8500,
+    "image": "https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    "name": "Nikon AF-S 24-70mm f/2.8G ED",
+    "brand": "Nikon",
+    "category": "DSLR/Lens",
+    "subcategory": "Lens",
+    "price": 52000,
+    "image": "https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400"
+  }
+]
