@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Unmapped Cameras</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: 600;
+            width: 100%;
+            margin: 10px 0;
+        }
+        button:hover:not(:disabled) { transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .info-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        #resultsContainer {
+            max-height: 500px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .camera-entry {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Export Unmapped Cameras</h1>
+        <p class="subtitle">Find and export cameras that need lens compatibility mapping</p>
+        
+        <div class="info-box">
+            <strong>📝 This will:</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Find all cameras without compatible lens mappings</li>
+                <li>Exclude fixed-lens cameras (they're correct)</li>
+                <li>Show brand, model, and suggested mount type</li>
+                <li>Export as text file for easy reference</li>
+            </ul>
+        </div>
+
+        <button id="exportBtn" onclick="findAndExportUnmapped()">
+            📥 Find & Export Unmapped Cameras
+        </button>
+
+        <div id="resultsContainer"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/lens-compatibility-dynamic.js"></script>
+    <script src="js/lens-compatibility-smart.js"></script>
+
+    <script>
+        async function findAndExportUnmapped() {
+            const exportBtn = document.getElementById('exportBtn');
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            exportBtn.disabled = true;
+            resultsContainer.innerHTML = '<p style="text-align:center;">Loading cameras...</p>';
+
+            try {
+                const db = firebase.firestore();
+                const snapshot = await db.collection('products')
+                    .where('category', '==', 'DSLR/Lens')
+                    .get();
+                
+                const unmappedCameras = [];
+                
+                for (const doc of snapshot.docs) {
+                    const data = doc.data();
+                    
+                    // Skip lenses
+                    if (data.subcategory === 'Lens') continue;
+                    
+                    const name = data.name;
+                    const brand = data.brand;
+                    
+                    // Check if fixed lens
+                    const isFixed = window.isFixedLensCamera(brand, name);
+                    if (isFixed) continue;
+                    
+                    // Get mount type using smart detection
+                    const mountInfo = window.detectCameraMountSmart ? 
+                        window.detectCameraMountSmart(brand, name) : 
+                        window.getCameraMountType(brand, name);
+                    
+                    // If no mount info, it's unmapped
+                    if (!mountInfo) {
+                        unmappedCameras.push({
+                            brand,
+                            name,
+                            suggested: suggestMountType(brand, name)
+                        });
+                    }
+                }
+
+                // Display results
+                resultsContainer.innerHTML = `
+                    <h3 style="color: #dc3545;">⚠️ ${unmappedCameras.length} Unmapped Cameras Found:</h3>
+                    <p style="margin-bottom: 15px;">These cameras need to be added to lens-compatibility-dynamic.js</p>
+                `;
+
+                unmappedCameras.forEach(camera => {
+                    resultsContainer.innerHTML += `
+                        <div class="camera-entry">
+                            <strong>${camera.brand} ${camera.name}</strong><br>
+                            <span style="color: #666;">Suggested: ${camera.suggested}</span>
+                        </div>
+                    `;
+                });
+
+                // Export to text file
+                if (unmappedCameras.length > 0) {
+                    const textContent = generateTextReport(unmappedCameras);
+                    downloadTextFile(textContent, 'unmapped-cameras.txt');
+                    
+                    resultsContainer.innerHTML += `
+                        <p style="color: #28a745; margin-top: 20px; font-weight: bold;">
+                            ✅ Exported to unmapped-cameras.txt
+                        </p>
+                    `;
+                } else {
+                    resultsContainer.innerHTML = `
+                        <p style="color: #28a745; text-align: center; padding: 40px;">
+                            ✅ All cameras are properly mapped!
+                        </p>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultsContainer.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            } finally {
+                exportBtn.disabled = false;
+            }
+        }
+
+        function suggestMountType(brand, name) {
+            const nameUpper = name.toUpperCase();
+            
+            if (brand === 'Canon') {
+                if (nameUpper.includes('5D') || nameUpper.includes('6D') || 
+                    nameUpper.includes('1D')) {
+                    return 'fullFrameEF - Add to fullFrameEF array';
+                }
+                if (nameUpper.includes('EOS R') || nameUpper.includes(' R5') || 
+                    nameUpper.includes(' R6') || nameUpper.includes(' R3')) {
+                    return 'rfMount - Add to rfMount array';
+                }
+                if (nameUpper.includes('EOS M')) {
+                    return 'efmMount - Add to efmMount array';
+                }
+                return 'apscEFS - Add to apscEFS array (most Canon DSLRs)';
+            }
+            
+            if (brand === 'Nikon') {
+                if (nameUpper.includes('Z')) {
+                    return 'zMount - Add to zMount array';
+                }
+                if (nameUpper.includes('D')) {
+                    return 'fMount - Add to fMount array (F-mount DSLR)';
+                }
+                return 'Check if fixed lens (Coolpix?)';
+            }
+            
+            if (brand === 'Sony') {
+                if (nameUpper.includes('A7') || nameUpper.includes('A9')) {
+                    return 'eMountFullFrame - Add to eMountFullFrame array';
+                }
+                if (nameUpper.includes('A6') || nameUpper.includes('A5') || nameUpper.includes('NEX')) {
+                    return 'eMountAPSC - Add to eMountAPSC array';
+                }
+                if (nameUpper.includes('A55') || nameUpper.includes('A77') || nameUpper.includes('A99')) {
+                    return 'aMount - Add to aMount array';
+                }
+                return 'Check if fixed lens (RX/HX series?)';
+            }
+            
+            if (brand === 'Fujifilm') {
+                if (nameUpper.includes('GFX') || nameUpper.includes('GF')) {
+                    return 'gfMount - Add to gfMount array';
+                }
+                if (nameUpper.includes('X-T') || nameUpper.includes('X-H') || 
+                    nameUpper.includes('X-PRO') || nameUpper.includes('X-E')) {
+                    return 'xMount - Add to xMount array';
+                }
+                return 'Check if fixed lens (X100 series?)';
+            }
+            
+            return 'Unknown - manual check needed';
+        }
+
+        function generateTextReport(cameras) {
+            let report = '='.repeat(60) + '\n';
+            report += 'UNMAPPED CAMERAS REPORT\n';
+            report += 'Generated: ' + new Date().toLocaleString() + '\n';
+            report += '='.repeat(60) + '\n\n';
+            report += `Total Unmapped: ${cameras.length}\n\n`;
+            
+            // Group by brand
+            const byBrand = {};
+            cameras.forEach(cam => {
+                if (!byBrand[cam.brand]) byBrand[cam.brand] = [];
+                byBrand[cam.brand].push(cam);
+            });
+            
+            Object.entries(byBrand).forEach(([brand, cams]) => {
+                report += `\n${'='.repeat(60)}\n`;
+                report += `${brand.toUpperCase()} (${cams.length} cameras)\n`;
+                report += '='.repeat(60) + '\n';
+                
+                cams.forEach(cam => {
+                    report += `\nCamera: ${cam.name}\n`;
+                    report += `Suggested Mount: ${cam.suggested}\n`;
+                });
+            });
+            
+            report += '\n\n' + '='.repeat(60) + '\n';
+            report += 'Add these cameras to js/lens-compatibility-dynamic.js\n';
+            report += 'in the appropriate mount type arrays\n';
+            report += '='.repeat(60) + '\n';
+            
+            return report;
+        }
+
+        function downloadTextFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+    </script>
+</body>
+</html>
+
