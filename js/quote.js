@@ -32,6 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Debug logging
+    if (window.Logger) {
+        window.Logger.log('Quote page data:', { modelName, brandName, category, basePrice, imageUrl });
+    }
+    
     if (modelName && brandName && basePrice && category) {
         
         const fullName = window.getFullModelName ? 
@@ -45,8 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('modelName').textContent = fullName + variantText;
         const modelImage = document.getElementById('productImage');
 
-        if (imageUrl && imageUrl !== 'null') {
+        if (imageUrl && imageUrl !== 'null' && imageUrl !== 'undefined') {
             modelImage.src = imageUrl;
+        } else {
+            // Fallback image if none provided
+            modelImage.src = 'https://via.placeholder.com/350?text=' + encodeURIComponent(fullName);
         }
         
         // Use adjusted price if available, otherwise base price
@@ -71,8 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = 'assessment.html';
         });
     } else {
-        // Fallback if required parameters are missing
-        alert("Could not load device details. Please go back and try again.");
-        window.location.href = 'index.html';
+        // Improved error message showing what's missing
+        const missing = [];
+        if (!modelName) missing.push('Model');
+        if (!brandName) missing.push('Brand');
+        if (!category) missing.push('Category');
+        if (!basePrice) missing.push('Price');
+        
+        const errorMsg = `Missing required data: ${missing.join(', ')}. Please go back and try again.`;
+        
+        if (window.Logger) {
+            window.Logger.error('Quote page error:', errorMsg, { modelName, brandName, category, basePrice });
+        }
+        
+        alert(errorMsg);
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 100);
     }
 });

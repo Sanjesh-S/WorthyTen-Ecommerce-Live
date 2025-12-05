@@ -220,7 +220,7 @@
           <h3>${product.name}</h3>
           <p class="product-brand">${product.brand}</p>
           <p class="product-price">₹${product.price.toLocaleString('en-IN')}</p>
-          <a href="quote.html?model=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.brand)}&image=${encodeURIComponent(product.image)}&price=${encodeURIComponent(product.price)}" 
+          <a href="quote.html?model=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.brand)}&category=${encodeURIComponent(product.category)}&image=${encodeURIComponent(product.image)}&price=${encodeURIComponent(product.price)}" 
              class="cta-button" aria-label="Get quote for ${product.name}">
             Get Quote
           </a>
