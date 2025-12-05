@@ -6,28 +6,28 @@
  */
 
 // ===== DOM ELEMENTS =====
-const searchInput = document.getElementById("search-input");
-const dividerText = document.getElementById("divider-text");
+const searchInput = document.getElementById('search-input');
+const dividerText = document.getElementById('divider-text');
 
-const categorySelection = document.getElementById("category-selection");
-const brandSelection = document.getElementById("brand-selection");
-const productTypeSelection = document.getElementById("product-type-selection");
-const modelSelection = document.getElementById("model-selection");
+const categorySelection = document.getElementById('category-selection');
+const brandSelection = document.getElementById('brand-selection');
+const productTypeSelection = document.getElementById('product-type-selection');
+const modelSelection = document.getElementById('model-selection');
 
-const categoryGrid = document.getElementById("category-grid");
-const brandGrid = document.getElementById("brand-grid");
-const productTypeGrid = document.getElementById("product-type-grid");
-const modelGrid = document.getElementById("model-grid");
+const categoryGrid = document.getElementById('category-grid');
+const brandGrid = document.getElementById('brand-grid');
+const productTypeGrid = document.getElementById('product-type-grid');
+const modelGrid = document.getElementById('model-grid');
 
-const selectedCategoryTitle = document.getElementById("selected-category-title");
-const selectedBrandTitle = document.getElementById("selected-brand-title");
-const selectedBrandForType = document.getElementById("selected-brand-for-type");
-const selectedTypeTitle = document.getElementById("selected-type-title");
+const selectedCategoryTitle = document.getElementById('selected-category-title');
+const selectedBrandTitle = document.getElementById('selected-brand-title');
+const selectedBrandForType = document.getElementById('selected-brand-for-type');
+const selectedTypeTitle = document.getElementById('selected-type-title');
 
-const backToCategoriesBtn = document.getElementById("back-to-categories");
-const backToBrandsBtn = document.getElementById("back-to-brands");
-const backToBrandsFromTypeBtn = document.getElementById("back-to-brands-from-type");
-const backToTypesBtn = document.getElementById("back-to-types");
+const backToCategoriesBtn = document.getElementById('back-to-categories');
+const backToBrandsBtn = document.getElementById('back-to-brands');
+const backToBrandsFromTypeBtn = document.getElementById('back-to-brands-from-type');
+const backToTypesBtn = document.getElementById('back-to-types');
 
 // ===== GLOBAL DATA STORE =====
 // This will hold all our products fetched from Firestore
@@ -41,35 +41,39 @@ let currentProductType = null; // 'bodies' or 'lenses'
 // Show/Hide sections
 function showSection(sectionToShow) {
   [categorySelection, brandSelection, productTypeSelection, modelSelection].forEach(section => {
-    section.classList.add("hidden");
+    section.classList.add('hidden');
   });
-  sectionToShow.classList.remove("hidden");
+  sectionToShow.classList.remove('hidden');
 }
 
 // 1. Populate Categories with images
 function populateCategories() {
-  categoryGrid.innerHTML = "";
-  
-  const categories = [...new Set(
-    allProducts
-      .map(p => p.category)
-      .filter(c => c) // This filters out any falsy values (null, undefined, "")
-  )];
+  categoryGrid.innerHTML = '';
+
+  const categories = [
+    ...new Set(
+      allProducts.map(p => p.category).filter(c => c) // This filters out any falsy values (null, undefined, "")
+    )
+  ];
   categories.sort(); // Sort them alphabetically
 
   // Category images mapping - high quality professional images
   const categoryImages = {
-    'DSLR/Lens': 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
-    'Lens': 'https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
-    'Phone': 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
-    'Laptop': 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
-    'iPad': 'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
-    'DSLR/Lens': 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2'
+    'DSLR/Lens':
+      'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
+    Lens: 'https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
+    Phone:
+      'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
+    Laptop:
+      'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2',
+    iPad: 'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2'
   };
 
   categories.forEach(categoryName => {
-    const imageUrl = categoryImages[categoryName] || 'https://via.placeholder.com/400x400/667eea/ffffff?text=' + categoryName;
-    
+    const imageUrl =
+      categoryImages[categoryName] ||
+      'https://via.placeholder.com/400x400/667eea/ffffff?text=' + categoryName;
+
     // All categories now use images (no icons)
     let cardContent;
     cardContent = `
@@ -80,81 +84,87 @@ function populateCategories() {
         <span class="category-name">Sell ${categoryName}</span>
       </a>
     `;
-    
+
     categoryGrid.innerHTML += cardContent;
   });
 
   // Add click listeners to the new category cards
   categoryGrid.querySelectorAll('.category-card').forEach(card => {
-    card.addEventListener('click', (e) => {
+    card.addEventListener('click', e => {
       e.preventDefault();
       currentCategory = card.getAttribute('data-category');
       selectedCategoryTitle.textContent = currentCategory;
-      dividerText.textContent = "Or choose a brand";
-      
+      dividerText.textContent = 'Or choose a brand';
+
       populateBrands(currentCategory);
       showSection(brandSelection);
       searchInput.value = ''; // Clear search
-      searchInput.placeholder = "Search for a brand or model";
+      searchInput.placeholder = 'Search for a brand or model';
     });
   });
 }
 
 // 2. Populate Brands with logos
 function populateBrands(categoryName) {
-  brandGrid.innerHTML = "";
-  
+  brandGrid.innerHTML = '';
+
   // Brand logo mapping - using logo.dev for reliable CDN logos
   const brandLogos = {
-    'Canon': 'https://logo.clearbit.com/canon.com',
-    'Nikon': 'https://logo.clearbit.com/nikon.com',
-    'Sony': 'https://logo.clearbit.com/sony.com',
-    'Fujifilm': 'https://logo.clearbit.com/fujifilm.com',
-    'Apple': 'https://logo.clearbit.com/apple.com',
-    'Samsung': 'https://logo.clearbit.com/samsung.com',
-    'GoPro': 'https://logo.clearbit.com/gopro.com',
-    'DJI': 'https://logo.clearbit.com/dji.com',
-    'Panasonic': 'https://logo.clearbit.com/panasonic.com',
-    'Olympus': 'https://logo.clearbit.com/olympus.com',
-    'Pentax': 'https://logo.clearbit.com/pentax.com'
+    Canon: 'https://logo.clearbit.com/canon.com',
+    Nikon: 'https://logo.clearbit.com/nikon.com',
+    Sony: 'https://logo.clearbit.com/sony.com',
+    Fujifilm: 'https://logo.clearbit.com/fujifilm.com',
+    Apple: 'https://logo.clearbit.com/apple.com',
+    Samsung: 'https://logo.clearbit.com/samsung.com',
+    GoPro: 'https://logo.clearbit.com/gopro.com',
+    DJI: 'https://logo.clearbit.com/dji.com',
+    Panasonic: 'https://logo.clearbit.com/panasonic.com',
+    Olympus: 'https://logo.clearbit.com/olympus.com',
+    Pentax: 'https://logo.clearbit.com/pentax.com'
   };
-  
+
   // Special handling for DSLR/Lens category - show cameras and lenses as separate brands
   if (categoryName === 'DSLR/Lens') {
     // Get brands that have cameras
-    const cameraBrands = [...new Set(
-      allProducts
-        .filter(p => p.category === categoryName && !p.subcategory)
-        .map(p => p.brand)
-        .filter(b => b)
-    )].sort();
-    
+    const cameraBrands = [
+      ...new Set(
+        allProducts
+          .filter(p => p.category === categoryName && !p.subcategory)
+          .map(p => p.brand)
+          .filter(b => b)
+      )
+    ].sort();
+
     // Get brands that have lenses
-    const lensBrands = [...new Set(
-      allProducts
-        .filter(p => p.category === categoryName && p.subcategory === 'Lens')
-        .map(p => p.brand)
-        .filter(b => b)
-    )].sort();
-    
+    const lensBrands = [
+      ...new Set(
+        allProducts
+          .filter(p => p.category === categoryName && p.subcategory === 'Lens')
+          .map(p => p.brand)
+          .filter(b => b)
+      )
+    ].sort();
+
     // Create brand list with cameras only (lenses hidden from initial selection)
     const brandList = [];
-    
+
     // Add all camera brands only
     for (const brand of cameraBrands) {
       brandList.push({ name: brand, type: 'camera', displayName: brand });
     }
-    
+
     // Lens brands are hidden from initial selection
     // Users can select lenses during the additional lens selection step
-    
-    console.log(`Total brand options: ${brandList.length} (${cameraBrands.length} camera brands, ${lensBrands.length} lens brands available in additional lens selection)`);
-    
+
+    console.log(
+      `Total brand options: ${brandList.length} (${cameraBrands.length} camera brands, ${lensBrands.length} lens brands available in additional lens selection)`
+    );
+
     // Render brand cards
     brandList.forEach(brandInfo => {
       const logoUrl = brandLogos[brandInfo.name] || '';
       const displayName = brandInfo.displayName;
-      
+
       const cardHTML = `
         <a href="#" class="brand-card" data-brand="${brandInfo.name}" data-type="${brandInfo.type}" aria-label="Select ${displayName}">
           ${logoUrl ? `<img src="${logoUrl}" alt="${brandInfo.name} logo" class="brand-logo-img" loading="lazy" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(brandInfo.name)}&size=80&background=667eea&color=fff&bold=true'">` : ''}
@@ -165,17 +175,19 @@ function populateBrands(categoryName) {
     });
   } else {
     // For other categories (Phone, Laptop), use original logic
-    const brands = [...new Set(
-      allProducts
-        .filter(p => p.category === categoryName)
-        .map(p => p.brand)
-        .filter(b => b)
-    )].sort();
-    
+    const brands = [
+      ...new Set(
+        allProducts
+          .filter(p => p.category === categoryName)
+          .map(p => p.brand)
+          .filter(b => b)
+      )
+    ].sort();
+
     brands.forEach(brandName => {
       const logoUrl = brandLogos[brandName] || '';
       const displayName = brandName;
-      
+
       const cardHTML = `
         <a href="#" class="brand-card" data-brand="${brandName}" data-type="product" aria-label="Select ${displayName}">
           ${logoUrl ? `<img src="${logoUrl}" alt="${brandName} logo" class="brand-logo-img" loading="lazy" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(brandName)}&size=80&background=667eea&color=fff&bold=true'">` : ''}
@@ -188,41 +200,41 @@ function populateBrands(categoryName) {
 
   // Add click listeners to the new brand cards
   brandGrid.querySelectorAll('.brand-card').forEach(card => {
-    card.addEventListener('click', (e) => {
+    card.addEventListener('click', e => {
       e.preventDefault();
       currentBrand = card.getAttribute('data-brand');
       const brandType = card.getAttribute('data-type');
-      
+
       // For DSLR/Lens category
       if (currentCategory === 'DSLR/Lens') {
         if (brandType === 'lens') {
           selectedBrandTitle.textContent = `${currentBrand}-Lens`;
-          dividerText.textContent = "Or choose a lens model";
-          
+          dividerText.textContent = 'Or choose a lens model';
+
           // Filter for lenses only
           populateModelsForLens(currentBrand);
           showSection(modelSelection);
           searchInput.value = '';
-          searchInput.placeholder = "Search for a lens";
+          searchInput.placeholder = 'Search for a lens';
         } else {
           selectedBrandTitle.textContent = currentBrand;
-          dividerText.textContent = "Or choose a camera model";
-          
+          dividerText.textContent = 'Or choose a camera model';
+
           // Filter for cameras only
           populateModelsForCamera(currentBrand);
           showSection(modelSelection);
           searchInput.value = '';
-          searchInput.placeholder = "Search for a camera";
+          searchInput.placeholder = 'Search for a camera';
         }
       } else {
         // For other categories (Phone, Laptop)
         selectedBrandTitle.textContent = currentBrand;
-        dividerText.textContent = "Or choose a model";
-        
+        dividerText.textContent = 'Or choose a model';
+
         populateModels(currentCategory, currentBrand);
         showSection(modelSelection);
         searchInput.value = '';
-        searchInput.placeholder = "Search for a model";
+        searchInput.placeholder = 'Search for a model';
       }
     });
   });
@@ -230,30 +242,39 @@ function populateBrands(categoryName) {
 
 // 2.4 Populate Models for Cameras (DSLR/Lens category - cameras only)
 function populateModelsForCamera(brandName) {
-  modelGrid.innerHTML = "";
-  
+  modelGrid.innerHTML = '';
+
   // Get cameras only (products without subcategory='Lens')
-  const models = allProducts.filter(p => 
-    p.category === 'DSLR/Lens' && p.brand === brandName && !p.subcategory
+  const models = allProducts.filter(
+    p => p.category === 'DSLR/Lens' && p.brand === brandName && !p.subcategory
   );
-  
+
   // Sort naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
   models.sort((a, b) => collator.compare(a.name, b.name));
-  
+
   console.log(`📷 Showing ${models.length} camera models for brand: ${brandName}`);
-  
+
   models.forEach(model => {
-    // Debug: Check if price is missing
-    if (!model.price) {
-      console.error('❌ Model missing price:', model.name, 'Data:', model);
-    } else {
-      console.log('✅', model.name, '- Price:', model.price);
+    // Skip models without price
+    if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
+      if (window.Logger) {
+        window.Logger.warn('Model missing or invalid price:', model.name, 'Data:', model);
+      }
+      return; // Skip this model
     }
-    
+
+    const price = Number(model.price);
+    if (price <= 0) {
+      if (window.Logger) {
+        window.Logger.warn('Model has invalid price (<= 0):', model.name, 'Price:', price);
+      }
+      return; // Skip this model
+    }
+
     const cardHTML = `
-      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=DSLR/Lens&image=${encodeURIComponent(model.image)}&price=${encodeURIComponent(model.price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
-        <img src="${model.image}" alt="${model.name}" class="model-image" loading="lazy">
+      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=DSLR/Lens&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
+        <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
         <span class="model-name">${model.name}</span>
       </a>
     `;
@@ -263,21 +284,37 @@ function populateModelsForCamera(brandName) {
 
 // 2.5 Populate Models for Lenses (DSLR/Lens category - lenses only)
 function populateModelsForLens(brandName) {
-  modelGrid.innerHTML = "";
-  
+  modelGrid.innerHTML = '';
+
   // Get lenses only (products with subcategory='Lens')
-  const models = allProducts.filter(p => 
-    p.category === 'DSLR/Lens' && p.brand === brandName && p.subcategory === 'Lens'
+  const models = allProducts.filter(
+    p => p.category === 'DSLR/Lens' && p.brand === brandName && p.subcategory === 'Lens'
   );
-  
+
   // Sort naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
   models.sort((a, b) => collator.compare(a.name, b.name));
-  
+
   models.forEach(model => {
+    // Skip models without price
+    if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
+      if (window.Logger) {
+        window.Logger.warn('Model missing or invalid price:', model.name);
+      }
+      return;
+    }
+
+    const price = Number(model.price);
+    if (price <= 0) {
+      if (window.Logger) {
+        window.Logger.warn('Model has invalid price (<= 0):', model.name);
+      }
+      return;
+    }
+
     const cardHTML = `
-      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=Lens&image=${encodeURIComponent(model.image)}&price=${encodeURIComponent(model.price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
-        <img src="${model.image}" alt="${model.name}" class="model-image" loading="lazy">
+      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=Lens&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
+        <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
         <span class="model-name">${model.name}</span>
       </a>
     `;
@@ -287,17 +324,17 @@ function populateModelsForLens(brandName) {
 
 // 2.6 Populate Product Types (Bodies vs Lenses) - Only for DSLR Camera
 function populateProductTypes(brandName) {
-  productTypeGrid.innerHTML = "";
-  
+  productTypeGrid.innerHTML = '';
+
   // Count available products for each type
-  const bodiesCount = allProducts.filter(p => 
-    p.category === 'DSLR Camera' && p.brand === brandName && p.type !== 'lens'
+  const bodiesCount = allProducts.filter(
+    p => p.category === 'DSLR Camera' && p.brand === brandName && p.type !== 'lens'
   ).length;
-  
-  const lensesCount = allProducts.filter(p => 
-    p.category === 'DSLR Camera' && p.brand === brandName && p.type === 'lens'
+
+  const lensesCount = allProducts.filter(
+    p => p.category === 'DSLR Camera' && p.brand === brandName && p.type === 'lens'
   ).length;
-  
+
   // Camera Bodies card
   if (bodiesCount > 0) {
     const bodiesCard = `
@@ -311,7 +348,7 @@ function populateProductTypes(brandName) {
     `;
     productTypeGrid.innerHTML += bodiesCard;
   }
-  
+
   // Lenses card
   if (lensesCount > 0) {
     const lensesCard = `
@@ -325,50 +362,64 @@ function populateProductTypes(brandName) {
     `;
     productTypeGrid.innerHTML += lensesCard;
   }
-  
+
   // Add click listeners
   productTypeGrid.querySelectorAll('.brand-card').forEach(card => {
-    card.addEventListener('click', (e) => {
+    card.addEventListener('click', e => {
       e.preventDefault();
       currentProductType = card.getAttribute('data-type');
-      
+
       selectedBrandTitle.textContent = currentBrand;
       selectedTypeTitle.textContent = currentProductType === 'bodies' ? 'Camera Bodies' : 'Lenses';
-      dividerText.textContent = "Or choose a model";
-      
+      dividerText.textContent = 'Or choose a model';
+
       // Show appropriate back button
       document.getElementById('back-to-brands').classList.add('hidden');
       document.getElementById('back-to-types').classList.remove('hidden');
-      
+
       populateModelsByType(currentCategory, currentBrand, currentProductType);
       showSection(modelSelection);
       searchInput.value = '';
-      searchInput.placeholder = "Search for a model";
+      searchInput.placeholder = 'Search for a model';
     });
   });
 }
 
 // 3. Populate Models
 function populateModels(categoryName, brandName) {
-  modelGrid.innerHTML = "";
-  
+  modelGrid.innerHTML = '';
+
   // Get all models that match both category and brand
-  const models = allProducts.filter(p => 
-    p.category === categoryName && p.brand === brandName
-  );
-  
+  const models = allProducts.filter(p => p.category === categoryName && p.brand === brandName);
+
   // Sort the models array naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
   models.sort((a, b) => collator.compare(a.name, b.name));
-  
+
   // Check if category needs variant selection
   const needsVariants = window.supportsVariants && window.supportsVariants(categoryName);
   const targetPage = needsVariants ? 'variant-selection.html' : 'quote.html';
-  
+
   models.forEach(model => {
+    // Skip models without price
+    if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
+      if (window.Logger) {
+        window.Logger.warn('Model missing or invalid price:', model.name);
+      }
+      return;
+    }
+
+    const price = Number(model.price);
+    if (price <= 0) {
+      if (window.Logger) {
+        window.Logger.warn('Model has invalid price (<= 0):', model.name);
+      }
+      return;
+    }
+
     const cardHTML = `
-      <a href="${targetPage}?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image)}&price=${encodeURIComponent(model.price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
-        <img src="${model.image}" alt="${model.name}" class="model-image" loading="lazy">
+      <a href="${targetPage}?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
+        <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
         <span class="model-name">${model.name}</span>
       </a>
     `;
@@ -378,30 +429,46 @@ function populateModels(categoryName, brandName) {
 
 // 3.5 Populate Models by Type (Bodies or Lenses)
 function populateModelsByType(categoryName, brandName, productType) {
-  modelGrid.innerHTML = "";
-  
+  modelGrid.innerHTML = '';
+
   // Filter by type
   let models;
   if (productType === 'bodies') {
     // Camera bodies (products without 'lens' type)
-    models = allProducts.filter(p => 
-      p.category === categoryName && p.brand === brandName && p.type !== 'lens'
+    models = allProducts.filter(
+      p => p.category === categoryName && p.brand === brandName && p.type !== 'lens'
     );
   } else {
     // Lenses (products with 'lens' type)
-    models = allProducts.filter(p => 
-      p.category === categoryName && p.brand === brandName && p.type === 'lens'
+    models = allProducts.filter(
+      p => p.category === categoryName && p.brand === brandName && p.type === 'lens'
     );
   }
-  
+
   // Sort the models array naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
   models.sort((a, b) => collator.compare(a.name, b.name));
-  
+
   models.forEach(model => {
+    // Skip models without price
+    if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
+      if (window.Logger) {
+        window.Logger.warn('Model missing or invalid price:', model.name);
+      }
+      return;
+    }
+
+    const price = Number(model.price);
+    if (price <= 0) {
+      if (window.Logger) {
+        window.Logger.warn('Model has invalid price (<= 0):', model.name);
+      }
+      return;
+    }
+
     const cardHTML = `
-      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image)}&price=${encodeURIComponent(model.price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
-        <img src="${model.image}" alt="${model.name}" class="model-image" loading="lazy">
+      <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
+        <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
         <span class="model-name">${model.name}</span>
       </a>
     `;
@@ -410,80 +477,79 @@ function populateModelsByType(categoryName, brandName, productType) {
 }
 
 // ===== BACK BUTTONS =====
-backToCategoriesBtn.addEventListener('click', (e) => {
+backToCategoriesBtn.addEventListener('click', e => {
   e.preventDefault();
   currentCategory = null;
-  dividerText.textContent = "Popular Categories";
+  dividerText.textContent = 'Popular Categories';
   showSection(categorySelection);
   searchInput.value = '';
-  searchInput.placeholder = "Search for a brand or model";
+  searchInput.placeholder = 'Search for a brand or model';
   handleSearch(); // Re-show all categories
 });
 
-backToBrandsFromTypeBtn.addEventListener('click', (e) => {
+backToBrandsFromTypeBtn.addEventListener('click', e => {
   e.preventDefault();
   currentProductType = null;
-  dividerText.textContent = "Or choose a brand";
+  dividerText.textContent = 'Or choose a brand';
   showSection(brandSelection);
   searchInput.value = '';
-  searchInput.placeholder = "Search for a brand";
+  searchInput.placeholder = 'Search for a brand';
 });
 
-backToBrandsBtn.addEventListener('click', (e) => {
+backToBrandsBtn.addEventListener('click', e => {
   e.preventDefault();
   currentBrand = null;
-  dividerText.textContent = "Or choose a brand";
-  
+  dividerText.textContent = 'Or choose a brand';
+
   // Reset back button visibility
   document.getElementById('back-to-brands').classList.remove('hidden');
   document.getElementById('back-to-types').classList.add('hidden');
-  
+
   showSection(brandSelection);
   searchInput.value = '';
-  searchInput.placeholder = "Search for a brand or model";
+  searchInput.placeholder = 'Search for a brand or model';
   handleSearch(); // Re-show all brands
 });
 
-backToTypesBtn.addEventListener('click', (e) => {
+backToTypesBtn.addEventListener('click', e => {
   e.preventDefault();
   currentProductType = null;
-  dividerText.textContent = "Choose product type";
-  
+  dividerText.textContent = 'Choose product type';
+
   // Reset back button visibility
   document.getElementById('back-to-brands').classList.remove('hidden');
   document.getElementById('back-to-types').classList.add('hidden');
-  
+
   showSection(productTypeSelection);
   searchInput.value = '';
-  searchInput.placeholder = "Search for camera or lens";
+  searchInput.placeholder = 'Search for camera or lens';
 });
-
 
 // ===== SEARCH LOGIC (Updated) =====
 
 function handleSearch() {
-    if (!searchInput) return; 
-    const searchTerm = searchInput.value.toLowerCase();
+  if (!searchInput) {
+    return;
+  }
+  const searchTerm = searchInput.value.toLowerCase();
 
-    // Figure out which grid is active
-    if (!categorySelection.classList.contains('hidden')) {
-      // Filtering Categories
-      filterGrid(categoryGrid.querySelectorAll('.brand-card'), searchTerm, (card) => {
-        return (card.getAttribute('data-category') || "").toLowerCase();
-      });
-
-    } else if (!brandSelection.classList.contains('hidden')) {
-      // Filtering Brands
-      filterGrid(brandGrid.querySelectorAll('.brand-card'), searchTerm, (card) => {
-        return (card.getAttribute('data-brand') || "").toLowerCase();
-      });
-
-    } else if (!modelSelection.classList.contains('hidden')) {
-      // Filtering Models
-      filterGrid(modelGrid.querySelectorAll('.model-card'), searchTerm, (card) => {
-        return (card.querySelector('.model-name').textContent || "").toLowerCase();
-      });
-    }
+  // Figure out which grid is active
+  if (!categorySelection.classList.contains('hidden')) {
+    // Filtering Categories
+    filterGrid(categoryGrid.querySelectorAll('.brand-card'), searchTerm, card => {
+      return (card.getAttribute('data-category') || '').toLowerCase();
+    });
+  } else if (!brandSelection.classList.contains('hidden')) {
+    // Filtering Brands
+    filterGrid(brandGrid.querySelectorAll('.brand-card'), searchTerm, card => {
+      return (card.getAttribute('data-brand') || '').toLowerCase();
+    });
+  } else if (!modelSelection.classList.contains('hidden')) {
+    // Filtering Models
+    filterGrid(modelGrid.querySelectorAll('.model-card'), searchTerm, card => {
+      return (card.querySelector('.model-name').textContent || '').toLowerCase();
+    });
+  }
 }
 
 // Helper function to filter any grid
@@ -491,16 +557,16 @@ function filterGrid(cards, searchTerm, getName) {
   cards.forEach(card => {
     const name = getName(card);
     if (name.includes(searchTerm)) {
-      card.classList.remove("hidden");
+      card.classList.remove('hidden');
     } else {
-      card.classList.add("hidden");
+      card.classList.add('hidden');
     }
   });
 }
 
 // Attach search listener
 if (searchInput) {
-    searchInput.addEventListener('input', handleSearch);
+  searchInput.addEventListener('input', handleSearch);
 }
 
 // ===== INITIAL PAGE LOAD =====
@@ -509,7 +575,7 @@ if (searchInput) {
 function initScript() {
   // Show a loading message
   if (categoryGrid) {
-    categoryGrid.innerHTML = "<p>Loading products...</p>";
+    categoryGrid.innerHTML = '<p>Loading products...</p>';
   }
 
   // Ensure Firebase is ready before trying to fetch
@@ -525,13 +591,14 @@ function initScript() {
   async function fetchProducts() {
     try {
       const db = firebase.firestore();
-      const snapshot = await db.collection("products").get();
-      
+      const snapshot = await db.collection('products').get();
+
       if (snapshot.empty) {
-        categoryGrid.innerHTML = "<p>No products found. Please add some in the admin dashboard.</p>";
+        categoryGrid.innerHTML =
+          '<p>No products found. Please add some in the admin dashboard.</p>';
         return;
       }
-      
+
       // Map Firestore documents to our allProducts array
       allProducts = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -542,14 +609,14 @@ function initScript() {
           category: data.category,
           price: data.price,
           image: data.image,
-          subcategory: data.subcategory  // Important: for distinguishing cameras from lenses
+          subcategory: data.subcategory // Important: for distinguishing cameras from lenses
         };
-        
+
         // Debug: Log products with missing price
         if (!product.price) {
           console.warn('⚠️ Product missing price:', product.name, product);
         }
-        
+
         return product;
       });
 
@@ -560,12 +627,11 @@ function initScript() {
 
       // Now that we have data, populate the categories
       populateCategories();
-      
     } catch (error) {
       if (window.Logger) {
-        window.Logger.error("Error fetching products:", error);
+        window.Logger.error('Error fetching products:', error);
       }
-      categoryGrid.innerHTML = "<p>Error loading products. Please try again later.</p>";
+      categoryGrid.innerHTML = '<p>Error loading products. Please try again later.</p>';
     }
   }
 
@@ -575,7 +641,7 @@ function initScript() {
 
 // Run initialization - handle both immediate and deferred loading
 if (document.readyState === 'loading') {
-  document.addEventListener("DOMContentLoaded", initScript);
+  document.addEventListener('DOMContentLoaded', initScript);
 } else {
   // DOM already loaded (deferred script)
   initScript();
