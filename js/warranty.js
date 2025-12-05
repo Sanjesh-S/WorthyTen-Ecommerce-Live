@@ -62,23 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const age = document.querySelector('input[name="device_age"]:checked')?.value;
     const warrantyBonus = window.Config?.pricing?.warrantyBonusPercentage || 0.05;
     
-    // Apply warranty bonus for devices under 12 months with valid bill
-    const warrantyEligible = ['0-3', '3-6', '6-12'];
-    if (warrantyEligible.includes(age) && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
+    // Apply warranty bonus for devices under 1 year with valid bill
+    if (age === 'less-than-1' && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
       price *= (1 + warrantyBonus);
     }
     
     // Apply age-based deductions for older devices
     const ageDeductions = {
-      '0-3': 0,      // No deduction - newest
-      '3-6': 0,      // No deduction
-      '6-12': 0,     // No deduction
-      '12-24': 0.05, // 5% deduction
-      '24-36': 0.10, // 10% deduction
-      '36+': 0.15    // 15% deduction for very old devices
+      'less-than-1': 0,     // No deduction - newest
+      '1-to-2': 0.05,       // 5% deduction
+      'more-than-2': 0.15   // 15% deduction for older devices
     };
     
-    if (ageDeductions[age]) {
+    if (ageDeductions[age] !== undefined) {
       price *= (1 - ageDeductions[age]);
     }
     
