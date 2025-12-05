@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Check if we came from variant selection (data in sessionStorage)
   const variantData = sessionStorage.getItem('valuationData');
   let modelName, brandName, category, imageUrl, basePrice, variants, adjustedPrice;
@@ -34,6 +34,47 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       basePrice = null;
+    }
+
+    // If price is missing, try to fetch it from Firestore as fallback
+    if (!basePrice && modelName && brandName && category) {
+      if (window.Logger) {
+        window.Logger.log('Price missing from URL, attempting to fetch from Firestore...');
+      }
+
+      // Try to fetch price from Firestore
+      if (window.firebase && firebase.firestore) {
+        try {
+          const db = firebase.firestore();
+          const snapshot = await db
+            .collection('products')
+            .where('name', '==', modelName)
+            .where('brand', '==', brandName)
+            .where('category', '==', category)
+            .limit(1)
+            .get();
+
+          if (!snapshot.empty) {
+            const productData = snapshot.docs[0].data();
+            if (productData.price && productData.price > 0) {
+              basePrice = Number(productData.price);
+
+              // Update the URL with the price to prevent this issue on refresh
+              const newUrl = new URL(window.location);
+              newUrl.searchParams.set('price', basePrice);
+              window.history.replaceState({}, '', newUrl);
+
+              if (window.Logger) {
+                window.Logger.log('Price fetched from Firestore:', basePrice);
+              }
+            }
+          }
+        } catch (error) {
+          if (window.Logger) {
+            window.Logger.error('Error fetching price from Firestore:', error);
+          }
+        }
+      }
     }
 
     adjustedPrice = basePrice;

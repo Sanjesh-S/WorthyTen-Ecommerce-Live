@@ -32,6 +32,7 @@ const backToTypesBtn = document.getElementById('back-to-types');
 // ===== GLOBAL DATA STORE =====
 // This will hold all our products fetched from Firestore
 let allProducts = [];
+let productsLoaded = false; // Track if products are fully loaded
 let currentCategory = null;
 let currentBrand = null;
 let currentProductType = null; // 'bodies' or 'lenses'
@@ -202,6 +203,16 @@ function populateBrands(categoryName) {
   brandGrid.querySelectorAll('.brand-card').forEach(card => {
     card.addEventListener('click', e => {
       e.preventDefault();
+
+      // Ensure products are loaded before proceeding
+      if (!productsLoaded) {
+        if (window.Logger) {
+          window.Logger.warn('Products not loaded yet, please wait...');
+        }
+        alert('Products are still loading. Please wait a moment and try again.');
+        return;
+      }
+
       currentBrand = card.getAttribute('data-brand');
       const brandType = card.getAttribute('data-type');
 
@@ -624,6 +635,9 @@ function initScript() {
       console.log('✅ Loaded', allProducts.length, 'products from Firestore');
       console.log('📊 Products with prices:', allProducts.filter(p => p.price).length);
       console.log('⚠️ Products without prices:', allProducts.filter(p => !p.price).length);
+
+      // Mark products as loaded
+      productsLoaded = true;
 
       // Now that we have data, populate the categories
       populateCategories();
