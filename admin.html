@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - WorthyTen</title>
+    <meta name="description" content="Admin dashboard for managing WorthyTen platform" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://worthyten.com/admin.html" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
+    <style>
+      /* Styles for the admin page */
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: var(--bg-soft);
+      }
+      .admin-header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .logout-btn {
+        padding: 8px 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1px solid var(--brand);
+        background: #fff;
+        color: var(--brand);
+      }
+      .logout-btn:hover {
+        background: var(--brand);
+        color: #fff;
+      }
+
+      /* NEW: Tab Styles */
+      .admin-tabs {
+        padding: 20px 20px 0 20px;
+        display: flex;
+        gap: 10px;
+      }
+      .tab-btn {
+        padding: 10px 18px;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 10px 10px 0 0;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        background: #f0f0f0;
+        color: #555;
+      }
+      .tab-btn.active {
+        background: #fff;
+        color: var(--brand);
+        border-bottom: 1px solid #fff;
+        margin-bottom: -1px;
+        position: relative;
+      }
+
+      /* NEW: Panel Styles */
+      .admin-panel {
+        display: none; /* Hidden by default */
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 0 12px 12px 12px;
+        margin: 0 20px 20px 20px;
+      }
+      .admin-panel.active {
+        display: block; /* Shown by tab JS */
+      }
+
+      /* NEW: Product Form */
+      .product-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      .form-input {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #f5f5f5;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        font-family: 'Urbanist', sans-serif;
+        font-size: 15px;
+      }
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+      .form-actions {
+        grid-column: 1 / -1;
+        text-align: right;
+        margin-top: 10px;
+      }
+      .save-btn {
+        padding: 10px 18px;
+      }
+      #product-form-status {
+        font-weight: 600;
+        display: none;
+        margin-top: 10px;
+      }
+
+      /* Table Styles (shared) */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+      th {
+        background-color: #f8f9fa;
+        font-weight: 700;
+      }
+      tr:hover {
+        background-color: #fdfdfd;
+      }
+      .status-new {
+        font-weight: 700;
+        color: var(--ok);
+      }
+      .status-completed {
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .details-col {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .details-col strong {
+        color: #000;
+      }
+      .action-btn {
+        padding: 6px 10px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 8px;
+        border: 0;
+        color: #fff;
+        margin-right: 5px;
+      }
+      .complete-btn {
+        background: var(--brand-2);
+      }
+      .edit-btn {
+        background: var(--warning);
+      }
+      .edit-name-btn {
+        background: #3b82f6;
+      }
+      .edit-name-btn:hover {
+        background: #2563eb;
+      }
+      .delete-btn {
+        background: var(--danger);
+      }
+      .action-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      /* NEW: Action Buttons for Pickup Requests */
+      .action-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .action-btn-sm {
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .action-btn-sm:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+      .action-btn-sm:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Button Colors */
+      .btn-complete {
+        background: #10b981;
+        color: white;
+      }
+      .btn-complete:hover {
+        background: #059669;
+      }
+      .btn-hold {
+        background: #f59e0b;
+        color: white;
+      }
+      .btn-hold:hover {
+        background: #d97706;
+      }
+      .btn-suspect {
+        background: #ef4444;
+        color: white;
+      }
+      .btn-suspect:hover {
+        background: #dc2626;
+      }
+      .btn-reject {
+        background: #6b7280;
+        color: white;
+      }
+      .btn-reject:hover {
+        background: #4b5563;
+      }
+      .btn-reopen {
+        background: #3b82f6;
+        color: white;
+      }
+      .btn-reopen:hover {
+        background: #2563eb;
+      }
+
+      /* Status Badges */
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-block;
+      }
+      .status-new {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .status-completed {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .status-hold {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .status-suspect {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .status-rejected {
+        background: #e5e7eb;
+        color: #374151;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="admin-header" role="banner">
+      <div>
+        <h1 style="margin: 0">Admin Dashboard</h1>
+        <div id="user-role-badge" role="status" aria-live="polite" style="margin-top: 4px"></div>
+      </div>
+      <button id="logout-button" class="logout-btn" aria-label="Log out of admin dashboard">
+        Logout
+      </button>
+    </header>
+
+    <nav class="admin-tabs" role="tablist" aria-label="Admin dashboard sections">
+      <button
+        id="showPickupsBtn"
+        class="tab-btn active"
+        role="tab"
+        aria-selected="true"
+        aria-controls="pickupsPanel"
+      >
+        Pickup Requests
+      </button>
+      <button
+        id="showProductsBtn"
+        class="tab-btn"
+        role="tab"
+        aria-selected="false"
+        aria-controls="productsPanel"
+      >
+        Manage Products
+      </button>
+      <button
+        id="showUsersBtn"
+        class="tab-btn"
+        role="tab"
+        aria-selected="false"
+        aria-controls="usersPanel"
+        style="display: none"
+      >
+        User Management
+      </button>
+    </nav>
+
+    <main id="main-content">
+      <div
+        id="pickupsPanel"
+        class="admin-panel active"
+        role="tabpanel"
+        aria-labelledby="showPickupsBtn"
+      >
+        <div class="pickup-table-container">
+          <table id="pickup-table" role="grid" aria-label="Pickup requests list">
+            <thead>
+              <tr role="row">
+                <th role="columnheader" scope="col">Customer</th>
+                <th role="columnheader" scope="col">Device</th>
+                <th role="columnheader" scope="col">Price</th>
+                <th role="columnheader" scope="col">Slot</th>
+                <th role="columnheader" scope="col">Status</th>
+                <th role="columnheader" scope="col">Remarks</th>
+                <th role="columnheader" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pickup-list-body">
+              <tr role="row">
+                <td colspan="7" style="text-align: center; padding: 20px" role="status">
+                  Loading requests...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        id="productsPanel"
+        class="admin-panel"
+        role="tabpanel"
+        aria-labelledby="showProductsBtn"
+        aria-hidden="true"
+      >
+        <h2>Add New Product</h2>
+        <form id="product-form" aria-label="Add new product form">
+          <div class="product-form-grid">
+            <div class="form-group">
+              <label for="product-category">Category</label>
+              <select id="product-category" class="form-input" required aria-required="true">
+                <option value="">Select Category...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product-brand">Brand</label>
+              <select id="product-brand" class="form-input" required aria-required="true">
+                <option value="">Select Brand...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product-name">Model Name</label>
+              <input
+                type="text"
+                id="product-name"
+                class="form-input"
+                placeholder="e.g., Canon 90D"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group">
+              <label for="product-price">Base Price</label>
+              <input
+                type="number"
+                id="product-price"
+                class="form-input"
+                placeholder="e.g., 10000"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group full-width">
+              <label for="product-image">Image URL</label>
+              <input
+                type="text"
+                id="product-image"
+                class="form-input"
+                placeholder="Paste Firebase Storage URL here"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-actions">
+              <p id="product-form-status" role="status" aria-live="polite"></p>
+              <button
+                type="submit"
+                id="save-product-btn"
+                class="cta-button save-btn"
+                aria-label="Save new product"
+              >
+                Save Product
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0" role="separator" />
+
+        <h2>Existing Products</h2>
+        <div class="product-table-container">
+          <table id="product-table" role="grid" aria-label="Existing products list">
+            <thead>
+              <tr role="row">
+                <th role="columnheader" scope="col">Category</th>
+                <th role="columnheader" scope="col">Brand</th>
+                <th role="columnheader" scope="col">Name</th>
+                <th role="columnheader" scope="col">Price</th>
+                <th role="columnheader" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="product-list-body">
+              <tr role="row">
+                <td colspan="5" style="text-align: center; padding: 20px" role="status">
+                  Loading products...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        id="usersPanel"
+        class="admin-panel"
+        role="tabpanel"
+        aria-labelledby="showUsersBtn"
+        aria-hidden="true"
+      >
+        <h2>Add New Staff User</h2>
+        <form id="user-form" aria-label="Add new staff user form">
+          <div class="product-form-grid">
+            <div class="form-group">
+              <label for="user-email">Email</label>
+              <input
+                type="email"
+                id="user-email"
+                class="form-input"
+                placeholder="staff@example.com"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group">
+              <label for="user-password">Password</label>
+              <input
+                type="password"
+                id="user-password"
+                class="form-input"
+                placeholder="Minimum 6 characters"
+                minlength="6"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group">
+              <label for="user-displayname">Display Name</label>
+              <input
+                type="text"
+                id="user-displayname"
+                class="form-input"
+                placeholder="John Doe"
+                required
+                aria-required="true"
+              />
+            </div>
+            <div class="form-group">
+              <label for="user-role">Role</label>
+              <select id="user-role" class="form-input" required aria-required="true">
+                <option value="">Select Role</option>
+                <option value="staff">Staff</option>
+                <option value="manager">Manager</option>
+                <option value="superadmin">Super Admin</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <p id="user-form-status" role="status" aria-live="polite"></p>
+              <button
+                type="submit"
+                id="save-user-btn"
+                class="cta-button save-btn"
+                aria-label="Create new staff user"
+              >
+                Create User
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0" role="separator" />
+
+        <h2>Staff Users</h2>
+        <div class="user-table-container">
+          <table id="user-table" role="grid" aria-label="Staff users list">
+            <thead>
+              <tr role="row">
+                <th role="columnheader" scope="col">Email</th>
+                <th role="columnheader" scope="col">Display Name</th>
+                <th role="columnheader" scope="col">Role</th>
+                <th role="columnheader" scope="col">Status</th>
+                <th role="columnheader" scope="col">Last Login</th>
+                <th role="columnheader" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="user-list-body">
+              <tr role="row">
+                <td colspan="6" style="text-align: center; padding: 20px" role="status">
+                  Loading users...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Aria live region for dynamic updates -->
+    <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+    <script src="js/lazy-loading.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"
+    ></script>
+
+    <script defer src="js/firebase-config.js"></script>
+    <script defer src="js/rbac.js"></script>
+    <script defer src="js/user-management.js"></script>
+    <script defer src="js/admin-dashboard.js"></script>
+    <script defer src="js/product-data.js"></script>
+  </body>
+</html>

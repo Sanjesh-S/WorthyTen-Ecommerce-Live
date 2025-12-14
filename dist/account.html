@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>My Account - WorthyTen</title>
+  <meta name="description" content="Manage your WorthyTen account, view device selling history, track pickup requests, and manage your wallet balance."/>
+  <meta name="keywords" content="my account, profile, wallet, coins, WorthyTen account, user profile"/>
+  <meta name="author" content="WorthyTen"/>
+  <meta name="robots" content="noindex, nofollow"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://worthyten.com/account.html"/>
+  <meta property="og:title" content="My Account - WorthyTen"/>
+  <meta property="og:description" content="Manage your WorthyTen account, view device selling history, and track pickup requests."/>
+  <meta property="og:image" content="https://worthyten.com/images/og-image.jpg"/>
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:url" content="https://worthyten.com/account.html"/>
+  <meta name="twitter:title" content="My Account - WorthyTen"/>
+  <meta name="twitter:description" content="Manage your WorthyTen account, view device selling history, and track pickup requests."/>
+  <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg"/>
+
+  <link rel="canonical" href="https://worthyten.com/account.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+  <script src="js/logger.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script async type="module" crossorigin src="./assets/js/admin-login-CYSjpSQJ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/admin-login-CU63t7KM.css">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="header"></div>
+<script src="js/header.js"></script>
+
+<main id="main-content" class="main-container">
+  <div class="account-layout">
+    <div class="account-card">
+      <h1 class="product-title" style="text-align: center;">My Account</h1>
+      
+      <div class="account-balance" role="status" aria-label="Account balance information">
+        <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+        <span>Your Coins:</span>
+        <strong id="account-coin-balance" aria-live="polite">...</strong>
+      </div>
+
+      <form id="account-form" aria-label="Profile information form">
+        <div class="form-group">
+          <label for="account-phone">Mobile Number (Cannot be changed)</label>
+          <input type="tel" id="account-phone" class="form-input" readonly disabled aria-readonly="true" />
+        </div>
+        <div class="form-group">
+          <label for="account-name">Full Name</label>
+          <input type="text" id="account-name" class="form-input" placeholder="Enter your full name" aria-describedby="name-help" />
+          <span id="name-help" class="sr-only">Enter your full name as it appears on ID</span>
+        </div>
+        <div class="form-group">
+          <label for="account-email">Email Address</label>
+          <input type="email" id="account-email" class="form-input" placeholder="Enter your email" aria-describedby="email-help" />
+          <span id="email-help" class="sr-only">Enter a valid email address for notifications</span>
+        </div>
+        
+        <p id="account-form-status" role="status" aria-live="polite" style="display: none; text-align: center; font-weight: 600;"></p>
+
+        <div class="pickup-modal-actions" style="margin-top: 20px;">
+          <button type="submit" id="save-profile-btn" class="cta-button" aria-label="Save profile information">Save Profile</button>
+        </div>
+      </form>
+      
+      <hr class="sidebar-divider" role="separator" style="margin: 24px 0;">
+      
+      <div class="pickup-modal-actions" style="justify-content: center;">
+        <button type="button" id="logout-btn" class="logout-btn" aria-label="Log out of your account">Log Out</button>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- Aria live region for dynamic updates -->
+<div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+<script src="js/ui.js" defer></script>
+<script src="js/lazy-loading.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="js/firebase-config.js"></script>
+<script defer src="js/login.js"></script>
+<script defer src="js/account.js"></script>
+</body>
+</html>

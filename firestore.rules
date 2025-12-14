@@ -1,0 +1,88 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is staff member
+    function isStaff() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/staffUsers/$(request.auth.uid));
+    }
+    
+    // Helper function to get staff user data
+    function getStaffUser() {
+      return get(/databases/$(database)/documents/staffUsers/$(request.auth.uid)).data;
+    }
+    
+    // Helper function to check if user has specific role
+    function hasRole(role) {
+      return isStaff() && getStaffUser().role == role && getStaffUser().isActive == true;
+    }
+    
+    // Helper function to check if user is admin (manager or superadmin)
+    function isAdmin() {
+      return hasRole('superadmin') || hasRole('manager');
+    }
+    
+    // Staff Users Collection - Only Super Admins can manage
+    match /staffUsers/{userId} {
+      allow read: if isStaff();
+      allow create, update, delete: if hasRole('superadmin');
+    }
+    
+    // Products Collection
+    match /products/{productId} {
+      // Anyone can read products (for public website)
+      allow read: if true;
+      
+      // Only managers and superadmins can add/edit products
+      allow create, update: if isAdmin();
+      
+      // Only superadmins can delete products
+      allow delete: if hasRole('superadmin');
+    }
+    
+    // Pickup Requests Collection
+    match /pickupRequests/{requestId} {
+      // Users can read their own requests
+      allow read: if isAuthenticated() && 
+                     (request.auth.uid == resource.data.userId || isStaff());
+      
+      // Users can create their own pickup requests
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      
+      // Staff can update pickup requests (status changes, etc.)
+      allow update: if isStaff();
+      
+      // Only superadmins can delete pickup requests
+      allow delete: if hasRole('superadmin');
+    }
+    
+    // Users Collection (for customer data and coins)
+    match /users/{userId} {
+      // Users can read their own data, staff can read all users
+      allow read: if isAuthenticated() && 
+                     (request.auth.uid == userId || isStaff());
+      
+      // Users can create and update their own data
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && 
+                       (request.auth.uid == userId || isStaff());
+      
+      // Only superadmins can delete users
+      allow delete: if hasRole('superadmin');
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+

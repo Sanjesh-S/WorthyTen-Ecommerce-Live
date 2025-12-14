@@ -1,0 +1,410 @@
+/* ============================================
+   SIMPLE & FAST "How It Works" Section
+   Clean, modern design with minimal animations
+   ============================================ */
+
+.how-works-ultra {
+  background: #ffffff;
+  padding: 80px 20px;
+  position: relative;
+}
+
+/* Hide animated background */
+.animated-bg {
+  display: none;
+}
+
+.how-works-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ========== Header ========== */
+.ultra-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.title-word {
+  font-size: 48px;
+  font-weight: 800;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.title-word.gradient-text {
+  background: linear-gradient(135deg, #0071e3 0%, #00c896 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ultra-subtitle {
+  font-size: 20px;
+  color: #6e6e73;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+/* ========== Timeline Container ========== */
+.timeline-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.timeline-track {
+  display: none;
+}
+
+.timeline-step {
+  position: relative;
+  margin-bottom: 40px;
+  opacity: 1;
+  transform: none;
+}
+
+.timeline-step.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+.step-connector {
+  display: none;
+}
+
+/* ========== Step Cards ========== */
+.step-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #d1d1d6;
+}
+
+.step-card::before {
+  display: none;
+}
+
+.step-card.reverse {
+  flex-direction: column;
+}
+
+/* Step Media - Hidden */
+.step-media {
+  display: none;
+}
+
+/* Step Info */
+.step-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.step-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #0071e3 0%, #00c896 100%);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.step-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.step-desc {
+  font-size: 16px;
+  color: #6e6e73;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.step-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #6e6e73;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========== Floating Stats ========== */
+.floating-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 32px;
+  margin-top: 60px;
+  border: 1px solid #e5e5e7;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.stat-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+.stat-text {
+  font-size: 13px;
+  color: #6e6e73;
+  font-weight: 500;
+}
+
+.stat-divider {
+  display: none;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 1024px) {
+  .how-works-ultra {
+    padding: 60px 20px;
+  }
+
+  .ultra-header {
+    margin-bottom: 50px;
+  }
+
+  .title-word {
+    font-size: 40px;
+  }
+
+  .ultra-subtitle {
+    font-size: 18px;
+  }
+
+  .step-card {
+    padding: 28px;
+  }
+
+  .step-title {
+    font-size: 24px;
+  }
+
+  .step-desc {
+    font-size: 15px;
+  }
+
+  .floating-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .how-works-ultra {
+    padding: 50px 16px;
+  }
+
+  .how-works-wrapper {
+    padding: 0;
+  }
+
+  .ultra-header {
+    margin-bottom: 40px;
+  }
+
+  .title-line {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .title-word {
+    font-size: 32px;
+  }
+
+  .ultra-subtitle {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .step-card {
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+
+  .step-info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .step-badge {
+    font-size: 11px;
+    padding: 5px 12px;
+    margin-bottom: 12px;
+  }
+
+  .step-title {
+    font-size: 22px;
+    margin: 0 0 10px 0;
+  }
+
+  .step-desc {
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+  }
+
+  .step-stats {
+    justify-content: center;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+
+  .timeline-step {
+    margin-bottom: 32px;
+  }
+
+  .floating-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 24px 20px;
+    margin-top: 40px;
+    border-radius: 12px;
+  }
+
+  .stat-icon {
+    font-size: 28px;
+  }
+
+  .stat-num {
+    font-size: 18px;
+  }
+
+  .stat-text {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .how-works-ultra {
+    padding: 40px 12px;
+  }
+
+  .title-word {
+    font-size: 28px;
+  }
+
+  .ultra-subtitle {
+    font-size: 14px;
+  }
+
+  .step-card {
+    padding: 20px 16px;
+  }
+
+  .step-title {
+    font-size: 20px;
+  }
+
+  .step-desc {
+    font-size: 14px;
+  }
+
+  .step-stats {
+    gap: 20px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .floating-stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 16px;
+  }
+
+  .stat-item {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 12px;
+  }
+
+  .stat-icon {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+}

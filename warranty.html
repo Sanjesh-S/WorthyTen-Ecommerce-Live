@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Device Warranty Information - WorthyTen</title>
+  <meta name="description" content="Add warranty information to increase your device value. Valid warranties get better offers on WorthyTen."/>
+  <meta name="keywords" content="device warranty, warranty status, device age, WorthyTen, warranty value"/>
+  <meta name="author" content="WorthyTen"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://worthyten.com/warranty.html"/>
+  <meta property="og:title" content="Device Warranty Information - WorthyTen"/>
+  <meta property="og:description" content="Add warranty information to increase your device value. Valid warranties get better offers on WorthyTen."/>
+  <meta property="og:image" content="https://worthyten.com/images/og-image.jpg"/>
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:url" content="https://worthyten.com/warranty.html"/>
+  <meta name="twitter:title" content="Device Warranty Information - WorthyTen"/>
+  <meta name="twitter:description" content="Add warranty information to increase your device value. Valid warranties get better offers on WorthyTen."/>
+  <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg"/>
+
+  <link rel="canonical" href="https://worthyten.com/warranty.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link href="css/style.css" rel="stylesheet"/>
+  <script src="js/logger.js"></script>
+  <script src="js/accessibility.js"></script>
+</head>
+<body data-step="7">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div id="header"></div>
+
+  <div class="steps-bar-track" role="progressbar" aria-valuenow="7" aria-valuemin="1" aria-valuemax="8" aria-label="Progress through device selling process"><div class="steps-bar-fill" id="stepsFill"></div></div>
+
+  <script src="js/header.js"></script>
+  <script src="js/ui.js"></script>
+
+  <main id="main-content" class="main-container">
+    <div class="warranty-card">
+      <div class="evaluating-header">
+        <img alt="Product image for device being evaluated" class="evaluating-image" id="deviceImage" src="https://via.placeholder.com/80"/>
+        <div class="evaluating-details">
+          <span class="evaluating-title">Evaluating</span>
+          <h1 class="evaluating-device-name" id="deviceName"></h1>
+        </div>
+      </div>
+
+      <div class="warranty-body">
+        <h2 class="section-title">Age of the Device</h2>
+        <div class="age-options" role="radiogroup" aria-label="Select device age">
+          <label class="radio-option">
+            <input name="device_age" type="radio" value="less-than-1" aria-label="Device is less than 1 year old"/>
+            <span class="radio-label">Less than 1 year</span>
+          </label>
+          <label class="radio-option">
+            <input checked name="device_age" type="radio" value="1-to-2" aria-label="Device is between 1 and 2 years old"/>
+            <span class="radio-label">Between 1 and 2 years</span>
+          </label>
+          <label class="radio-option">
+            <input name="device_age" type="radio" value="more-than-2" aria-label="Device is more than 2 years old"/>
+            <span class="radio-label">More than 2 years</span>
+          </label>
+        </div>
+
+        <div class="final-quote-container" id="finalQuoteDisplay">
+            <h3 class="hidden">Final Price</h3>
+            <p class="final-price hidden" id="finalPrice" aria-live="polite" aria-atomic="true"></p>
+            <a class="cta-button" href="#" id="finishBtn" aria-label="Complete evaluation and see final offer">Finish</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="recaptcha-container" style="display: none;" aria-hidden="true"></div>
+
+  <!-- Login Modal -->
+  <div id="simple-login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 32px; border-radius: 16px; max-width: 400px; width: 90%; position: relative;">
+      <button id="login-modal-close" aria-label="Close login dialog" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
+      
+      <h2 id="login-modal-title" style="margin-top: 0; margin-bottom: 8px;">Login Required</h2>
+      <p style="margin-top: 0; margin-bottom: 24px; color: #666;">Please verify your phone number to see the final price.</p>
+
+      <div id="login-step-phone">
+        <div class="form-group">
+          <label for="login-phone" style="font-weight: 600;">Enter mobile number</label>
+          <div class="phone-input-group">
+            <span class="phone-prefix" aria-label="India country code">+91</span>
+            <input id="login-phone" type="tel" class="form-input" placeholder="Enter 10-digit mobile" maxlength="10" aria-required="true" inputmode="numeric" />
+          </div>
+        </div>
+        <div class="pickup-modal-actions" style="justify-content: center; margin-top: 12px;">
+          <button id="send-otp-btn" class="cta-button" style="width: 100%;" aria-label="Send OTP to mobile number">Send OTP</button>
+        </div>
+      </div>
+
+      <div id="login-step-otp" style="display:none; margin-top:12px;">
+        <div class="form-group">
+          <label for="login-otp" style="font-weight: 600;">Enter 6-digit OTP</label>
+          <input id="login-otp" type="tel" class="form-input" maxlength="6" placeholder="123456" aria-required="true" inputmode="numeric" />
+        </div>
+        <div class="pickup-modal-actions" style="justify-content: center; margin-top: 12px;">
+          <button id="verify-otp-btn" class="cta-button" style="width: 100%;" aria-label="Verify OTP and login">Verify & Login</button>
+        </div>
+        <a href="#" id="resend-otp-link" aria-label="Resend OTP to mobile number" style="text-align: center; display: block; margin-top: 16px; font-size: 14px;">Resend OTP</a>
+      </div>
+
+      <div id="login-error" role="alert" style="color:var(--danger); margin-top:16px; display:none; text-align:center;"></div>
+      <div id="login-success" role="status" aria-live="polite" style="color:var(--ok); margin-top:16px; display:none; text-align:center;"></div>
+    </div>
+  </div>
+<!-- Aria live region for dynamic updates -->
+<div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script> <script defer src="js/firebase-config.js"></script>
+  <script defer src="js/login.js"></script>
+  
+  <script defer src="js/state-helper.js"></script>
+  <script src="js/lazy-loading.js"></script>
+  <script defer src="js/warranty.js"></script>
+  
+</body>
+</html>

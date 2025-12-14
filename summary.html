@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WorthyTen - Final Quote | Schedule Pickup</title>
+<meta name="description" content="Your device quote is ready! Review your final offer and schedule a free pickup on WorthyTen."/>
+<meta name="keywords" content="device quote, final offer, pickup schedule, sell device, WorthyTen"/>
+<meta name="author" content="WorthyTen"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://worthyten.com/summary.html"/>
+<meta property="og:title" content="WorthyTen - Final Quote | Schedule Pickup"/>
+<meta property="og:description" content="Your device quote is ready! Review your final offer and schedule a free pickup on WorthyTen."/>
+<meta property="og:image" content="https://worthyten.com/images/og-image.jpg"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:url" content="https://worthyten.com/summary.html"/>
+<meta name="twitter:title" content="WorthyTen - Final Quote | Schedule Pickup"/>
+<meta name="twitter:description" content="Your device quote is ready! Review your final offer and schedule a free pickup on WorthyTen."/>
+<meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg"/>
+
+<link rel="canonical" href="https://worthyten.com/summary.html"/>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Final Quote - WorthyTen",
+  "description": "Review your final device quote and schedule pickup",
+  "url": "https://worthyten.com/summary.html"
+}
+</script>
+<!-- Product Schema (dynamically updated by JS) -->
+<script type="application/ld+json" id="product-schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Device",
+  "description": "Sell your device on WorthyTen",
+  "brand": {
+    "@type": "Brand",
+    "name": "Various"
+  },
+  "category": "Electronics",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR",
+    "availability": "https://schema.org/InStock",
+    "priceValidUntil": "2024-12-31",
+    "seller": {
+      "@type": "Organization",
+      "name": "WorthyTen",
+      "url": "https://worthyten.com"
+    }
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "3250"
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
+<link href="css/summary-new.css" rel="stylesheet"/>
+<script src="js/logger.js"></script>
+<script src="js/variant-config.js"></script>
+<script src="js/display-helper.js"></script>
+<script src="js/accessibility.js"></script>
+<script src="js/config.js"></script>
+
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="js/firebase-config.js"></script>
+<script defer src="js/login.js"></script>
+
+</head>
+<body data-step="8">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="header"></div>
+<div class="steps-bar-track" role="progressbar" aria-valuenow="8" aria-valuemin="1" aria-valuemax="8" aria-label="Progress through device selling process"><div class="steps-bar-fill" id="stepsFill"></div></div>
+
+<script src="js/header.js"></script>
+<script src="js/ui.js"></script>
+
+<main id="main-content" class="main-container">
+  
+  <!-- Minimalist Header -->
+  <div class="quote-header">
+    <div class="quote-status">
+      <div class="status-dot"></div>
+      <span>Quote Ready</span>
+    </div>
+    <h1>Your Device Quote</h1>
+  </div>
+
+  <!-- Main Content -->
+  <div class="quote-container">
+    
+    <!-- Left: Device & Price -->
+    <div class="quote-main">
+      
+      <!-- Device Section -->
+      <div class="device-section">
+        <div class="device-photo">
+          <img id="sumImage" src="https://via.placeholder.com/200" alt="Device product image"/>
+        </div>
+        <div class="device-info">
+          <h2 id="sumModel" class="device-name">Device Model</h2>
+          <p id="deviceBrandModel" class="device-specs">Brand Model</p>
+          <div class="quote-validity">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Valid for 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Section -->
+      <div class="price-section">
+        <div class="price-header-row">
+          <span class="price-label">Final Offer</span>
+          <span class="price-tag">Best Price</span>
+        </div>
+        <div class="price-main">
+          <span class="price-symbol" aria-hidden="true">₹</span>
+          <span id="finalSellingPrice" class="price-number" aria-live="polite" aria-atomic="true">0</span>
+        </div>
+        <p class="price-info">Final amount after expert verification</p>
+        
+        <!-- Breakdown -->
+        <div class="breakdown-section">
+          <button class="breakdown-btn" id="toggleBreakdown" aria-expanded="false" aria-controls="priceBreakdown">
+            <span class="breakdown-text">Show Price Breakdown</span>
+            <i class="fa-solid fa-chevron-down breakdown-arrow" aria-hidden="true"></i>
+          </button>
+          <div class="breakdown-panel" id="priceBreakdown" style="display: none;" role="region" aria-labelledby="toggleBreakdown">
+            <div id="desktopPriceSummaryWidget" class="breakdown-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" class="schedule-btn" id="bookPickupBtnDesktop" aria-label="Schedule free pickup for your device">
+        <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i>
+        <span>Schedule Free Pickup</span>
+      </button>
+      <p class="schedule-note">
+        <i class="fa-solid fa-phone" aria-hidden="true"></i>
+        We'll call you to confirm the pickup time
+      </p>
+
+      <!-- Benefits -->
+      <div class="benefits-row" role="list" aria-label="Service benefits">
+        <div class="benefit-box" role="listitem">
+          <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+          <div>
+            <strong>Fast Payment</strong>
+            <span>24 hours</span>
+          </div>
+        </div>
+        <div class="benefit-box" role="listitem">
+          <i class="fa-solid fa-truck" aria-hidden="true"></i>
+          <div>
+            <strong>Free Pickup</strong>
+            <span>At your door</span>
+          </div>
+        </div>
+        <div class="benefit-box" role="listitem">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <div>
+            <strong>100% Secure</strong>
+            <span>Safe & protected</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Details Sidebar -->
+    <div class="quote-sidebar">
+      
+      <!-- Evaluation Card -->
+      <div class="sidebar-card">
+        <div class="card-title">
+          <i class="fa-solid fa-clipboard-check"></i>
+          <h3>Evaluation</h3>
+        </div>
+        <div class="card-body">
+          <h4 id="evaluationModel" class="eval-device">Device Model</h4>
+          <ul class="eval-list" id="summaryBreakdownList" role="list" aria-label="Device evaluation breakdown">
+            <!-- Breakdown items -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Process Card -->
+      <div class="sidebar-card">
+        <div class="card-title">
+          <i class="fa-solid fa-list-ol"></i>
+          <h3>What's Next?</h3>
+        </div>
+        <div class="card-body">
+          <div class="process-item" role="listitem">
+            <div class="process-num" aria-hidden="true">1</div>
+            <div class="process-desc">
+              <strong>Schedule Pickup</strong>
+              <p>Choose date & time</p>
+            </div>
+          </div>
+          <div class="process-item" role="listitem">
+            <div class="process-num" aria-hidden="true">2</div>
+            <div class="process-desc">
+              <strong>Device Inspection</strong>
+              <p>Expert verification</p>
+            </div>
+          </div>
+          <div class="process-item" role="listitem">
+            <div class="process-num" aria-hidden="true">3</div>
+            <div class="process-desc">
+              <strong>Get Paid</strong>
+              <p>Within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions Card -->
+      <div class="sidebar-card actions-card">
+        <div class="card-body">
+          <button class="action-button" id="printQuoteBtn" aria-label="Print quote">
+            <i class="fa-solid fa-print" aria-hidden="true"></i>
+            <span>Print</span>
+          </button>
+          <button class="action-button" id="shareQuoteBtn" aria-label="Share quote">
+            <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+            <span>Share</span>
+          </button>
+          <a href="index.html" class="action-button" aria-label="Create new quote">
+            <i class="fa-solid fa-plus-circle" aria-hidden="true"></i>
+            <span>New Quote</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Mobile Footer -->
+<div class="mobile-sticky" id="mobileFooter">
+  <div class="mobile-sticky-inner">
+    <div class="mobile-price-section">
+      <span class="mobile-label">Final Price</span>
+      <span id="mobileFinalPrice" class="mobile-price">₹0</span>
+    </div>
+    <button type="button" class="mobile-book-btn" id="bookPickupBtnMobile" aria-label="Schedule free pickup for your device">
+      <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+      <span>Book Pickup</span>
+    </button>
+  </div>
+</div>
+
+<!-- Price Breakdown Modal (Mobile) -->
+<div class="breakdown-overlay" id="priceSummaryModal" style="display: none;">
+  <div class="breakdown-modal">
+    <div class="breakdown-modal-header">
+      <h3>Price Breakdown</h3>
+      <button id="closeSummaryModalBtn" class="close-btn" aria-label="Close price breakdown modal">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div id="modalPriceSummaryWidget" class="breakdown-content"></div>
+  </div>
+</div>
+
+<!-- Pickup Booking Modal -->
+<div class="pickup-modal-backdrop" id="pickupModal" style="display:none;">
+  <div class="pickup-modal-content">
+    <button type="button" class="pickup-modal-close" id="modalCloseBtn" aria-label="Close pickup booking modal">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <div id="pickup-step-1">
+      <h2 class="pickup-modal-title">Enter Pickup Details</h2>
+      <p class="pickup-modal-subtitle">Where can we pick up your device?</p>
+      <form id="pickupForm-Step1">
+        <div class="form-group">
+          <label for="custName">Full Name</label>
+          <input type="text" id="custName" class="form-input" placeholder="Enter your name" required aria-required="true" aria-describedby="name-error"/>
+          <span id="name-error" class="sr-only" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="custPhone">Contact Number</label>
+          <input type="tel" id="custPhone" class="form-input" placeholder="Enter your 10-digit number" required aria-required="true" aria-describedby="phone-error"/>
+          <span id="phone-error" class="sr-only" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="custCityTrigger">City</label>
+          <input type="text" id="custCityTrigger" class="form-input" placeholder="Select your city" required readonly aria-required="true" aria-describedby="city-error"/>
+          <span id="city-error" class="sr-only" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="custPincode">Pincode</label>
+          <input type="tel" id="custPincode" class="form-input" placeholder="Enter 6-digit pincode" required aria-required="true" aria-describedby="pincode-error"/>
+          <span id="pincode-error" class="sr-only" role="alert"></span>
+        </div>
+        <div class="form-group">
+          <label for="custAddress">Full Address</label>
+          <textarea id="custAddress" class="form-input" placeholder="E.g., House No, Building, Street, Area" required aria-required="true" aria-describedby="address-error"></textarea>
+          <span id="address-error" class="sr-only" role="alert"></span>
+        </div>
+        <div class="pickup-modal-actions">
+          <button type="submit" id="goToStep2Btn" class="cta-button">Next: Schedule Pickup</button>
+        </div>
+      </form>
+    </div>
+    <div id="pickup-step-2" style="display:none;">
+      <h2 class="pickup-modal-title">Schedule Pickup</h2>
+      <p class="pickup-modal-subtitle">Select a convenient date and time.</p>
+      <form id="pickupForm-Step2">
+        <div class="form-group">
+          <label>Select Date</label>
+          <div class="slot-selector" id="date-slots-container">
+            <p>Loading available dates...</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Select Time</label>
+          <div class="slot-selector" id="time-slots-container">
+            <p>Please select a date first.</p>
+          </div>
+        </div>
+        <div class="pickup-modal-actions">
+          <button type="button" id="backToStep1Btn" class="nav-button prev">Back</button>
+          <button type="submit" id="goToStep3Btn" class="cta-button" disabled>Next: Confirm</button>
+        </div>
+      </form>
+    </div>
+    <div id="pickup-step-3" style="display:none;">
+      <h2 class="pickup-modal-title">Confirm Your Details</h2>
+      <div class="summary-review-box">
+        <div id="review-device"><strong>Device:</strong> <span></span></div>
+        <div id="review-price"><strong>Price:</strong> <span></span></div>
+        <hr>
+        <div id="review-name"><strong>Name:</strong> <span></span></div>
+        <div id="review-contact"><strong>Phone:</strong> <span></span></div>
+        <div id="review-address"><strong>Address:</strong> <span></span></div>
+        <hr>
+        <div id="review-slot"><strong>Pickup Slot:</strong> <span></span></div>
+      </div>
+      <div class="pickup-modal-actions">
+        <button type="button" id="backToStep2Btn" class="nav-button prev">Back</button>
+        <button type="button" id="submitPickupBtn" class="cta-button">Confirm Pickup</button>
+      </div>
+    </div>
+    <div id="pickup-step-4" style="display:none;">
+      <div class="pickup-success-content">
+        <div class="success-icon-large">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 class="pickup-modal-title success">Pickup Scheduled!</h2>
+        <p class="pickup-modal-subtitle">Your pickup request has been booked successfully.</p>
+        <p class="pickup-confirmation-note">Our agent will reach out to you shortly to confirm the pickup time.</p>
+      </div>
+      <div class="pickup-modal-actions">
+        <button type="button" id="closeConfirmBtn" class="cta-button">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div id="simple-login-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+  <div style="background: white; padding: 32px; border-radius: 16px; max-width: 400px; width: 90%; position: relative;">
+    <button id="login-modal-close" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;" aria-label="Close login modal">×</button>
+    
+    <h2 style="margin-top: 0; margin-bottom: 8px;">Login Required</h2>
+    <p style="margin-top: 0; margin-bottom: 24px; color: #666;">Please verify your phone number to schedule pickup.</p>
+
+    <div id="login-step-phone">
+      <div class="form-group">
+        <label for="login-phone" style="font-weight: 600;">Enter mobile number</label>
+        <div class="phone-input-group">
+          <span class="phone-prefix">+91</span>
+          <input id="login-phone" type="tel" class="form-input" placeholder="Enter 10-digit mobile" maxlength="10" aria-required="true"/>
+        </div>
+      </div>
+      <div class="pickup-modal-actions" style="justify-content: center; margin-top: 12px;">
+        <button id="send-otp-btn" class="cta-button" style="width: 100%;">Send OTP</button>
+      </div>
+    </div>
+
+    <div id="login-step-otp" style="display:none; margin-top:12px;">
+      <div class="form-group">
+        <label for="login-otp" style="font-weight: 600;">Enter 6-digit OTP</label>
+        <input id="login-otp" type="tel" class="form-input" maxlength="6" placeholder="123456" aria-required="true"/>
+      </div>
+      <div class="pickup-modal-actions" style="justify-content: center; margin-top: 12px;">
+        <button id="verify-otp-btn" class="cta-button" style="width: 100%;">Verify & Login</button>
+      </div>
+      <a href="#" id="resend-otp-link" style="text-align: center; display: block; margin-top: 16px; font-size: 14px;">Resend OTP</a>
+    </div>
+
+    <div id="login-error" style="color:var(--danger); margin-top:16px; display:none; text-align:center;"></div>
+    <div id="login-success" style="color:var(--ok); margin-top:16px; display:none; text-align:center;"></div>
+  </div>
+</div>
+
+<div id="recaptcha-container" style="display: none;"></div>
+
+<!-- City Selection Popup -->
+<div class="city-popup-overlay" id="city-popup" style="display: none;">
+  <div class="city-popup-content">
+    <div class="city-popup-header">
+      <h3>Select your City</h3>
+      <button type="button" class="city-popup-close" id="city-popup-close" aria-label="Close city selection popup">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="city-popup-search">
+      <input type="text" id="city-search-input" class="form-input" placeholder="Search for your city..." aria-label="Search cities"/>
+    </div>
+    <ul class="city-popup-list" id="city-list" role="listbox" aria-label="Available cities"></ul>
+  </div>
+</div>
+<!-- Aria live region for dynamic updates -->
+<div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+<script src="js/state-helper.js" defer></script>
+<script src="js/lazy-loading.js"></script>
+<script src="js/analytics.js" defer></script>
+<script src="js/error-tracking.js" defer></script>
+<script src="js/performance.js" defer></script>
+<script src="js/lens-compatibility.js" defer></script>
+<script src="js/summary.js" defer></script>
+
+</body>
+</html>

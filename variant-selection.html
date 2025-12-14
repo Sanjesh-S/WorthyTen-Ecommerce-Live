@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WorthyTen - Choose Device Variant</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
+<script src="js/logger.js"></script>
+<script src="js/config.js"></script>
+<script src="js/variant-config.js"></script>
+<script src="js/display-helper.js"></script>
+</head>
+<body data-step="2">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div id="header"></div>
+<script src="js/header.js"></script>
+<script src="js/ui.js"></script>
+
+<main id="main-content" class="main-container">
+  <div class="variant-selection-container">
+    
+    <!-- Back Button -->
+    <a class="back-button" href="#" id="backToModels">← Back to Models</a>
+    
+    <!-- Page Title -->
+    <h1 class="page-title variant-title">Sell Old <span id="deviceFullName"></span></h1>
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" id="breadcrumb">
+      <span>Home</span> > <span id="categoryBreadcrumb"></span> > <span id="brandBreadcrumb"></span> > <span id="modelBreadcrumb"></span>
+    </div>
+    
+    <div class="variant-layout">
+      
+      <!-- Left: Device Image and Name -->
+      <div class="variant-device-info">
+        <div class="variant-device-image-container">
+          <img id="deviceImage" src="https://via.placeholder.com/400x400" alt="Device" class="variant-device-image">
+        </div>
+        <h2 class="variant-device-name" id="deviceName">Device Name</h2>
+        <p class="variant-device-price" id="basePriceDisplay">Starting from ₹<span id="basePrice">0</span></p>
+      </div>
+      
+      <!-- Right: Variant Selection -->
+      <div class="variant-options-panel">
+        <h3 class="variant-section-title">Choose a variant</h3>
+        
+        <!-- Storage Selection -->
+        <div class="variant-group" id="storageGroup">
+          <label class="variant-label">
+            <i class="fa-solid fa-hard-drive"></i> Storage
+          </label>
+          <div class="variant-buttons" id="storageButtons">
+            <!-- Storage options will be populated here -->
+          </div>
+        </div>
+        
+        <!-- RAM Selection -->
+        <div class="variant-group" id="ramGroup" style="display: none;">
+          <label class="variant-label">
+            <i class="fa-solid fa-memory"></i> RAM
+          </label>
+          <div class="variant-buttons" id="ramButtons">
+            <!-- RAM options will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Price Preview -->
+        <div class="variant-price-preview" id="pricePreview" style="display: none;">
+          <div class="price-preview-label">Estimated Value:</div>
+          <div class="price-preview-amount">₹<span id="estimatedPrice">0</span></div>
+          <div class="price-preview-note">*Final price may vary based on device condition</div>
+        </div>
+        
+        <!-- Continue Button -->
+        <button class="cta-button variant-cta" id="continueBtn" disabled>
+          Get Exact Value <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        
+        <p class="variant-help-text">
+          <i class="fa-solid fa-circle-info"></i>
+          Select your device specifications to get an accurate valuation
+        </p>
+      </div>
+      
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3 class="footer-logo">WorthyTen</h3>
+        <p class="footer-description">Sell your old devices instantly and get the best price.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/worthyten" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://www.instagram.com/worthytenofficial/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.youtube.com/@WorthyTen" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <div class="footer-bottom-content">
+        <p class="copyright">© <span id="yearNow"></span> WorthyTen. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-conditions.html">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yearNow').textContent = new Date().getFullYear();
+</script>
+
+<script src="js/variant-selection.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script defer src="js/firebase-config.js"></script>
+</body>
+</html>
+

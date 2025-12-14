@@ -1,0 +1,82 @@
+{
+  "name": "worthyten",
+  "version": "1.0.0",
+  "description": "Sell your old devices instantly and get the best price",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "format": "prettier --write \"**/*.{js,json,css,html}\"",
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "serve": "http-server -p 8000",
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "device-selling",
+    "e-commerce",
+    "firebase"
+  ],
+  "author": "WorthyTen",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^11.11.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "@playwright/test": "^1.40.0",
+    "babel-jest": "^29.7.0",
+    "eslint": "^8.50.0",
+    "husky": "^8.0.3",
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.0.2",
+    "postcss": "^8.4.32",
+    "prettier": "^3.0.3",
+    "terser": "^5.24.0",
+    "vite": "^5.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1"
+    },
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/logger.js",
+      "!js/config.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "warn"
+    }
+  }
+}
+

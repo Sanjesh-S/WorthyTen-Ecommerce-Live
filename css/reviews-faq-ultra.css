@@ -1,0 +1,936 @@
+/* ============================================
+   LEVEL 20: Ultra Reviews & FAQ Sections
+   Beyond Premium - Next Generation UI
+   ============================================ */
+
+/* ========== REVIEWS ULTRA SECTION - SOUTH INDIAN STYLE ========== */
+.reviews-ultra {
+  position: relative;
+  background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 50%, #fff5e6 100%);
+  padding: 80px 20px;
+  overflow: hidden;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255, 153, 51, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(244, 196, 48, 0.08) 0%, transparent 50%);
+}
+
+/* Animated Background Orbs - Hidden for performance */
+.reviews-bg-animated {
+  display: none;
+}
+
+.review-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: orbFloat 30s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+  top: -10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, transparent 70%);
+  top: 30%;
+  right: -10%;
+  animation-delay: 10s;
+}
+
+.orb-3 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+  bottom: 10%;
+  left: 50%;
+  animation-delay: 5s;
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(80px, -100px) scale(1.1);
+  }
+  66% {
+    transform: translate(-60px, 80px) scale(0.9);
+  }
+}
+
+.reviews-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Reviews Header - South Indian Style */
+.reviews-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #ff9933 0%, #f4c430 100%);
+  border: 3px solid #c8102e;
+  border-radius: 100px;
+  padding: 12px 32px;
+  margin-bottom: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(255, 153, 51, 0.3);
+  position: relative;
+}
+
+.rating-badge::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, #ff9933, #f4c430, #138808);
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(8px);
+}
+
+.rating-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 153, 51, 0.4);
+}
+
+.rating-stars {
+  font-size: 20px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rating-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reviews-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #8b4513;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+.reviews-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ff9933, #f4c430, #ff9933, transparent);
+  border-radius: 2px;
+}
+
+.gradient-text-alt {
+  background: linear-gradient(135deg, #c8102e 0%, #ff9933 50%, #138808 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+}
+
+@keyframes gradientFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.reviews-subtitle {
+  font-size: 20px;
+  color: #8b4513;
+  font-weight: 500;
+  margin-top: 24px;
+}
+
+/* Reviews Carousel - South Indian Style */
+.reviews-carousel {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  overflow: visible;
+}
+
+.reviews-track {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+/* Ultra Review Cards - South Indian Style */
+.review-card-ultra {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8f0 100%);
+  border: 3px solid #ff9933;
+  border-radius: 24px;
+  padding: 32px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 4px 16px rgba(255, 153, 51, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  background-image:
+    radial-gradient(circle at top left, rgba(255, 153, 51, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at bottom right, rgba(244, 196, 48, 0.05) 0%, transparent 50%);
+}
+
+.review-card-ultra::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    #c8102e 0%,
+    #ff9933 25%,
+    #f4c430 50%,
+    #138808 75%,
+    #c8102e 100%
+  );
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.card-glow {
+  display: none;
+}
+
+.review-card-ultra:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: #c8102e;
+  box-shadow:
+    0 8px 32px rgba(255, 153, 51, 0.3),
+    0 0 0 2px rgba(244, 196, 48, 0.2);
+}
+
+.review-quote-mark {
+  font-size: 80px;
+  line-height: 1;
+  color: #ff9933;
+  font-family: Georgia, serif;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  font-weight: bold;
+  pointer-events: none;
+  opacity: 0.3;
+  text-shadow: 2px 2px 4px rgba(255, 153, 51, 0.2);
+}
+
+.review-content-ultra {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+}
+
+.review-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #5c4033;
+  font-weight: 500;
+  margin: 0;
+  text-align: justify;
+}
+
+.review-footer-ultra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 2px dashed #ff9933;
+  margin-top: 20px;
+}
+
+.review-avatar-ultra {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #ff9933;
+  box-shadow:
+    0 4px 12px rgba(255, 153, 51, 0.3),
+    inset 0 0 0 2px #f4c430;
+  transition: all 0.4s ease;
+  background: linear-gradient(135deg, #fff 0%, #fff8f0 100%);
+  padding: 2px;
+}
+
+.review-card-ultra:hover .review-avatar-ultra {
+  transform: scale(1.1) rotate(5deg);
+  border-color: #c8102e;
+  box-shadow:
+    0 6px 20px rgba(255, 153, 51, 0.4),
+    inset 0 0 0 2px #f4c430;
+}
+
+.review-author-ultra {
+  flex: 1;
+}
+
+.author-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #8b4513;
+  margin-bottom: 6px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.author-location {
+  font-size: 14px;
+  color: #a0522d;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-device {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ff9933 0%, #f4c430 100%);
+  border: 2px solid #c8102e;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 2px 8px rgba(255, 153, 51, 0.3);
+  white-space: nowrap;
+}
+
+.review-stars-ultra {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-size: 22px;
+  color: #f4c430;
+  letter-spacing: 3px;
+  text-shadow:
+    0 2px 4px rgba(244, 196, 48, 0.5),
+    0 0 8px rgba(255, 153, 51, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Review Navigation Dots */
+.review-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 48px;
+}
+
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d1d1d6;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-dot::before {
+  display: none;
+}
+
+.nav-dot:hover {
+  background: #8e8e93;
+}
+
+.nav-dot.active {
+  background: #0071e3;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+}
+
+/* ========== FAQ ULTRA SECTION ========== */
+.faq-ultra {
+  position: relative;
+  background: #ffffff;
+  padding: 80px 20px;
+  overflow: hidden;
+}
+
+.faq-bg-elements {
+  display: none;
+}
+
+.faq-grid-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px;
+  opacity: 0.3;
+}
+
+.faq-container {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.faq-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #1d1d1f;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.faq-subtitle {
+  font-size: 20px;
+  color: #6e6e73;
+  font-weight: 400;
+}
+
+/* Ultra FAQ Items */
+.faq-list-ultra {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.faq-item-ultra {
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.faq-item-ultra:hover {
+  border-color: #d1d1d6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.faq-item-ultra.active {
+  background: #ffffff;
+  border-color: #0071e3;
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.12);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 40px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-q-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+  flex: 1;
+}
+
+.faq-item-ultra:hover .faq-q-text {
+  color: #0071e3;
+}
+
+.faq-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.faq-toggle::before,
+.faq-toggle::after {
+  content: '';
+  position: absolute;
+  background: #1d1d1f;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.faq-toggle::before {
+  width: 20px;
+  height: 3px;
+}
+
+.faq-toggle::after {
+  width: 3px;
+  height: 20px;
+}
+
+.faq-item-ultra.active .faq-toggle {
+  background: #0071e3;
+  border-color: #0071e3;
+  transform: rotate(180deg);
+}
+
+.faq-item-ultra.active .faq-toggle::before,
+.faq-item-ultra.active .faq-toggle::after {
+  background: #ffffff;
+}
+
+.faq-item-ultra.active .faq-toggle::after {
+  height: 0;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    padding 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
+  opacity: 0;
+}
+
+.faq-item-ultra.active .faq-answer {
+  max-height: 500px;
+  padding: 0 40px 40px 40px;
+  opacity: 1;
+}
+
+.faq-answer-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #1d1d1f;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #0071e3;
+}
+
+/* Still Have Questions CTA */
+.faq-cta {
+  text-align: center;
+  margin-top: 60px;
+  padding: 40px;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+}
+
+.faq-cta-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 12px;
+}
+
+.faq-cta-text {
+  font-size: 16px;
+  color: #6e6e73;
+  margin-bottom: 24px;
+}
+
+.faq-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #0071e3 0%, #00c896 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
+}
+
+.faq-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
+}
+
+/* ========== Reveal Animations ========== */
+.reveal-fade {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.reveal-scale:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.reveal-scale:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.reveal-scale:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.reveal-scale:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+/* ========== Responsive Design - South Indian Style ========== */
+@media (max-width: 1024px) {
+  .reviews-title,
+  .faq-title {
+    font-size: 42px;
+  }
+
+  .reviews-track {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .review-card-ultra {
+    padding: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviews-ultra,
+  .faq-ultra {
+    padding: 50px 16px;
+  }
+
+  .reviews-container,
+  .faq-container {
+    padding: 0;
+  }
+
+  .reviews-header,
+  .faq-header {
+    margin-bottom: 40px;
+  }
+
+  .reviews-title,
+  .faq-title {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .reviews-title::after {
+    width: 80px;
+    height: 3px;
+  }
+
+  .reviews-subtitle,
+  .faq-subtitle {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+
+  .rating-badge {
+    padding: 10px 24px;
+    margin-bottom: 24px;
+  }
+
+  .rating-stars {
+    font-size: 18px;
+  }
+
+  .rating-number {
+    font-size: 16px;
+  }
+
+  .review-text {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .faq-q-text {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .review-card-ultra {
+    padding: 24px 20px;
+    border-width: 2px;
+  }
+
+  .review-card-ultra::before {
+    height: 4px;
+  }
+
+  .review-quote-mark {
+    font-size: 60px;
+    top: 16px;
+    left: 20px;
+  }
+
+  .review-stars-ultra {
+    top: 24px;
+    right: 24px;
+    font-size: 18px;
+  }
+
+  .review-footer-ultra {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 20px;
+    margin-top: 16px;
+  }
+
+  .review-avatar-ultra {
+    width: 50px;
+    height: 50px;
+  }
+
+  .author-name {
+    font-size: 16px;
+  }
+
+  .author-location {
+    font-size: 13px;
+  }
+
+  .review-device {
+    padding: 8px 16px;
+    font-size: 11px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .faq-item-ultra {
+    padding: 20px;
+  }
+
+  .faq-question {
+    padding: 20px;
+  }
+
+  .faq-item-ultra.active .faq-answer {
+    padding: 0 20px 24px 20px;
+  }
+
+  .faq-answer-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .reviews-track {
+    gap: 20px;
+  }
+
+  .faq-list-ultra {
+    gap: 16px;
+  }
+
+  .faq-cta {
+    margin-top: 40px;
+    padding: 24px 20px;
+  }
+
+  .faq-cta-title {
+    font-size: 20px;
+  }
+
+  .faq-cta-text {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-ultra,
+  .faq-ultra {
+    padding: 40px 12px;
+  }
+
+  .reviews-title,
+  .faq-title {
+    font-size: 26px;
+  }
+
+  .reviews-title::after {
+    width: 60px;
+    height: 2px;
+  }
+
+  .reviews-subtitle,
+  .faq-subtitle {
+    font-size: 14px;
+  }
+
+  .rating-badge {
+    padding: 8px 20px;
+    gap: 12px;
+  }
+
+  .rating-stars {
+    font-size: 16px;
+  }
+
+  .rating-number {
+    font-size: 14px;
+  }
+
+  .review-quote-mark {
+    font-size: 50px;
+    top: 12px;
+    left: 16px;
+  }
+
+  .review-card-ultra {
+    padding: 20px 16px;
+    border-width: 2px;
+    border-radius: 20px;
+  }
+
+  .review-card-ultra::before {
+    height: 3px;
+  }
+
+  .review-stars-ultra {
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .review-content-ultra {
+    margin-bottom: 20px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .review-footer-ultra {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+
+  .review-avatar-ultra {
+    width: 48px;
+    height: 48px;
+  }
+
+  .review-author-ultra {
+    flex: 1;
+  }
+
+  .author-name {
+    font-size: 15px;
+  }
+
+  .author-location {
+    font-size: 12px;
+  }
+
+  .review-device {
+    padding: 6px 14px;
+    font-size: 10px;
+    width: auto;
+    align-self: flex-end;
+  }
+
+  .faq-item-ultra {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .faq-question {
+    padding: 16px;
+  }
+
+  .faq-q-text {
+    font-size: 15px;
+  }
+
+  .faq-item-ultra.active .faq-answer {
+    padding: 0 16px 20px 16px;
+  }
+
+  .faq-answer-text {
+    font-size: 13px;
+  }
+
+  .faq-cta {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .faq-cta-title {
+    font-size: 18px;
+  }
+
+  .faq-cta-text {
+    font-size: 13px;
+  }
+}
