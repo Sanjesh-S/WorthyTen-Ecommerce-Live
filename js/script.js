@@ -404,45 +404,156 @@ function populateModels(categoryName, brandName) {
   modelGrid.innerHTML = '';
 
   // Get all models that match both category and brand, excluding lenses
-  const models = allProducts.filter(
+  const allModelsForBrand = allProducts.filter(
     p => p.category === categoryName && p.brand === brandName && p.subcategory !== 'Lens'
   );
 
-  // Sort the models array naturally
-  const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
-  models.sort((a, b) => collator.compare(a.name, b.name));
-
-  // Check if category needs variant selection
+  // Check if category needs variant selection (Phone, Laptop, iPad)
   const needsVariants = window.supportsVariants && window.supportsVariants(categoryName);
-  const targetPage = needsVariants ? 'variant-selection.html' : 'quote.html';
 
-  models.forEach(model => {
-    // Skip models without price
-    if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
-      if (window.Logger) {
-        window.Logger.warn('Model missing or invalid price:', model.name);
+  // Helper function to extract base model from product name
+  // Removes variant info like (64GB), (128GB), (256GB), etc.
+  function extractBaseModel(productName) {
+    if (!productName) return productName;
+    // Remove storage variants like (64GB), (128GB), (256GB), (512GB), (1TB), (2TB)
+    // Also handles WiFi variants like (64GB) WiFi, (256GB) WiFi+Cellular
+    return productName
+      .replace(/\s*\(\d+\s*(GB|TB)\)\s*(WiFi(\+Cellular)?)?/gi, '')
+      .replace(/\s*\(\d+\s*(GB|TB)\s*(RAM)?\s*\/\s*\d+\s*(GB|TB)\)\s*\d{4}?/gi, '') // MacBook format
+      .trim();
+  }
+
+  // Helper function to extract variant from product name
+  function extractVariant(productName) {
+    if (!productName) return '';
+    // Match patterns like (64GB), (128GB), etc.
+    const match = productName.match(/\((\d+\s*(GB|TB)(\s*(RAM)?\s*\/\s*\d+\s*(GB|TB))?)\)/i);
+    return match ? match[1] : '';
+  }
+
+  // For categories with variants, group by baseModel to show unique models only
+  if (needsVariants) {
+    // Group products by baseModel
+    const modelGroups = {};
+    allModelsForBrand.forEach(product => {
+      // Use baseModel if available, otherwise extract from name
+      const baseModel = product.baseModel || extractBaseModel(product.name);
+      const variant = product.variant || extractVariant(product.name);
+
+      if (!modelGroups[baseModel]) {
+        modelGroups[baseModel] = {
+          baseModel: baseModel,
+          brand: product.brand,
+          category: product.category,
+          image: product.image,
+          variants: []
+        };
       }
-      return;
-    }
+      modelGroups[baseModel].variants.push({
+        name: product.name,
+        variant: variant,
+        price: product.price
+      });
+    });
 
-    const price = Number(model.price);
-    if (price <= 0) {
-      if (window.Logger) {
-        window.Logger.warn('Model has invalid price (<= 0):', model.name);
+    // Sort baseModels naturally
+    const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+    const sortedBaseModels = Object.keys(modelGroups).sort((a, b) => collator.compare(a, b));
+
+    // Render unique base models
+    sortedBaseModels.forEach(baseModel => {
+      const group = modelGroups[baseModel];
+
+      // Find minimum price from variants
+      const minPrice = Math.min(...group.variants.map(v => Number(v.price) || 0));
+
+      if (minPrice <= 0) {
+        if (window.Logger) {
+          window.Logger.warn('Model group has invalid price:', baseModel);
+        }
+        return;
       }
-      return;
-    }
 
-    const cardHTML = `
-      <a href="${targetPage}?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
-        <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
-        <span class="model-name">${model.name}</span>
-      </a>
-    `;
-    modelGrid.innerHTML += cardHTML;
-  });
+      const cardHTML = `
+        <a href="#" class="model-card" data-basemodel="${baseModel}" title="${baseModel}" aria-label="Get quote for ${baseModel}">
+          <img src="${group.image || ''}" alt="${baseModel}" class="model-image" loading="lazy">
+          <span class="model-name">${baseModel}</span>
+        </a>
+      `;
+      modelGrid.innerHTML += cardHTML;
+    });
+
+    // Add click listeners for variant-enabled models
+    modelGrid.querySelectorAll('.model-card').forEach(card => {
+      card.addEventListener('click', e => {
+        e.preventDefault();
+        const baseModel = card.getAttribute('data-basemodel');
+        const group = modelGroups[baseModel];
+
+        if (group) {
+          // Store all variants in sessionStorage for variant-selection page
+          sessionStorage.setItem('selectedProduct', JSON.stringify({
+            baseModel: baseModel,
+            brand: group.brand,
+            category: group.category,
+            image: group.image,
+            variants: group.variants
+          }));
+
+          // Navigate to variant selection page
+          const minPrice = Math.min(...group.variants.map(v => Number(v.price) || 0));
+          window.location.href = `variant-selection.html?model=${encodeURIComponent(baseModel)}&brand=${encodeURIComponent(group.brand)}&category=${encodeURIComponent(group.category)}&image=${encodeURIComponent(group.image || '')}&price=${encodeURIComponent(minPrice)}`;
+        }
+      });
+    });
+  } else {
+    // For non-variant categories (DSLR), filter and deduplicate
+
+    // Filter: Only keep products that have the brand name as prefix
+    // This removes duplicates like "EOS 5D Mark II" when "Canon EOS 5D Mark II" exists
+    const filteredModels = allModelsForBrand.filter(model => {
+      if (!model.name) return false;
+      return model.name.toLowerCase().startsWith(brandName.toLowerCase());
+    });
+
+    const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+    filteredModels.sort((a, b) => collator.compare(a.name, b.name));
+
+    // Deduplicate by exact name (after filtering, duplicates should be minimal)
+    const seenNames = new Set();
+
+    filteredModels.forEach(model => {
+      // Skip duplicates
+      if (seenNames.has(model.name)) {
+        return;
+      }
+      seenNames.add(model.name);
+
+      if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
+        if (window.Logger) {
+          window.Logger.warn('Model missing or invalid price:', model.name);
+        }
+        return;
+      }
+
+      const price = Number(model.price);
+      if (price <= 0) {
+        if (window.Logger) {
+          window.Logger.warn('Model has invalid price (<= 0):', model.name);
+        }
+        return;
+      }
+
+      const cardHTML = `
+        <a href="quote.html?model=${encodeURIComponent(model.name)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(categoryName)}&image=${encodeURIComponent(model.image || '')}&price=${encodeURIComponent(price)}" class="model-card" title="${model.name}" aria-label="Get quote for ${model.name}">
+          <img src="${model.image || ''}" alt="${model.name}" class="model-image" loading="lazy">
+          <span class="model-name">${model.name}</span>
+        </a>
+      `;
+      modelGrid.innerHTML += cardHTML;
+    });
+  }
 }
-
 // 3.5 Populate Models by Type (Bodies or Lenses)
 function populateModelsByType(categoryName, brandName, productType) {
   modelGrid.innerHTML = '';
@@ -461,11 +572,27 @@ function populateModelsByType(categoryName, brandName, productType) {
     );
   }
 
+  // Filter: Only keep products that have the brand name as prefix
+  // This removes duplicates like "EOS 5D Mark II" when "Canon EOS 5D Mark II" exists
+  const filteredModels = models.filter(model => {
+    if (!model.name) return false;
+    return model.name.toLowerCase().startsWith(brandName.toLowerCase());
+  });
+
   // Sort the models array naturally
   const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
-  models.sort((a, b) => collator.compare(a.name, b.name));
+  filteredModels.sort((a, b) => collator.compare(a.name, b.name));
 
-  models.forEach(model => {
+  // Deduplicate by exact name
+  const seenNames = new Set();
+
+  filteredModels.forEach(model => {
+    // Skip duplicates
+    if (seenNames.has(model.name)) {
+      return;
+    }
+    seenNames.add(model.name);
+
     // Skip models without price
     if (!model.price || model.price === 0 || isNaN(Number(model.price))) {
       if (window.Logger) {

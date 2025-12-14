@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin - Cleanup Duplicate Products | WorthyTen</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .cleanup-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .cleanup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cleanup-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 10px;
+        }
+
+        .cleanup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand, #667eea);
+        }
+
+        .stat-box.danger .value {
+            color: #ef4444;
+        }
+
+        .stat-box .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .cleanup-btn {
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cleanup-btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .cleanup-btn.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .cleanup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cleanup-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-table th,
+        .product-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .product-table th {
+            background: #f5f5f7;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .product-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .product-table .duplicate {
+            background: #fef2f2;
+        }
+
+        .product-table .duplicate:hover {
+            background: #fee2e2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.ok {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge.duplicate {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .filter-row label {
+            font-weight: 600;
+        }
+
+        .filter-row select {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 1rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 8px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .log-box {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #4ade80;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            padding: 2px 0;
+        }
+
+        .log-entry.error {
+            color: #f87171;
+        }
+
+        .log-entry.info {
+            color: #60a5fa;
+        }
+
+        .login-required {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cleanup-container">
+        <div class="cleanup-header">
+            <h1>🧹 Duplicate Product Cleanup</h1>
+            <p>Find and remove duplicate products in Firebase Firestore</p>
+        </div>
+
+        <!-- Login Required -->
+        <div id="login-section" class="login-required">
+            <h2>🔐 Admin Login Required</h2>
+            <p>Please login with your admin account.</p>
+            <a href="admin-login.html" class="cleanup-btn primary">Go to Admin Login</a>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-section" style="display: none;">
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="value" id="total-count">0</div>
+                    <div class="label">Total Products</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="valid-count">0</div>
+                    <div class="label">Valid (With Brand)</div>
+                </div>
+                <div class="stat-box danger">
+                    <div class="value" id="duplicate-count">0</div>
+                    <div class="label">Duplicates (No Brand)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="brand-count">0</div>
+                    <div class="label">Brands</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="action-row">
+                <button class="cleanup-btn primary" id="scan-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i> Scan Products
+                </button>
+                <button class="cleanup-btn danger" id="delete-btn" disabled>
+                    <i class="fa-solid fa-trash"></i> Delete Duplicates
+                </button>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-bar" id="progress-bar" style="display: none;">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-row">
+                <label>Filter:</label>
+                <select id="brand-filter">
+                    <option value="all">All Brands</option>
+                </select>
+                <select id="status-filter">
+                    <option value="all">All Status</option>
+                    <option value="duplicate">Duplicates Only</option>
+                    <option value="valid">Valid Only</option>
+                </select>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-all" checked> Show All
+                </label>
+            </div>
+
+            <!-- Table -->
+            <table class="product-table" id="product-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Doc ID</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">Click "Scan Products" to load data
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Log -->
+            <div class="log-box" id="log-box">
+                <div class="log-entry info">Ready. Click "Scan Products" to start.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        let allProducts = [];
+        let duplicates = [];
+
+        const logBox = document.getElementById('log-box');
+        const tbody = document.getElementById('product-tbody');
+        const brandFilter = document.getElementById('brand-filter');
+        const statusFilter = document.getElementById('status-filter');
+        const scanBtn = document.getElementById('scan-btn');
+        const deleteBtn = document.getElementById('delete-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
+
+        function log(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Check if product name starts with brand
+        function isDuplicate(product) {
+            if (!product.name || !product.brand) return false;
+            return !product.name.toLowerCase().startsWith(product.brand.toLowerCase());
+        }
+
+        // Scan all products
+        async function scanProducts() {
+            const db = firebase.firestore();
+            log('Scanning products from Firestore...', 'info');
+            scanBtn.disabled = true;
+
+            try {
+                const snapshot = await db.collection('products').get();
+                allProducts = [];
+                duplicates = [];
+                const brands = new Set();
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const product = {
+                        id: doc.id,
+                        name: data.name || '',
+                        brand: data.brand || '',
+                        category: data.category || '',
+                        price: data.price || 0
+                    };
+                    allProducts.push(product);
+                    brands.add(product.brand);
+
+                    if (isDuplicate(product)) {
+                        duplicates.push(product);
+                    }
+                });
+
+                // Update stats
+                document.getElementById('total-count').textContent = allProducts.length;
+                document.getElementById('valid-count').textContent = allProducts.length - duplicates.length;
+                document.getElementById('duplicate-count').textContent = duplicates.length;
+                document.getElementById('brand-count').textContent = brands.size;
+
+                // Populate brand filter
+                brandFilter.innerHTML = '<option value="all">All Brands</option>';
+                [...brands].sort().forEach(brand => {
+                    if (brand) {
+                        brandFilter.innerHTML += `<option value="${brand}">${brand}</option>`;
+                    }
+                });
+
+                log(`Found ${allProducts.length} products, ${duplicates.length} duplicates`, 'info');
+
+                if (duplicates.length > 0) {
+                    deleteBtn.disabled = false;
+                    log(`⚠️ ${duplicates.length} products don't have brand prefix and should be deleted!`, 'error');
+                } else {
+                    log('✅ No duplicates found!', 'info');
+                }
+
+                renderTable();
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+
+            scanBtn.disabled = false;
+        }
+
+        // Render table with filters
+        function renderTable() {
+            const brandVal = brandFilter.value;
+            const statusVal = statusFilter.value;
+
+            let filtered = allProducts.filter(p => {
+                if (brandVal !== 'all' && p.brand !== brandVal) return false;
+                if (statusVal === 'duplicate' && !isDuplicate(p)) return false;
+                if (statusVal === 'valid' && isDuplicate(p)) return false;
+                return true;
+            });
+
+            // Limit to 100 for performance
+            const showAll = document.getElementById('show-all').checked;
+            if (!showAll) {
+                filtered = filtered.slice(0, 100);
+            }
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">No products match filter</td></tr>';
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isDup = isDuplicate(p);
+                const row = document.createElement('tr');
+                row.className = isDup ? 'duplicate' : '';
+                row.innerHTML = `
+          <td>${p.name || '(no name)'}</td>
+          <td>${p.brand || '(no brand)'}</td>
+          <td>${p.category || '—'}</td>
+          <td>₹${(p.price || 0).toLocaleString('en-IN')}</td>
+          <td><span class="badge ${isDup ? 'duplicate' : 'ok'}">${isDup ? 'DUPLICATE' : 'OK'}</span></td>
+          <td style="font-size: 0.75rem; color: #888;">${p.id}</td>
+        `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Delete all duplicates
+        async function deleteDuplicates() {
+            if (duplicates.length === 0) {
+                log('No duplicates to delete', 'info');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to delete ${duplicates.length} duplicate products? This cannot be undone!`)) {
+                return;
+            }
+
+            const db = firebase.firestore();
+            scanBtn.disabled = true;
+            deleteBtn.disabled = true;
+            progressBar.style.display = 'block';
+
+            let deleted = 0;
+            let failed = 0;
+
+            for (let i = 0; i < duplicates.length; i++) {
+                try {
+                    await db.collection('products').doc(duplicates[i].id).delete();
+                    deleted++;
+                    progressFill.style.width = `${((i + 1) / duplicates.length) * 100}%`;
+
+                    if ((i + 1) % 10 === 0) {
+                        log(`Deleted ${i + 1}/${duplicates.length}...`, 'info');
+                    }
+                } catch (error) {
+                    failed++;
+                    log(`Failed to delete ${duplicates[i].name}: ${error.message}`, 'error');
+                }
+            }
+
+            log(`✅ Deleted ${deleted} duplicates, ${failed} failed`, deleted > 0 ? 'info' : 'error');
+
+            // Refresh
+            await scanProducts();
+            progressBar.style.display = 'none';
+        }
+
+        // Event listeners
+        scanBtn.addEventListener('click', scanProducts);
+        deleteBtn.addEventListener('click', deleteDuplicates);
+        brandFilter.addEventListener('change', renderTable);
+        statusFilter.addEventListener('change', renderTable);
+        document.getElementById('show-all').addEventListener('change', renderTable);
+
+        // Auth check
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const db = firebase.firestore();
+                    const staffDoc = await db.collection('staffUsers').doc(user.uid).get();
+
+                    if (staffDoc.exists && staffDoc.data().isActive) {
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('main-section').style.display = 'block';
+                        log(`Logged in as: ${user.email || user.phoneNumber}`, 'info');
+                    } else {
+                        log('Not authorized', 'error');
+                    }
+                } catch (error) {
+                    log(`Auth error: ${error.message}`, 'error');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
