@@ -12,7 +12,7 @@ const variantConfig = {
       { value: '1TB', label: '1 TB', priceMultiplier: 1.50 },
       { value: '2TB', label: '2 TB', priceMultiplier: 1.70 }
     ],
-    
+
     // RAM options for phones (model-specific defaults)
     ram: {
       // iPhone models
@@ -39,33 +39,69 @@ const variantConfig = {
       'iPhone 11 Pro Max': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 11 Pro': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 11': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
-      
-      // Samsung models
-      'Galaxy S24 Ultra': [
-        { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }
-      ],
-      'Galaxy S24+': [
-        { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }
-      ],
-      'Galaxy S24': [
-        { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }
-      ],
-      'Galaxy S23 Ultra': [
-        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
-        { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }
-      ],
-      
-      // Default for phones
-      default: [
-        { value: '4GB', label: '4 GB', priceMultiplier: 0.90 },
-        { value: '6GB', label: '6 GB', priceMultiplier: 0.95 },
-        { value: '8GB', label: '8 GB', priceMultiplier: 1.0 },
-        { value: '12GB', label: '12 GB', priceMultiplier: 1.10 },
-        { value: '16GB', label: '16 GB', priceMultiplier: 1.20 }
-      ]
+
+      // Samsung Galaxy S Series
+      'Samsung Galaxy S24 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S24+': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S24': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S23 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S23+': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S23': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S22 Ultra': [{ value: '8GB', label: '8 GB', priceMultiplier: 0.95 }, { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S22+': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S22': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S21 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 0.95 }, { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S21+': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S21': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S21 FE': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S20 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 0.95 }, { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S20+': [{ value: '8GB', label: '8 GB', priceMultiplier: 0.95 }, { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S20': [{ value: '8GB', label: '8 GB', priceMultiplier: 0.95 }, { value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy S20 FE': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+
+      // Samsung Galaxy Z Fold Series
+      'Samsung Galaxy Z Fold 5': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Fold 4': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Fold 3': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Fold 2': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Fold': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+
+      // Samsung Galaxy Z Flip Series
+      'Samsung Galaxy Z Flip 5': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Flip 4': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Flip 3': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Z Flip': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+
+      // Samsung Galaxy A Series
+      'Samsung Galaxy A54': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy A53': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy A52': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy A34': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy A33': [{ value: '6GB', label: '6 GB', priceMultiplier: 0.95 }, { value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+
+      // Samsung Galaxy Note Series
+      'Samsung Galaxy Note 20 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Note 20': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Note 10+': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Samsung Galaxy Note 10': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+
+      // Short name aliases (without Samsung prefix)
+      'Galaxy S24 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Galaxy S24+': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Galaxy S24': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Galaxy S23 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Flip 5': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Flip 4': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Flip 3': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Fold 5': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Fold 4': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+      'Galaxy Z Fold 3': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
+
+      // Default for phones - EMPTY to not show RAM for unknown models
+      default: []
     }
   },
-  
+
   Laptop: {
     // Storage options for laptops
     storage: [
@@ -77,7 +113,7 @@ const variantConfig = {
       { value: '4TB', label: '4 TB', priceMultiplier: 1.60 },
       { value: '8TB', label: '8 TB', priceMultiplier: 2.0 }
     ],
-    
+
     // RAM options for laptops
     ram: {
       // MacBook models
@@ -113,7 +149,7 @@ const variantConfig = {
         { value: '96GB', label: '96 GB', priceMultiplier: 1.40 },
         { value: '128GB', label: '128 GB', priceMultiplier: 1.60 }
       ],
-      
+
       // Default for laptops
       default: [
         { value: '4GB', label: '4 GB', priceMultiplier: 0.75 },
@@ -124,7 +160,7 @@ const variantConfig = {
       ]
     }
   },
-  
+
   iPad: {
     // Storage options for iPads
     storage: [
@@ -135,7 +171,7 @@ const variantConfig = {
       { value: '1TB', label: '1 TB', priceMultiplier: 1.35 },
       { value: '2TB', label: '2 TB', priceMultiplier: 1.60 }
     ],
-    
+
     // RAM for iPads (most don't advertise RAM, but Pro models do)
     ram: {
       'iPad Pro 12.9': [
@@ -146,7 +182,7 @@ const variantConfig = {
         { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
       ],
-      
+
       // Default: no RAM selection for standard iPads
       default: []
     }
@@ -172,19 +208,35 @@ function getStorageVariants(category) {
 function getRAMVariants(category, modelName) {
   const normalizedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
   const ramConfig = variantConfig[normalizedCategory]?.ram;
-  
+
   if (!ramConfig) return [];
-  
-  // Check for model-specific RAM options
+  if (!modelName) return ramConfig.default || [];
+
+  // First, try exact match
+  if (ramConfig[modelName]) {
+    return ramConfig[modelName];
+  }
+
+  // Try case-insensitive match
+  const modelLower = modelName.toLowerCase();
   for (const [modelPattern, ramOptions] of Object.entries(ramConfig)) {
     if (modelPattern === 'default') continue;
-    
-    if (modelName.includes(modelPattern)) {
+    if (modelPattern.toLowerCase() === modelLower) {
       return ramOptions;
     }
   }
-  
-  // Return default RAM options
+
+  // Try partial match (model name contains pattern or pattern contains model name)
+  for (const [modelPattern, ramOptions] of Object.entries(ramConfig)) {
+    if (modelPattern === 'default') continue;
+
+    const patternLower = modelPattern.toLowerCase();
+    if (modelLower.includes(patternLower) || patternLower.includes(modelLower)) {
+      return ramOptions;
+    }
+  }
+
+  // Return default RAM options (empty array for unknown models)
   return ramConfig.default || [];
 }
 
@@ -208,9 +260,9 @@ function supportsVariants(category) {
  */
 function calculateVariantPrice(basePrice, variants, category, modelName) {
   if (!basePrice || !variants) return basePrice;
-  
+
   let finalPrice = basePrice;
-  
+
   // Apply storage multiplier
   if (variants.storage) {
     const storageOptions = getStorageVariants(category);
@@ -219,7 +271,7 @@ function calculateVariantPrice(basePrice, variants, category, modelName) {
       finalPrice *= storageVariant.priceMultiplier;
     }
   }
-  
+
   // Apply RAM multiplier
   if (variants.ram) {
     const ramOptions = getRAMVariants(category, modelName);
@@ -228,7 +280,7 @@ function calculateVariantPrice(basePrice, variants, category, modelName) {
       finalPrice *= ramVariant.priceMultiplier;
     }
   }
-  
+
   return Math.round(finalPrice);
 }
 
@@ -239,11 +291,11 @@ function calculateVariantPrice(basePrice, variants, category, modelName) {
  */
 function formatVariantDisplay(variants) {
   if (!variants) return '';
-  
+
   const parts = [];
   if (variants.storage) parts.push(variants.storage);
   if (variants.ram) parts.push(variants.ram);
-  
+
   return parts.length > 0 ? `(${parts.join(' / ')})` : '';
 }
 

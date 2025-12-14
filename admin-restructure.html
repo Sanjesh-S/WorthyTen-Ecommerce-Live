@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin - Restructure Products | WorthyTen</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .restructure-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .restructure-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .restructure-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 10px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand, #667eea);
+        }
+
+        .stat-box.warning .value {
+            color: #f59e0b;
+        }
+
+        .stat-box.success .value {
+            color: #10b981;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .action-btn.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+        }
+
+        .action-btn.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-row select {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 1rem;
+        }
+
+        .group-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .group-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .group-header .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.variants {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.ready {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .variant-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .variant-chip {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .variant-chip .price {
+            color: #666;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+
+        .original-products {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .original-products summary {
+            cursor: pointer;
+            color: #666;
+        }
+
+        .original-products ul {
+            margin: 8px 0 0 20px;
+            color: #888;
+        }
+
+        .log-box {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #4ade80;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            padding: 2px 0;
+        }
+
+        .log-entry.error {
+            color: #f87171;
+        }
+
+        .log-entry.info {
+            color: #60a5fa;
+        }
+
+        .log-entry.success {
+            color: #4ade80;
+        }
+
+        .login-required {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 8px;
+            height: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="restructure-container">
+        <div class="restructure-header">
+            <h1>🔄 Restructure Products</h1>
+            <p>Extract variants from product names and group by base model</p>
+        </div>
+
+        <!-- Login Required -->
+        <div id="login-section" class="login-required">
+            <h2>🔐 Admin Login Required</h2>
+            <p>Please login with your admin account.</p>
+            <a href="admin-login.html" class="action-btn primary">Go to Admin Login</a>
+        </div>
+
+        <!-- Main Content -->
+        <div id="main-section" style="display: none;">
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="value" id="total-count">0</div>
+                    <div class="label">Total Products</div>
+                </div>
+                <div class="stat-box warning">
+                    <div class="value" id="needs-restructure">0</div>
+                    <div class="label">Need Restructuring</div>
+                </div>
+                <div class="stat-box success">
+                    <div class="value" id="base-models">0</div>
+                    <div class="label">Base Models</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="total-variants">0</div>
+                    <div class="label">Total Variants</div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="action-row">
+                <button class="action-btn primary" id="analyze-btn">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Products
+                </button>
+                <button class="action-btn success" id="restructure-btn" disabled>
+                    <i class="fa-solid fa-layer-group"></i> Restructure in Firebase
+                </button>
+                <button class="action-btn danger" id="delete-old-btn" disabled>
+                    <i class="fa-solid fa-trash"></i> Delete Old Entries
+                </button>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-row">
+                <select id="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="iPad">iPad</option>
+                    <option value="Phone">Phone</option>
+                    <option value="Laptop">Laptop</option>
+                </select>
+                <select id="brand-filter">
+                    <option value="">All Brands</option>
+                </select>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-bar" id="progress-bar" style="display: none;">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <!-- Groups List -->
+            <div id="groups-list"></div>
+
+            <!-- Log -->
+            <div class="log-box" id="log-box">
+                <div class="log-entry info">Ready. Click "Analyze Products" to start.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        const logBox = document.getElementById('log-box');
+        const groupsList = document.getElementById('groups-list');
+        const categoryFilter = document.getElementById('category-filter');
+        const brandFilter = document.getElementById('brand-filter');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const restructureBtn = document.getElementById('restructure-btn');
+        const deleteOldBtn = document.getElementById('delete-old-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
+
+        let allProducts = [];
+        let groupedProducts = {};
+        let productsToDelete = [];
+
+        function log(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Extract base model and variant from product name
+        // e.g., "iPad Pro 11" M2 (512GB) WiFi" -> { baseModel: "iPad Pro 11\" M2 WiFi", variant: "512GB" }
+        function extractBaseAndVariant(name) {
+            if (!name) return { baseModel: name, variant: null };
+
+            // Pattern to match storage in parentheses: (64GB), (128GB), (256GB), (512GB), (1TB), (2TB)
+            const storagePattern = /\s*\((\d+\s*(?:GB|TB))\)\s*/i;
+            const match = name.match(storagePattern);
+
+            if (match) {
+                const variant = match[1].replace(/\s+/g, ''); // "512GB"
+                const baseModel = name.replace(match[0], ' ').replace(/\s+/g, ' ').trim();
+                return { baseModel, variant };
+            }
+
+            // Also check for RAM/Storage pattern like "(8GB/128GB)"
+            const ramStoragePattern = /\s*\((\d+\s*GB\s*\/\s*\d+\s*(?:GB|TB))\)\s*/i;
+            const ramMatch = name.match(ramStoragePattern);
+
+            if (ramMatch) {
+                const variant = ramMatch[1].replace(/\s+/g, '');
+                const baseModel = name.replace(ramMatch[0], ' ').replace(/\s+/g, ' ').trim();
+                return { baseModel, variant };
+            }
+
+            return { baseModel: name, variant: null };
+        }
+
+        // Analyze all products
+        async function analyzeProducts() {
+            const db = firebase.firestore();
+            const category = categoryFilter.value;
+            const brand = brandFilter.value;
+
+            log('Analyzing products...', 'info');
+            analyzeBtn.disabled = true;
+            groupsList.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+
+            try {
+                let query = db.collection('products');
+                if (category) query = query.where('category', '==', category);
+                if (brand) query = query.where('brand', '==', brand);
+
+                const snapshot = await query.get();
+                allProducts = [];
+                groupedProducts = {};
+                productsToDelete = [];
+                const brands = new Set();
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    brands.add(data.brand);
+                    allProducts.push({ id: doc.id, ...data });
+                });
+
+                // Update brand filter
+                if (!brand) {
+                    brandFilter.innerHTML = '<option value="">All Brands</option>';
+                    [...brands].sort().forEach(b => {
+                        if (b) brandFilter.innerHTML += `<option value="${b}">${b}</option>`;
+                    });
+                }
+
+                // Group products by base model
+                let needsRestructure = 0;
+                let totalVariants = 0;
+
+                allProducts.forEach(product => {
+                    const { baseModel, variant } = extractBaseAndVariant(product.name);
+
+                    if (!groupedProducts[baseModel]) {
+                        groupedProducts[baseModel] = {
+                            baseModel,
+                            brand: product.brand,
+                            category: product.category,
+                            image: product.image,
+                            variants: [],
+                            originalProducts: []
+                        };
+                    }
+
+                    groupedProducts[baseModel].originalProducts.push(product);
+
+                    if (variant) {
+                        needsRestructure++;
+                        totalVariants++;
+                        groupedProducts[baseModel].variants.push({
+                            name: variant,
+                            price: product.price,
+                            productId: product.id
+                        });
+                        productsToDelete.push(product.id);
+                    } else {
+                        // Product without variant in name - keep as is but track
+                        if (!groupedProducts[baseModel].baseProduct) {
+                            groupedProducts[baseModel].baseProduct = product;
+                        }
+                    }
+                });
+
+                // Update stats
+                document.getElementById('total-count').textContent = allProducts.length;
+                document.getElementById('needs-restructure').textContent = needsRestructure;
+                document.getElementById('base-models').textContent = Object.keys(groupedProducts).length;
+                document.getElementById('total-variants').textContent = totalVariants;
+
+                log(`Found ${allProducts.length} products, ${Object.keys(groupedProducts).length} base models, ${needsRestructure} need restructuring`, 'info');
+
+                // Enable buttons if there's work to do
+                restructureBtn.disabled = needsRestructure === 0;
+                deleteOldBtn.disabled = productsToDelete.length === 0;
+
+                renderGroups();
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+
+            analyzeBtn.disabled = false;
+        }
+
+        // Render grouped products
+        function renderGroups() {
+            groupsList.innerHTML = '';
+
+            Object.values(groupedProducts).forEach(group => {
+                if (group.variants.length === 0) return; // Skip groups without variants
+
+                // Sort variants by storage size
+                group.variants.sort((a, b) => {
+                    const sizeA = parseSize(a.name);
+                    const sizeB = parseSize(b.name);
+                    return sizeA - sizeB;
+                });
+
+                const card = document.createElement('div');
+                card.className = 'group-card';
+                card.innerHTML = `
+          <div class="group-header">
+            <h3>${group.baseModel}</h3>
+            <span class="badge variants">${group.variants.length} variants</span>
+          </div>
+          <div style="color: #666; font-size: 0.9rem;">
+            ${group.brand} • ${group.category}
+          </div>
+          <div class="variant-list">
+            ${group.variants.map(v => `
+              <div class="variant-chip">
+                ${v.name}
+                <span class="price">₹${(v.price || 0).toLocaleString('en-IN')}</span>
+              </div>
+            `).join('')}
+          </div>
+          <details class="original-products">
+            <summary>Original products (${group.originalProducts.length})</summary>
+            <ul>
+              ${group.originalProducts.map(p => `<li>${p.name} - ₹${(p.price || 0).toLocaleString('en-IN')}</li>`).join('')}
+            </ul>
+          </details>
+        `;
+                groupsList.appendChild(card);
+            });
+
+            if (groupsList.innerHTML === '') {
+                groupsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No products with variants in names found</div>';
+            }
+        }
+
+        function parseSize(str) {
+            if (!str) return 0;
+            const match = str.match(/(\d+)\s*(GB|TB)/i);
+            if (!match) return 0;
+            const val = parseInt(match[1]);
+            return match[2].toUpperCase() === 'TB' ? val * 1024 : val;
+        }
+
+        // Restructure products in Firebase
+        async function restructureProducts() {
+            if (!confirm('This will create new base model products with variants arrays and keep the original products. Continue?')) {
+                return;
+            }
+
+            const db = firebase.firestore();
+            analyzeBtn.disabled = true;
+            restructureBtn.disabled = true;
+            progressBar.style.display = 'block';
+
+            const groups = Object.values(groupedProducts).filter(g => g.variants.length > 0);
+            let created = 0;
+
+            for (let i = 0; i < groups.length; i++) {
+                const group = groups[i];
+
+                try {
+                    // Create variant strings like "8GB/128GB" or just "128GB"
+                    const variantStrings = group.variants.map(v => v.name);
+
+                    // Get the lowest price as base price
+                    const minPrice = Math.min(...group.variants.map(v => v.price || 0));
+
+                    // Create new base model product
+                    const newProduct = {
+                        name: group.baseModel,
+                        brand: group.brand,
+                        category: group.category,
+                        image: group.image || '',
+                        price: minPrice,
+                        baseModel: group.baseModel,
+                        variants: variantStrings,
+                        variantsWithPrices: group.variants.map(v => ({
+                            variant: v.name,
+                            price: v.price
+                        })),
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        restructured: true
+                    };
+
+                    await db.collection('products').add(newProduct);
+                    created++;
+
+                    progressFill.style.width = `${((i + 1) / groups.length) * 100}%`;
+                    log(`Created base model: ${group.baseModel} with ${variantStrings.length} variants`, 'success');
+                } catch (error) {
+                    log(`Error creating ${group.baseModel}: ${error.message}`, 'error');
+                }
+            }
+
+            log(`✅ Created ${created} new base model products`, 'success');
+            deleteOldBtn.disabled = false;
+            progressBar.style.display = 'none';
+            analyzeBtn.disabled = false;
+        }
+
+        // Delete old variant products
+        async function deleteOldProducts() {
+            if (!confirm(`This will DELETE ${productsToDelete.length} old products that had variants in their names. This cannot be undone! Continue?`)) {
+                return;
+            }
+
+            const db = firebase.firestore();
+            analyzeBtn.disabled = true;
+            restructureBtn.disabled = true;
+            deleteOldBtn.disabled = true;
+            progressBar.style.display = 'block';
+
+            let deleted = 0;
+
+            for (let i = 0; i < productsToDelete.length; i++) {
+                try {
+                    await db.collection('products').doc(productsToDelete[i]).delete();
+                    deleted++;
+                    progressFill.style.width = `${((i + 1) / productsToDelete.length) * 100}%`;
+
+                    if ((i + 1) % 10 === 0) {
+                        log(`Deleted ${i + 1}/${productsToDelete.length}...`, 'info');
+                    }
+                } catch (error) {
+                    log(`Error deleting: ${error.message}`, 'error');
+                }
+            }
+
+            log(`✅ Deleted ${deleted} old products`, 'success');
+            progressBar.style.display = 'none';
+
+            // Refresh
+            analyzeProducts();
+        }
+
+        // Event listeners
+        analyzeBtn.addEventListener('click', analyzeProducts);
+        restructureBtn.addEventListener('click', restructureProducts);
+        deleteOldBtn.addEventListener('click', deleteOldProducts);
+        categoryFilter.addEventListener('change', analyzeProducts);
+        brandFilter.addEventListener('change', analyzeProducts);
+
+        // Auth check
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const db = firebase.firestore();
+                    const staffDoc = await db.collection('staffUsers').doc(user.uid).get();
+
+                    if (staffDoc.exists && staffDoc.data().isActive) {
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('main-section').style.display = 'block';
+                        log(`Logged in as: ${user.email || user.phoneNumber}`, 'info');
+                    }
+                } catch (error) {
+                    log(`Auth error: ${error.message}`, 'error');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

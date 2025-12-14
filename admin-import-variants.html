@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Import Product Variants | WorthyTen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background: #f5f5f7;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn.success {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn.danger {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+
+        .stat.success .num {
+            color: #10b981;
+        }
+
+        .stat.warning .num {
+            color: #f59e0b;
+        }
+
+        .stat .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .log-box {
+            background: #1a1a2e;
+            color: #4ade80;
+            font-family: monospace;
+            font-size: 13px;
+            padding: 20px;
+            border-radius: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 3px 0;
+        }
+
+        .log-entry.error {
+            color: #f87171;
+        }
+
+        .log-entry.success {
+            color: #4ade80;
+        }
+
+        .log-entry.info {
+            color: #60a5fa;
+        }
+
+        .log-entry.warn {
+            color: #fbbf24;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 8px;
+            height: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .login-required {
+            text-align: center;
+            padding: 60px;
+            background: #fff;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📥 Import Product Variants</h1>
+        <p class="subtitle">Upload verified RAM/Storage variants to Firebase</p>
+
+        <!-- Login Required -->
+        <div id="login-section" class="login-required">
+            <h2>🔐 Admin Login Required</h2>
+            <p>Please login with your admin account.</p>
+            <a href="admin-login.html" class="btn primary">Go to Admin Login</a>
+        </div>
+
+        <!-- Main -->
+        <div id="main-section" style="display: none;">
+            <div class="stats">
+                <div class="stat">
+                    <div class="num" id="total-count">0</div>
+                    <div class="label">Total Products</div>
+                </div>
+                <div class="stat success">
+                    <div class="num" id="updated-count">0</div>
+                    <div class="label">Updated</div>
+                </div>
+                <div class="stat warning">
+                    <div class="num" id="not-found-count">0</div>
+                    <div class="label">Not Found</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn primary" id="import-btn">🚀 Import All Variants to Firebase</button>
+            </div>
+
+            <div class="progress-bar" id="progress-bar" style="display: none;">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div class="log-box" id="log-box">
+                <div class="log-entry info">Ready. Click "Import All Variants" to start.</div>
+                <div class="log-entry info">This will update existing products with verified variants.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        const logBox = document.getElementById('log-box');
+        const importBtn = document.getElementById('import-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressFill = document.getElementById('progress-fill');
+
+        function log(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Verified variants data
+        const variantsData = {
+            // APPLE - IPHONE
+            "iPhone 11": ["4GB/64GB", "4GB/128GB"],
+            "iPhone 11 Pro": ["4GB/64GB", "4GB/256GB"],
+            "iPhone 11 Pro Max": ["4GB/64GB", "4GB/256GB"],
+            "iPhone 12": ["4GB/64GB", "4GB/128GB"],
+            "iPhone 12 mini": ["4GB/64GB", "4GB/128GB"],
+            "iPhone 12 Pro": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 12 Pro Max": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 13": ["4GB/128GB", "4GB/256GB"],
+            "iPhone 13 mini": ["4GB/128GB", "4GB/256GB"],
+            "iPhone 13 Pro": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 13 Pro Max": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 14": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 14 Plus": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 14 Pro": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 14 Pro Max": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 15": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 15 Plus": ["6GB/128GB", "6GB/256GB"],
+            "iPhone 15 Pro": ["8GB/128GB", "8GB/256GB"],
+            "iPhone 15 Pro Max": ["8GB/256GB", "8GB/512GB"],
+            "iPhone 16": ["8GB/128GB", "8GB/256GB"],
+            "iPhone 16 Plus": ["8GB/128GB", "8GB/256GB", "8GB/512GB"],
+            "iPhone 16 Pro": ["8GB/128GB", "8GB/256GB"],
+            "iPhone 16 Pro Max": ["8GB/256GB", "8GB/512GB"],
+
+            // SAMSUNG - PHONES
+            "Samsung Galaxy S21": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy S21+": ["8GB/128GB"],
+            "Samsung Galaxy S21 Ultra": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy S22": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy S22+": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy S22 Ultra": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy S23": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy S23+": ["8GB/256GB"],
+            "Samsung Galaxy S23 Ultra": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy S24": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy S24+": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy S24 Ultra": ["12GB/256GB", "12GB/512GB", "12GB/1TB"],
+            "Samsung Galaxy Z Flip 3": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy Z Flip 4": ["8GB/128GB", "8GB/256GB"],
+            "Samsung Galaxy Z Flip 5": ["8GB/256GB", "8GB/512GB"],
+            "Samsung Galaxy Z Fold 3": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy Z Fold 4": ["12GB/256GB", "12GB/512GB"],
+            "Samsung Galaxy Z Fold 5": ["12GB/256GB", "12GB/512GB"],
+
+            // APPLE - MACBOOKS
+            "MacBook Air M1 2020": ["8GB/256GB", "8GB/512GB"],
+            "MacBook Air M2 2022": ["8GB/256GB", "8GB/512GB", "16GB/512GB"],
+            "MacBook Air M3 2024": ["8GB/256GB", "16GB/512GB"],
+            "MacBook Pro 13\" M1 2020": ["8GB/256GB", "8GB/512GB", "16GB/512GB"],
+            "MacBook Pro 13\" M2 2022": ["8GB/256GB", "16GB/512GB"],
+            "MacBook Pro 14\" M1 Pro 2021": ["16GB/512GB"],
+            "MacBook Pro 14\" M1 Max 2021": ["32GB/1TB"],
+            "MacBook Pro 14\" M2 Pro 2023": ["16GB/512GB"],
+            "MacBook Pro 14\" M2 Max 2023": ["32GB/1TB"],
+            "MacBook Pro 14\" M3 Pro 2023": ["18GB/512GB"],
+            "MacBook Pro 14\" M3 Max 2023": ["36GB/1TB"],
+            "MacBook Pro 16\" M1 Pro 2021": ["16GB/512GB"],
+            "MacBook Pro 16\" M1 Max 2021": ["32GB/1TB"],
+            "MacBook Pro 16\" M2 Pro 2023": ["16GB/512GB"],
+            "MacBook Pro 16\" M2 Max 2023": ["32GB/1TB"],
+            "MacBook Pro 16\" M3 Pro 2023": ["18GB/512GB"],
+            "MacBook Pro 16\" M3 Max 2023": ["36GB/1TB"],
+
+            // APPLE - IPADS
+            "iPad 9th Gen WiFi": ["3GB/64GB", "3GB/256GB"],
+            "iPad 9th Gen WiFi+Cellular": ["3GB/64GB", "3GB/256GB"],
+            "iPad 10th Gen WiFi": ["4GB/64GB", "4GB/256GB"],
+            "iPad 10th Gen WiFi+Cellular": ["4GB/64GB", "4GB/256GB"],
+            "iPad Air 4th Gen WiFi": ["4GB/64GB", "4GB/256GB"],
+            "iPad Air 5th Gen M1 WiFi": ["8GB/64GB", "8GB/256GB"],
+            "iPad Air 5th Gen M1 WiFi+Cellular": ["8GB/64GB", "8GB/256GB"],
+            "iPad Air 11\" M2 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB"],
+            "iPad Air 13\" M2 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB"],
+            "iPad mini 5th Gen WiFi": ["3GB/64GB", "3GB/256GB"],
+            "iPad mini 6th Gen WiFi": ["4GB/64GB", "4GB/256GB"],
+            "iPad mini 6th Gen WiFi+Cellular": ["4GB/64GB", "4GB/256GB"],
+            "iPad Pro 11\" M1 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB"],
+            "iPad Pro 11\" M2 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB", "16GB/2TB"],
+            "iPad Pro 11\" M4 WiFi": ["8GB/256GB", "16GB/512GB", "16GB/1TB", "16GB/2TB"],
+            "iPad Pro 12.9\" M1 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB"],
+            "iPad Pro 12.9\" M2 WiFi": ["8GB/128GB", "8GB/256GB", "16GB/512GB", "16GB/1TB", "16GB/2TB"],
+            "iPad Pro 13\" M4 WiFi": ["8GB/256GB", "16GB/512GB", "16GB/1TB", "16GB/2TB"]
+        };
+
+        // Alternative name mappings for matching
+        const nameAliases = {
+            // Add common name variations
+        };
+
+        async function importVariants() {
+            const db = firebase.firestore();
+            importBtn.disabled = true;
+            progressBar.style.display = 'block';
+
+            const productNames = Object.keys(variantsData);
+            const total = productNames.length;
+            let updated = 0;
+            let notFound = 0;
+
+            document.getElementById('total-count').textContent = total;
+            log(`Starting import of ${total} products...`, 'info');
+
+            for (let i = 0; i < productNames.length; i++) {
+                const productName = productNames[i];
+                const variants = variantsData[productName];
+
+                try {
+                    // Search for product by name (exact match)
+                    let snapshot = await db.collection('products')
+                        .where('name', '==', productName)
+                        .get();
+
+                    // If not found, try partial match
+                    if (snapshot.empty) {
+                        // Try with different name patterns
+                        const allProducts = await db.collection('products').get();
+                        let found = false;
+
+                        for (const doc of allProducts.docs) {
+                            const name = doc.data().name || '';
+                            // Check if names are similar
+                            if (name.toLowerCase().includes(productName.toLowerCase()) ||
+                                productName.toLowerCase().includes(name.toLowerCase()) ||
+                                normalizeProductName(name) === normalizeProductName(productName)) {
+                                await doc.ref.update({ variants: variants });
+                                log(`✅ Updated: ${name} → ${variants.join(', ')}`, 'success');
+                                updated++;
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            log(`⚠️ Not found: ${productName}`, 'warn');
+                            notFound++;
+                        }
+                    } else {
+                        // Update all matching products
+                        for (const doc of snapshot.docs) {
+                            await doc.ref.update({ variants: variants });
+                            log(`✅ Updated: ${doc.data().name} → ${variants.join(', ')}`, 'success');
+                            updated++;
+                        }
+                    }
+                } catch (error) {
+                    log(`❌ Error updating ${productName}: ${error.message}`, 'error');
+                }
+
+                // Update progress
+                progressFill.style.width = `${((i + 1) / total) * 100}%`;
+                document.getElementById('updated-count').textContent = updated;
+                document.getElementById('not-found-count').textContent = notFound;
+            }
+
+            log(`\n========================================`, 'info');
+            log(`✅ Import complete!`, 'success');
+            log(`Updated: ${updated} products`, 'success');
+            log(`Not found: ${notFound} products`, 'warn');
+            log(`========================================`, 'info');
+
+            importBtn.disabled = false;
+            importBtn.textContent = '✅ Import Complete - Run Again?';
+        }
+
+        function normalizeProductName(name) {
+            return name
+                .toLowerCase()
+                .replace(/[^\w\s]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        importBtn.addEventListener('click', () => {
+            if (confirm('This will update variants for all products in the list. Continue?')) {
+                importVariants();
+            }
+        });
+
+        // Auth check
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const db = firebase.firestore();
+                    const staffDoc = await db.collection('staffUsers').doc(user.uid).get();
+
+                    if (staffDoc.exists && staffDoc.data().isActive) {
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('main-section').style.display = 'block';
+                        log(`Logged in as: ${user.email || user.phoneNumber}`, 'info');
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

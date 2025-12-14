@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Export Products for Variant Update | WorthyTen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background: #f5f5f7;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+
+        .btn.success {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 600px;
+            font-family: monospace;
+            font-size: 14px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            resize: vertical;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+
+        .stat .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-required {
+            text-align: center;
+            padding: 60px;
+            background: #fff;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📋 Export Products for Variant Update</h1>
+        <p class="subtitle">Export products, add variants, then import back</p>
+
+        <!-- Login Required -->
+        <div id="login-section" class="login-required">
+            <h2>🔐 Admin Login Required</h2>
+            <p>Please login with your admin account.</p>
+            <a href="admin-login.html" class="btn primary">Go to Admin Login</a>
+        </div>
+
+        <!-- Main -->
+        <div id="main-section" style="display: none;">
+            <div class="stats">
+                <div class="stat">
+                    <div class="num" id="phone-count">0</div>
+                    <div class="label">Phones</div>
+                </div>
+                <div class="stat">
+                    <div class="num" id="laptop-count">0</div>
+                    <div class="label">Laptops</div>
+                </div>
+                <div class="stat">
+                    <div class="num" id="ipad-count">0</div>
+                    <div class="label">iPads</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn primary" id="export-btn">📥 Export Products from Firebase</button>
+                <button class="btn success" id="download-btn" disabled>💾 Download as TXT</button>
+            </div>
+
+            <textarea id="output" placeholder="Click 'Export Products' to load..."></textarea>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        const output = document.getElementById('output');
+        const exportBtn = document.getElementById('export-btn');
+        const downloadBtn = document.getElementById('download-btn');
+
+        async function exportProducts() {
+            const db = firebase.firestore();
+            exportBtn.disabled = true;
+            exportBtn.textContent = '⏳ Loading...';
+
+            try {
+                const snapshot = await db.collection('products').get();
+
+                const products = {
+                    Phone: [],
+                    Laptop: [],
+                    iPad: []
+                };
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const cat = data.category;
+
+                    if (cat === 'Phone' || cat === 'Laptop' || cat === 'iPad') {
+                        products[cat].push({
+                            name: data.name || '',
+                            brand: data.brand || '',
+                            price: data.price || 0,
+                            existingVariants: data.variants || []
+                        });
+                    }
+                });
+
+                // Sort by brand, then name
+                for (const cat in products) {
+                    products[cat].sort((a, b) => {
+                        if (a.brand !== b.brand) return a.brand.localeCompare(b.brand);
+                        return a.name.localeCompare(b.name);
+                    });
+                }
+
+                // Update stats
+                document.getElementById('phone-count').textContent = products.Phone.length;
+                document.getElementById('laptop-count').textContent = products.Laptop.length;
+                document.getElementById('ipad-count').textContent = products.iPad.length;
+
+                // Generate text
+                let text = '# PRODUCT VARIANTS LIST\n';
+                text += '# Format: ProductName: variant1, variant2, variant3\n';
+                text += '# Example: Samsung Galaxy S24 Ultra: 12GB/256GB, 12GB/512GB, 12GB/1TB\n';
+                text += '# For iPads without RAM: iPad Pro 11" M2 WiFi: 128GB, 256GB, 512GB, 1TB\n';
+                text += '# Leave empty if no variants needed\n';
+                text += '#\n';
+                text += '# ================================================\n\n';
+
+                // Phones
+                text += '=== PHONES ===\n\n';
+                let currentBrand = '';
+                products.Phone.forEach(p => {
+                    if (p.brand !== currentBrand) {
+                        currentBrand = p.brand;
+                        text += `\n--- ${currentBrand} ---\n`;
+                    }
+                    const existing = p.existingVariants.length > 0 ? p.existingVariants.join(', ') : '';
+                    text += `${p.name}: ${existing}\n`;
+                });
+
+                // Laptops
+                text += '\n\n=== LAPTOPS ===\n\n';
+                currentBrand = '';
+                products.Laptop.forEach(p => {
+                    if (p.brand !== currentBrand) {
+                        currentBrand = p.brand;
+                        text += `\n--- ${currentBrand} ---\n`;
+                    }
+                    const existing = p.existingVariants.length > 0 ? p.existingVariants.join(', ') : '';
+                    text += `${p.name}: ${existing}\n`;
+                });
+
+                // iPads
+                text += '\n\n=== iPADS ===\n\n';
+                currentBrand = '';
+                products.iPad.forEach(p => {
+                    if (p.brand !== currentBrand) {
+                        currentBrand = p.brand;
+                        text += `\n--- ${currentBrand} ---\n`;
+                    }
+                    const existing = p.existingVariants.length > 0 ? p.existingVariants.join(', ') : '';
+                    text += `${p.name}: ${existing}\n`;
+                });
+
+                output.value = text;
+                downloadBtn.disabled = false;
+                exportBtn.textContent = '📥 Export Products from Firebase';
+                exportBtn.disabled = false;
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+                exportBtn.textContent = '📥 Export Products from Firebase';
+                exportBtn.disabled = false;
+            }
+        }
+
+        function downloadTxt() {
+            const text = output.value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'product_variants.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        exportBtn.addEventListener('click', exportProducts);
+        downloadBtn.addEventListener('click', downloadTxt);
+
+        // Auth check
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const db = firebase.firestore();
+                    const staffDoc = await db.collection('staffUsers').doc(user.uid).get();
+
+                    if (staffDoc.exists && staffDoc.data().isActive) {
+                        document.getElementById('login-section').style.display = 'none';
+                        document.getElementById('main-section').style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

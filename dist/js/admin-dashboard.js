@@ -715,9 +715,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const canEdit = !window.RBAC || window.RBAC.canAddEditProducts();
         const canDelete = !window.RBAC || window.RBAC.canDeleteProducts();
 
+        // Get variants data for Phone/Laptop/iPad
+        const variants = (d.variants || []).join('|');
+        const variantsWithPrices = encodeURIComponent(JSON.stringify(d.variantsWithPrices || []));
+
         let actionsHtml = '<td>';
         if (canEdit) {
-          actionsHtml += `<button class="action-btn edit-btn" data-doc-id="${docId}" data-price="${d.price}">Edit Price</button>`;
+          actionsHtml += `<button class="action-btn edit-btn" data-doc-id="${docId}" data-price="${d.price}" data-category="${d.category || ''}" data-variants="${variants}" data-variants-prices="${variantsWithPrices}">Edit Price</button>`;
           actionsHtml += `<button class="action-btn edit-name-btn" data-doc-id="${docId}" data-name="${d.name || ''}">Edit Name</button>`;
         }
         if (canDelete) {
@@ -848,24 +852,128 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const currentPrice = btn.dataset.price;
-        const newPrice = prompt('Enter the new price:', currentPrice);
+        const category = btn.dataset.category || '';
+        const variantsStr = btn.dataset.variants || '';
+        const variantsPricesStr = btn.dataset.variantsPrices || '';
 
-        if (newPrice === null || isNaN(Number(newPrice)) || Number(newPrice) <= 0) {
-          return; // User cancelled or entered invalid price
-        }
+        // Check if this is a variant-enabled category (Phone, Laptop, iPad)
+        const variantCategories = ['Phone', 'Laptop', 'iPad'];
+        const hasVariants = variantsStr && variantCategories.includes(category);
 
-        btn.disabled = true;
-        try {
-          await db
-            .collection('products')
-            .doc(docId)
-            .update({
-              price: Number(newPrice)
-            });
-          loadProducts(); // Refresh list
-        } catch (error) {
-          alert('Error updating price: ' + error.message);
-          btn.disabled = false;
+        if (hasVariants) {
+          // Show variant selection for variant-enabled categories
+          const variants = variantsStr.split('|').filter(v => v);
+          let variantsWithPrices = [];
+
+          try {
+            variantsWithPrices = JSON.parse(decodeURIComponent(variantsPricesStr));
+          } catch (e) {
+            variantsWithPrices = [];
+          }
+
+          if (variants.length === 0) {
+            // No variants, just update base price
+            const newPrice = prompt('Enter the new base price:', currentPrice);
+            if (newPrice === null || isNaN(Number(newPrice)) || Number(newPrice) <= 0) {
+              return;
+            }
+
+            btn.disabled = true;
+            try {
+              await db.collection('products').doc(docId).update({ price: Number(newPrice) });
+              loadProducts();
+            } catch (error) {
+              alert('Error updating price: ' + error.message);
+              btn.disabled = false;
+            }
+            return;
+          }
+
+          // Build variant options list
+          let variantOptions = 'Select which price to update:\n\n';
+          variantOptions += '0. Base Price (₹' + Number(currentPrice).toLocaleString('en-IN') + ')\n';
+
+          variants.forEach((v, i) => {
+            const existingPrice = variantsWithPrices.find(vp => vp.variant === v);
+            const price = existingPrice ? '₹' + Number(existingPrice.price).toLocaleString('en-IN') : 'Not set';
+            variantOptions += (i + 1) + '. ' + v + ' (' + price + ')\n';
+          });
+
+          const selection = prompt(variantOptions + '\nEnter number (0-' + variants.length + '):', '0');
+
+          if (selection === null) return;
+          const selNum = parseInt(selection, 10);
+
+          if (isNaN(selNum) || selNum < 0 || selNum > variants.length) {
+            alert('Invalid selection');
+            return;
+          }
+
+          if (selNum === 0) {
+            // Update base price
+            const newPrice = prompt('Enter new BASE price:', currentPrice);
+            if (newPrice === null || isNaN(Number(newPrice)) || Number(newPrice) <= 0) return;
+
+            btn.disabled = true;
+            try {
+              await db.collection('products').doc(docId).update({ price: Number(newPrice) });
+              loadProducts();
+            } catch (error) {
+              alert('Error updating price: ' + error.message);
+              btn.disabled = false;
+            }
+          } else {
+            // Update specific variant price
+            const selectedVariant = variants[selNum - 1];
+            const existingVariantPrice = variantsWithPrices.find(vp => vp.variant === selectedVariant);
+            const currentVariantPrice = existingVariantPrice ? existingVariantPrice.price : currentPrice;
+
+            const newPrice = prompt('Enter new price for ' + selectedVariant + ':', currentVariantPrice);
+            if (newPrice === null || isNaN(Number(newPrice)) || Number(newPrice) <= 0) return;
+
+            // Update variantsWithPrices array
+            let updatedVariantsPrices = [...variantsWithPrices];
+            const existingIndex = updatedVariantsPrices.findIndex(vp => vp.variant === selectedVariant);
+
+            if (existingIndex >= 0) {
+              updatedVariantsPrices[existingIndex].price = Number(newPrice);
+            } else {
+              updatedVariantsPrices.push({ variant: selectedVariant, price: Number(newPrice) });
+            }
+
+            btn.disabled = true;
+            try {
+              await db.collection('products').doc(docId).update({
+                variantsWithPrices: updatedVariantsPrices
+              });
+              alert('✅ Price updated for ' + selectedVariant);
+              loadProducts();
+            } catch (error) {
+              alert('Error updating variant price: ' + error.message);
+              btn.disabled = false;
+            }
+          }
+        } else {
+          // For DSLR and other categories - simple price update
+          const newPrice = prompt('Enter the new price:', currentPrice);
+
+          if (newPrice === null || isNaN(Number(newPrice)) || Number(newPrice) <= 0) {
+            return; // User cancelled or entered invalid price
+          }
+
+          btn.disabled = true;
+          try {
+            await db
+              .collection('products')
+              .doc(docId)
+              .update({
+                price: Number(newPrice)
+              });
+            loadProducts(); // Refresh list
+          } catch (error) {
+            alert('Error updating price: ' + error.message);
+            btn.disabled = false;
+          }
         }
       }
 
