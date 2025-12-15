@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Image Linker - WorthyTen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: #10b981;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #334155;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #10b981;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .log-container {
+            height: 300px;
+            overflow-y: auto;
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .log-item {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 2px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .info {
+            color: #60a5fa;
+        }
+
+        .warn {
+            color: #fbbf24;
+        }
+
+        .text {
+            color: #e2e8f0;
+        }
+
+        .auth-box {
+            text-align: center;
+            padding: 40px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📸 Auto Image Linker</h1>
+
+        <div id="authSection" class="card auth-box">
+            <h3>Admin Login Required</h3>
+            <div style="margin-top: 20px;">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="login()" class="btn">Login</button>
+            </div>
+        </div>
+
+        <div id="mainApp" style="display: none;">
+            <div class="card">
+                <h3>🚀 Intelligent Auto-Discovery</h3>
+                <p style="color: #94a3b8; margin-bottom: 20px;">
+                    This tool will automatically:
+                    1. Fetch all DSLR products<br>
+                    2. Scan Firebase Storage folders completely<br>
+                    3. Link matching images (ignores Case/Extension)<br>
+                    Note: Avoids CORS errors by listing files first.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div style="font-size: 24px; font-weight: bold;" id="totalProducts">0</div>
+                        <div style="color: #94a3b8;">Total Products</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; font-weight: bold; color: #4ade80;" id="foundImages">0</div>
+                        <div style="color: #94a3b8;">Images Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; font-weight: bold; color: #f87171;" id="missingImages">0</div>
+                        <div style="color: #94a3b8;">Missing Images</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size: 24px; font-weight: bold; color: #60a5fa;" id="processedCount">0</div>
+                        <div style="color: #94a3b8;">Processed</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px;">
+                    <label style="color: #94a3b8;">Filter Brand:</label>
+                    <select id="brandFilter"
+                        style="padding: 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: white;">
+                        <option value="ALL">All Brands</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                    <button id="startBtn" onclick="startDiscovery()" class="btn">▶ Start Auto-Discovery</button>
+                    <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                        <input type="checkbox" id="forceOverwrite"> Force overwrite existing images
+                    </label>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="saveBtn" onclick="saveChanges()" class="btn btn-success" disabled>💾 Save Changes to
+                        Firestore</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📜 Live Log</h3>
+                <div class="log-container" id="logs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4SqbxwKCJmUBNKt85UwEJgNnep9t7qOY",
+            authDomain: "worthyten-otp-a925d.firebaseapp.com",
+            projectId: "worthyten-otp-a925d",
+            storageBucket: "worthyten-otp-a925d.appspot.com",
+            messagingSenderId: "1067702314639",
+            appId: "1:1067702314639:web:0bb2a39181720c306572fa"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // State
+        let products = [];
+        let matchedProducts = [];
+        let isProcessing = false;
+
+        // Auth Logic
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                log(`Logged in as ${user.email}`, 'info');
+                loadProducts();
+            } else {
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('mainApp').style.display = 'none';
+            }
+        });
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            try {
+                await firebase.auth().signInWithEmailAndPassword(email, pass);
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        function log(msg, type = 'text') {
+            const div = document.createElement('div');
+            div.className = `log-item ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            const container = document.getElementById('logs');
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function loadProducts() {
+            console.log("Loading products...");
+            try {
+                const snap = await db.collection('products')
+                    .where('category', '==', 'DSLR/Lens')
+                    .get();
+
+                products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                document.getElementById('totalProducts').textContent = products.length;
+
+                // Populate Brand Filter
+                const brands = [...new Set(products.map(p => p.brand))].sort();
+                const filter = document.getElementById('brandFilter');
+                // Clear existing options except first
+                filter.innerHTML = '<option value="ALL">All Brands</option>';
+                brands.forEach(b => {
+                    if (b) {
+                        const opt = document.createElement('option');
+                        opt.value = b;
+                        opt.textContent = b;
+                        filter.appendChild(opt);
+                    }
+                });
+
+                log(`Loaded ${products.length} DSLR products. Ready to start.`, 'info');
+            } catch (e) {
+                log(`Error loading products: ${e.message}`, 'error');
+            }
+        }
+
+        async function startDiscovery() {
+            if (isProcessing) return;
+            isProcessing = true;
+            document.getElementById('startBtn').disabled = true;
+            matchedProducts = [];
+
+            const force = document.getElementById('forceOverwrite').checked;
+            const selectedBrand = document.getElementById('brandFilter').value;
+
+            let processed = 0;
+            let found = 0;
+            let missing = 0;
+
+            log(`Starting match process (Strategy: ListAll)...`, 'info');
+
+            // 1. Load ALL images for the brand first
+            const brandImages = new Map(); // filename_lower -> itemRef
+
+            try {
+                let foldersToScan = [];
+                if (selectedBrand === 'ALL') {
+                    foldersToScan = ['Canon Images', 'Nikon Images', 'Sony Images', 'Fujifilm Images'];
+                } else {
+                    foldersToScan = [`${selectedBrand} Images`];
+                }
+
+                log(`📂 Scanning storage folders: ${foldersToScan.join(', ')}...`, 'info');
+
+                for (const folderName of foldersToScan) {
+                    try {
+                        const ref = storage.ref(folderName);
+                        const res = await ref.listAll();
+                        log(`Found ${res.items.length} files in ${folderName}`, 'info');
+
+                        res.items.forEach(item => {
+                            // Normalize: "Nikon D850.jpg" -> "nikon d850"
+                            const name = item.name.toLowerCase().replace(/\.(jpg|jpeg|png|webp)/i, '');
+                            brandImages.set(name, item);
+                        });
+
+                    } catch (err) {
+                        console.error(err);
+                        if (err.code === 'storage/unknown' || (err.message && err.message.includes('CORS'))) {
+                            log(`🚨 CORS ERROR: Your Firebase Storage bucket is blocking this tool.`, 'error');
+                            log(`👉 ACTION REQUIRED: You must configure CORS on your bucket.`, 'warn');
+                            log(`1. Go to Google Cloud Console (activate Cloud Shell)`, 'text');
+                            log(`2. Upload the 'cors.json' file I just created (d:/WorthyTen.../cors.json).`, 'text');
+                            log(`3. Run: gsutil cors set cors.json gs://worthyten-otp-a925d.appspot.com`, 'text');
+                            alert("CORS Error! Please check the logs for instructions on how to fix your bucket settings.");
+                            isProcessing = false;
+                            document.getElementById('startBtn').disabled = false;
+                            return;
+                        }
+                        log(`Could not read ${folderName}: ${err.code}`, 'warn');
+                    }
+                }
+
+            } catch (e) {
+                log(`Error scanning storage: ${e.message}`, 'error');
+                isProcessing = false;
+                document.getElementById('startBtn').disabled = false;
+                return;
+            }
+
+            // 2. Match Products
+            for (const product of products) {
+                if (selectedBrand !== 'ALL' && product.brand !== selectedBrand) continue;
+
+                processed++;
+                document.getElementById('processedCount').textContent = processed;
+                updateProgress(processed, products.length);
+
+                if (product.image && product.image.startsWith('http') && !force) {
+                    continue;
+                }
+
+                const prodName = product.name.toLowerCase().trim();
+
+                if (brandImages.has(prodName)) {
+                    try {
+                        const itemRef = brandImages.get(prodName);
+                        const url = await itemRef.getDownloadURL();
+
+                        matchedProducts.push({
+                            id: product.id,
+                            name: product.name,
+                            image: url
+                        });
+                        found++;
+                        document.getElementById('foundImages').textContent = found;
+                        log(`✅ Linked: ${product.name}`, 'success');
+
+                    } catch (e) {
+                        log(`Error getting URL for ${prodName}: ${e.message}`, 'error');
+                    }
+                } else {
+                    missing++;
+                    document.getElementById('missingImages').textContent = missing;
+                }
+            }
+
+            isProcessing = false;
+            document.getElementById('startBtn').textContent = 'Discovery Complete';
+            document.getElementById('startBtn').disabled = false;
+
+            if (matchedProducts.length > 0) {
+                document.getElementById('saveBtn').disabled = false;
+                document.getElementById('saveBtn').textContent = `💾 Save ${matchedProducts.length} Matches`;
+                log(`✨ Finished! Found ${matchedProducts.length} matches. Click Save to apply.`, 'success');
+            } else {
+                log(`Scan complete. No new matches found.`, 'info');
+            }
+        }
+
+        function updateProgress(current, total) {
+            const pct = (current / total) * 100;
+            document.getElementById('progressFill').style.width = `${pct}%`;
+        }
+
+        async function saveChanges() {
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            btn.textContent = "Saving...";
+
+            let saved = 0;
+            let errors = 0;
+
+            const batchSize = 400;
+            for (let i = 0; i < matchedProducts.length; i += batchSize) {
+                const chunk = matchedProducts.slice(i, i + batchSize);
+                const batch = db.batch();
+
+                chunk.forEach(m => {
+                    const ref = db.collection('products').doc(m.id);
+                    batch.update(ref, { image: m.image });
+                });
+
+                try {
+                    await batch.commit();
+                    saved += chunk.length;
+                    log(`Saved batch ${i / batchSize + 1}`, 'success');
+                } catch (e) {
+                    errors += chunk.length;
+                    log(`Error saving batch: ${e.message}`, 'error');
+                }
+            }
+
+            log(`Saved ${saved} products.`, 'success');
+            alert(`Successfully updated ${saved} products!`);
+            btn.textContent = "Saved!";
+        }
+    </script>
+</body>
+
+</html>

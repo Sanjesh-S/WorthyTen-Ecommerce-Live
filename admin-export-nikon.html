@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Export Nikon Images</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:disabled {
+            background: #ccc;
+        }
+
+        #log {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>📑 Export Nikon Images to Excel (CSV)</h1>
+        <p>This tool will fetch all files from the <b>Nikon Images</b> folder and verify their URLs.</p>
+
+        <div id="authSection">
+            <input type="email" id="email" placeholder="Admin Email" style="padding: 8px;">
+            <input type="password" id="password" placeholder="Password" style="padding: 8px;">
+            <button onclick="login()">Login</button>
+        </div>
+
+        <div id="actionSection" style="display:none;">
+            <button onclick="generateCSV()" id="btn">Download Image List (.csv)</button>
+        </div>
+
+        <div id="log"></div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4SqbxwKCJmUBNKt85UwEJgNnep9t7qOY",
+            authDomain: "worthyten-otp-a925d.firebaseapp.com",
+            projectId: "worthyten-otp-a925d",
+            storageBucket: "worthyten-otp-a925d.appspot.com",
+            messagingSenderId: "1067702314639",
+            appId: "1:1067702314639:web:0bb2a39181720c306572fa"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+
+        function log(msg) {
+            document.getElementById('log').textContent += msg + '\n';
+        }
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('actionSection').style.display = 'block';
+                log('Logged in as ' + user.email);
+            }
+        });
+
+        async function login() {
+            try {
+                await firebase.auth().signInWithEmailAndPassword(
+                    document.getElementById('email').value,
+                    document.getElementById('password').value
+                );
+            } catch (e) { log('Login error: ' + e.message); }
+        }
+
+        async function generateCSV() {
+            const btn = document.getElementById('btn');
+            btn.disabled = true;
+            log('Starting scan of "Nikon Images"...');
+
+            try {
+                // 1. Get List
+                const ref = storage.ref('Nikon Images');
+                const res = await ref.listAll();
+                log(`Found ${res.items.length} files. Fetching URLs...`);
+
+                // 2. Build CSV Data
+                let csvContent = "data:text/csv;charset=utf-8,Filename,Download URL\n";
+
+                let count = 0;
+                for (const item of res.items) {
+                    try {
+                        const url = await item.getDownloadURL();
+                        csvContent += `"${item.name}","${url}"\n`;
+                        count++;
+                        if (count % 10 === 0) log(`Processed ${count}/${res.items.length}...`);
+                    } catch (err) {
+                        log(`Error fetching URL for ${item.name}: ${err.message}`);
+                    }
+                }
+
+                log('Done! Downloading...');
+
+                // 3. Trigger Download
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "nikon_images.csv");
+                document.body.appendChild(link);
+                link.click();
+
+            } catch (e) {
+                log('❌ ERROR: ' + e.message);
+                if (e.code === 'storage/unknown' || e.message.includes('CORS')) {
+                    log('⚠️ TIP: This is likely a CORS or Permissions issue.');
+                    log('If you see CORS errors in console, use the Chrome security workaround.');
+                    log('If you see storage/unknown, check your Firebase Storage Rules (must allow "list").');
+                }
+            }
+            btn.disabled = false;
+        }
+    </script>
+</body>
+
+</html>

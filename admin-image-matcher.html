@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSLR Image Matcher - WorthyTen Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Urbanist', sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #0d1b2a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #1a2332;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border: 1px solid #2d3748;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .btn.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .auth-section {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .auth-section input {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            background: #0d1b2a;
+            color: white;
+            margin: 8px;
+            width: 250px;
+        }
+
+        .auth-status {
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .auth-status.logged-in {
+            background: #065f46;
+            color: #10b981;
+        }
+
+        .auth-status.logged-out {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: #0d1b2a;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #2d3748;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #60a5fa;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #2d3748;
+        }
+
+        .match-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .match-table th,
+        .match-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .match-table th {
+            background: #0d1b2a;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .match-table tr:hover {
+            background: #0f172a;
+        }
+
+        .image-preview {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            background: #0d1b2a;
+            border-radius: 8px;
+        }
+
+        .log-box {
+            background: #0d1b2a;
+            border: 1px solid #2d3748;
+            border-radius: 10px;
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            margin-top: 16px;
+        }
+
+        .log-success {
+            color: #10b981;
+        }
+
+        .log-error {
+            color: #ef4444;
+        }
+
+        .log-info {
+            color: #60a5fa;
+        }
+
+        .log-warning {
+            color: #f59e0b;
+        }
+
+        .brand-section {
+            margin-bottom: 24px;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .brand-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 12px;
+        }
+
+        .manual-input {
+            background: #0f172a;
+            border: 1px solid #3b82f6;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .manual-input h3 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+
+        .manual-input textarea {
+            width: 100%;
+            height: 150px;
+            background: #0d1b2a;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: white;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .manual-input p {
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .manual-input code {
+            background: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #fbbf24;
+        }
+
+        #mainContent {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔗 DSLR Image Matcher</h1>
+        <p class="subtitle">Match Firebase Storage images with Firestore products</p>
+
+        <!-- Auth Section -->
+        <div class="card" id="authSection">
+            <div class="auth-section">
+                <div id="authStatus" class="auth-status logged-out">🔒 Not Logged In</div>
+                <h3 style="color: white; margin-bottom: 20px;">Admin Login Required</h3>
+                <div>
+                    <input type="email" id="emailInput" placeholder="Admin Email">
+                    <input type="password" id="passwordInput" placeholder="Password">
+                </div>
+                <button id="loginBtn" class="btn" style="margin-top: 10px;">🔐 Login</button>
+            </div>
+        </div>
+
+        <!-- Main Content (hidden until logged in) -->
+        <div id="mainContent">
+            <div class="card manual-input">
+                <h3>📋 Option 1: Paste Image URLs from Firebase Console (Recommended)</h3>
+                <p>
+                    Go to Firebase Console → Storage → Open each image → Copy the download URL<br>
+                    <strong>Format:</strong> One URL per line. The filename will be extracted to match products.<br>
+                    Example:
+                    <code>https://firebasestorage.googleapis.com/.../Canon%20EOS%2090D.png?alt=media&token=...</code>
+                </p>
+                <textarea id="manualUrls"
+                    placeholder="Paste Firebase Storage image URLs here, one per line..."></textarea>
+                <button id="parseManualBtn" class="btn">📥 Parse URLs</button>
+            </div>
+
+            <div class="card">
+                <h3 class="section-title">Option 2: Auto-Scan Storage</h3>
+                <button id="loadStorageBtn" class="btn">📁 Scan Storage Folders</button>
+                <button id="loadProductsBtn" class="btn">📦 Load Products</button>
+                <button id="matchBtn" class="btn warning" disabled>🔗 Match Images</button>
+                <button id="applyBtn" class="btn success" disabled>✅ Apply to Firestore</button>
+
+                <div class="stats" id="statsContainer" style="display: none;">
+                    <div class="stat-box">
+                        <div class="stat-number" id="storageCount">0</div>
+                        <div class="stat-label">Storage Images</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="productCount">0</div>
+                        <div class="stat-label">DSLR Products</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="matchedCount">0</div>
+                        <div class="stat-label">Matched</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="unmatchedCount">0</div>
+                        <div class="stat-label">Unmatched</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="storageSection" style="display: none;">
+                <h3 class="section-title">📁 Images Found</h3>
+                <div id="storageList"></div>
+            </div>
+
+            <div class="card" id="matchesSection" style="display: none;">
+                <h3 class="section-title">🔗 Match Results</h3>
+                <div id="matchesList"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="section-title">📜 Activity Log</h3>
+                <div id="logBox" class="log-box">
+                    <div class="log-info">Ready. Login to begin...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4SqbxwKCJmUBNKt85UwEJgNnep9t7qOY",
+            authDomain: "worthyten-otp-a925d.firebaseapp.com",
+            projectId: "worthyten-otp-a925d",
+            storageBucket: "worthyten-otp-a925d.appspot.com",
+            messagingSenderId: "1067702314639",
+            appId: "1:1067702314639:web:0bb2a39181720c306572fa"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        let storageImages = [];
+        let products = [];
+        let matches = [];
+
+        const loginBtn = document.getElementById('loginBtn');
+        const logBox = document.getElementById('logBox');
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log-${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logBox.appendChild(div);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        // Auth state listener
+        auth.onAuthStateChanged(user => {
+            const authSection = document.getElementById('authSection');
+            const mainContent = document.getElementById('mainContent');
+
+            if (user) {
+                authSection.querySelector('.auth-section').innerHTML = `
+                    <div class="auth-status logged-in">✅ Logged in as: ${user.email}</div>
+                    <button class="btn" onclick="firebase.auth().signOut()">🚪 Logout</button>
+                `;
+                mainContent.style.display = 'block';
+                log('Logged in successfully', 'success');
+            } else {
+                mainContent.style.display = 'none';
+                authSection.querySelector('.auth-section').innerHTML = `
+                    <div class="auth-status logged-out">🔒 Not Logged In</div>
+                    <h3 style="color: white; margin-bottom: 20px;">Admin Login Required</h3>
+                    <div>
+                        <input type="email" id="emailInput" placeholder="Admin Email">
+                        <input type="password" id="passwordInput" placeholder="Password">
+                    </div>
+                    <button id="loginBtn" class="btn" style="margin-top: 10px;">🔐 Login</button>
+                `;
+                document.getElementById('loginBtn').addEventListener('click', handleLogin);
+            }
+        });
+
+        async function handleLogin() {
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
+        }
+
+        loginBtn.addEventListener('click', handleLogin);
+
+        // Parse manual URLs
+        document.getElementById('parseManualBtn').addEventListener('click', () => {
+            const urlsText = document.getElementById('manualUrls').value;
+            const urls = urlsText.split('\n').filter(u => u.trim());
+
+            storageImages = [];
+
+            urls.forEach(url => {
+                try {
+                    const decodedUrl = decodeURIComponent(url);
+                    const match = decodedUrl.match(/\/o\/([^?]+)/);
+                    if (match) {
+                        const fullPath = match[1];
+                        const parts = fullPath.split('/');
+                        const filename = parts[parts.length - 1];
+                        const folder = parts.length > 1 ? parts[0] : '';
+                        const productName = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+
+                        let brand = 'Unknown';
+                        if (folder.toLowerCase().includes('canon')) brand = 'Canon';
+                        else if (folder.toLowerCase().includes('nikon')) brand = 'Nikon';
+                        else if (folder.toLowerCase().includes('sony')) brand = 'Sony';
+                        else if (folder.toLowerCase().includes('fujifilm')) brand = 'Fujifilm';
+
+                        storageImages.push({
+                            folder: folder,
+                            brand: brand,
+                            filename: filename,
+                            productName: productName,
+                            url: url.trim(),
+                            fullPath: fullPath
+                        });
+
+                        log(`Parsed: ${productName} (${brand})`, 'success');
+                    }
+                } catch (e) {
+                    log(`Failed to parse URL`, 'error');
+                }
+            });
+
+            document.getElementById('storageCount').textContent = storageImages.length;
+            document.getElementById('statsContainer').style.display = 'grid';
+            displayStorageImages();
+            document.getElementById('storageSection').style.display = 'block';
+
+            log(`Parsed ${storageImages.length} image URLs`, 'success');
+            if (products.length > 0) {
+                document.getElementById('matchBtn').disabled = false;
+            }
+        });
+
+        // Load from storage (auto-scan)
+        document.getElementById('loadStorageBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('loadStorageBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Scanning...';
+            storageImages = [];
+
+            const brandFolders = ['Canon Images', 'Nikon Images', 'Sony Images'];
+
+            log('Scanning Firebase Storage...', 'info');
+
+            for (const folder of brandFolders) {
+                try {
+                    log(`Scanning: ${folder}`, 'info');
+                    const folderRef = storage.ref(folder);
+                    const result = await folderRef.listAll();
+
+                    log(`Found ${result.items.length} files in ${folder}`, 'success');
+
+                    for (const itemRef of result.items) {
+                        const url = await itemRef.getDownloadURL();
+                        const filename = itemRef.name;
+                        const productName = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+
+                        storageImages.push({
+                            folder: folder,
+                            brand: folder.replace(' Images', ''),
+                            filename: filename,
+                            productName: productName,
+                            url: url,
+                            fullPath: itemRef.fullPath
+                        });
+                    }
+                } catch (err) {
+                    log(`Error with ${folder}: ${err.code || err.message}`, 'error');
+                    log('Use Option 1 (manual URL paste) instead', 'warning');
+                }
+            }
+
+            document.getElementById('storageCount').textContent = storageImages.length;
+            document.getElementById('statsContainer').style.display = 'grid';
+
+            if (storageImages.length > 0) {
+                displayStorageImages();
+                document.getElementById('storageSection').style.display = 'block';
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📁 Scan Storage Folders';
+        });
+
+        function displayStorageImages() {
+            const container = document.getElementById('storageList');
+            const byBrand = {};
+            storageImages.forEach(img => {
+                if (!byBrand[img.brand]) byBrand[img.brand] = [];
+                byBrand[img.brand].push(img);
+            });
+
+            let html = '';
+            Object.keys(byBrand).forEach(brand => {
+                html += `<div class="brand-section">
+                    <div class="brand-title">📷 ${brand} (${byBrand[brand].length} images)</div>
+                    <table class="match-table">
+                        <tr><th>Preview</th><th>Filename</th><th>Product Name</th></tr>`;
+
+                byBrand[brand].forEach(img => {
+                    html += `<tr>
+                        <td><img src="${img.url}" class="image-preview" onerror="this.style.display='none'"></td>
+                        <td style="font-size: 12px;">${img.filename}</td>
+                        <td><strong>${img.productName}</strong></td>
+                    </tr>`;
+                });
+                html += '</table></div>';
+            });
+
+            container.innerHTML = html || '<p style="color: #94a3b8;">No images loaded yet</p>';
+        }
+
+        // Load products
+        document.getElementById('loadProductsBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('loadProductsBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Loading...';
+            products = [];
+
+            log('Loading DSLR products...', 'info');
+
+            try {
+                const snapshot = await db.collection('products')
+                    .where('category', '==', 'DSLR/Lens')
+                    .get();
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    products.push({
+                        id: doc.id,
+                        name: data.name || '',
+                        brand: data.brand || '',
+                        subcategory: data.subcategory || 'Camera',
+                        currentImage: data.image || '',
+                        price: data.price || 0
+                    });
+                });
+
+                document.getElementById('productCount').textContent = products.length;
+                document.getElementById('statsContainer').style.display = 'grid';
+                log(`Loaded ${products.length} products`, 'success');
+
+                if (storageImages.length > 0) {
+                    document.getElementById('matchBtn').disabled = false;
+                }
+
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📦 Load Products';
+        });
+
+        // Match images
+        document.getElementById('matchBtn').addEventListener('click', () => {
+            log('Matching images to products...', 'info');
+            matches = [];
+
+            products.forEach(product => {
+                let matchedImage = null;
+                let matchType = 'none';
+                const prodNameLower = product.name.toLowerCase().trim();
+                const prodBrandLower = product.brand.toLowerCase().trim();
+
+                // Exact match
+                matchedImage = storageImages.find(img =>
+                    img.productName.toLowerCase().trim() === prodNameLower &&
+                    img.brand.toLowerCase().trim() === prodBrandLower
+                );
+                if (matchedImage) matchType = 'exact';
+
+                // Partial match
+                if (!matchedImage) {
+                    matchedImage = storageImages.find(img => {
+                        const imgName = img.productName.toLowerCase().trim();
+                        const sameBrand = img.brand.toLowerCase().trim() === prodBrandLower;
+                        return sameBrand && (imgName.includes(prodNameLower) || prodNameLower.includes(imgName));
+                    });
+                    if (matchedImage) matchType = 'partial';
+                }
+
+                matches.push({
+                    product: product,
+                    image: matchedImage,
+                    matchType: matchType,
+                    selected: matchType !== 'none'
+                });
+            });
+
+            const matchedCount = matches.filter(m => m.image).length;
+            document.getElementById('matchedCount').textContent = matchedCount;
+            document.getElementById('unmatchedCount').textContent = matches.length - matchedCount;
+
+            log(`Matched: ${matchedCount}/${products.length}`, matchedCount > 0 ? 'success' : 'warning');
+
+            displayMatches();
+            document.getElementById('matchesSection').style.display = 'block';
+            document.getElementById('applyBtn').disabled = matchedCount === 0;
+        });
+
+        function displayMatches() {
+            const container = document.getElementById('matchesList');
+            const matched = matches.filter(m => m.image);
+            const unmatched = matches.filter(m => !m.image);
+
+            let html = `<div class="brand-section">
+                <div class="brand-title" style="color: #10b981;">✅ Matched (${matched.length})</div>
+                <table class="match-table">
+                    <tr><th>✓</th><th>Product</th><th>Brand</th><th>Image File</th><th>Preview</th></tr>`;
+
+            matched.forEach((m, i) => {
+                const idx = matches.indexOf(m);
+                html += `<tr>
+                    <td><input type="checkbox" ${m.selected ? 'checked' : ''} onchange="matches[${idx}].selected=this.checked"></td>
+                    <td><strong>${m.product.name}</strong></td>
+                    <td>${m.product.brand}</td>
+                    <td style="font-size: 12px;">${m.image.filename}</td>
+                    <td><img src="${m.image.url}" class="image-preview"></td>
+                </tr>`;
+            });
+            html += '</table></div>';
+
+            if (unmatched.length > 0) {
+                html += `<div class="brand-section">
+                    <div class="brand-title" style="color: #ef4444;">❌ Unmatched (${unmatched.length})</div>
+                    <table class="match-table"><tr><th>Product</th><th>Brand</th></tr>`;
+                unmatched.forEach(m => {
+                    html += `<tr><td>${m.product.name}</td><td>${m.product.brand}</td></tr>`;
+                });
+                html += '</table></div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Apply matches
+        document.getElementById('applyBtn').addEventListener('click', async () => {
+            const toApply = matches.filter(m => m.image && m.selected);
+
+            if (!confirm(`Update ${toApply.length} products with matched images?`)) return;
+
+            const btn = document.getElementById('applyBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Applying...';
+
+            let success = 0, errors = 0;
+
+            for (const m of toApply) {
+                try {
+                    await db.collection('products').doc(m.product.id).update({ image: m.image.url });
+                    success++;
+                    log(`✅ ${m.product.name}`, 'success');
+                } catch (e) {
+                    errors++;
+                    log(`❌ ${m.product.name}: ${e.message}`, 'error');
+                }
+            }
+
+            alert(`Done! Updated: ${success}, Errors: ${errors}`);
+            btn.disabled = false;
+            btn.textContent = '✅ Apply to Firestore';
+        });
+    </script>
+</body>
+
+</html>
