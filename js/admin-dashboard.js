@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const showPickupsBtn = document.getElementById('showPickupsBtn');
   const showProductsBtn = document.getElementById('showProductsBtn');
   const showUsersBtn = document.getElementById('showUsersBtn');
+  const showPricingBtn = document.getElementById('showPricingBtn');
   const pickupsPanel = document.getElementById('pickupsPanel');
   const productsPanel = document.getElementById('productsPanel');
   const usersPanel = document.getElementById('usersPanel');
+  const pricingPanel = document.getElementById('pricingPanel');
   const userRoleBadge = document.getElementById('user-role-badge');
 
   // Pickups Panel Elements
@@ -133,28 +135,24 @@ document.addEventListener('DOMContentLoaded', () => {
     showPickupsBtn.addEventListener('click', () => {
       pickupsPanel.classList.add('active');
       productsPanel.classList.remove('active');
-      if (usersPanel) {
-        usersPanel.classList.remove('active');
-      }
+      if (usersPanel) usersPanel.classList.remove('active');
+      if (pricingPanel) pricingPanel.classList.remove('active');
       showPickupsBtn.classList.add('active');
       showProductsBtn.classList.remove('active');
-      if (showUsersBtn) {
-        showUsersBtn.classList.remove('active');
-      }
+      if (showUsersBtn) showUsersBtn.classList.remove('active');
+      if (showPricingBtn) showPricingBtn.classList.remove('active');
       loadPickupRequests(); // Refresh data
     });
 
     showProductsBtn.addEventListener('click', () => {
       pickupsPanel.classList.remove('active');
       productsPanel.classList.add('active');
-      if (usersPanel) {
-        usersPanel.classList.remove('active');
-      }
+      if (usersPanel) usersPanel.classList.remove('active');
+      if (pricingPanel) pricingPanel.classList.remove('active');
       showPickupsBtn.classList.remove('active');
       showProductsBtn.classList.add('active');
-      if (showUsersBtn) {
-        showUsersBtn.classList.remove('active');
-      }
+      if (showUsersBtn) showUsersBtn.classList.remove('active');
+      if (showPricingBtn) showPricingBtn.classList.remove('active');
       loadProducts(); // Load product data
       populateCategoryDropdown(); // Refresh dropdowns
       populateBrandDropdown();
@@ -165,17 +163,34 @@ document.addEventListener('DOMContentLoaded', () => {
       showUsersBtn.addEventListener('click', () => {
         pickupsPanel.classList.remove('active');
         productsPanel.classList.remove('active');
-        if (usersPanel) {
-          usersPanel.classList.add('active');
-        }
+        if (usersPanel) usersPanel.classList.add('active');
+        if (pricingPanel) pricingPanel.classList.remove('active');
         showPickupsBtn.classList.remove('active');
         showProductsBtn.classList.remove('active');
         showUsersBtn.classList.add('active');
+        if (showPricingBtn) showPricingBtn.classList.remove('active');
 
         // Load users if UserManagement is available
         if (window.UserManagement) {
           window.UserManagement.loadUsers();
         }
+      });
+    }
+
+    // Pricing Calculator Tab (only if available)
+    if (showPricingBtn) {
+      showPricingBtn.addEventListener('click', () => {
+        pickupsPanel.classList.remove('active');
+        productsPanel.classList.remove('active');
+        if (usersPanel) usersPanel.classList.remove('active');
+        if (pricingPanel) pricingPanel.classList.add('active');
+        showPickupsBtn.classList.remove('active');
+        showProductsBtn.classList.remove('active');
+        if (showUsersBtn) showUsersBtn.classList.remove('active');
+        showPricingBtn.classList.add('active');
+
+        // Load pricing products dropdown
+        populatePricingProductDropdown();
       });
     }
   }
@@ -189,6 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show/hide User Management tab
     if (showUsersBtn) {
       showUsersBtn.style.display = window.RBAC.canManageUsers() ? '' : 'none';
+    }
+
+    // Show/hide Pricing Calculator tab (admin/superAdmin only)
+    if (showPricingBtn) {
+      const canManagePricing = window.RBAC.canManageUsers() || window.RBAC.canEditProducts();
+      showPricingBtn.style.display = canManagePricing ? '' : 'none';
     }
 
     // Note: Product form and actions are handled in the specific functions
@@ -1014,5 +1035,413 @@ document.addEventListener('DOMContentLoaded', () => {
       return 'N/A';
     }
     return `₹${Number(n || 0).toLocaleString('en-IN')}`;
+  }
+
+  // ===========================================
+  // PRICING CALCULATOR FUNCTIONS
+  // ===========================================
+
+  // Category-specific issue definitions
+  const CATEGORY_ISSUES = {
+    'Phone': [
+      { id: 'display_cracked', label: 'Cracked/Broken Display' },
+      { id: 'display_scratched', label: 'Scratched Display' },
+      { id: 'body_dents', label: 'Body Dents/Damage' },
+      { id: 'body_scratches', label: 'Body Scratches' },
+      { id: 'battery_weak', label: 'Weak/Dead Battery' },
+      { id: 'speaker_broken', label: 'Speaker Not Working' },
+      { id: 'buttons_broken', label: 'Buttons Not Working' },
+      { id: 'charging_port', label: 'Charging Port Issue' },
+      { id: 'camera_issue', label: 'Camera Not Working' },
+      { id: 'face_id_issue', label: 'Face ID/Fingerprint Issue' }
+    ],
+    'DSLR/Lens': [
+      { id: 'display_cracked', label: 'LCD Screen Cracked' },
+      { id: 'display_scratched', label: 'LCD Screen Scratched' },
+      { id: 'body_dents', label: 'Body Dents/Damage' },
+      { id: 'body_scratches', label: 'Body Scratches' },
+      { id: 'battery_weak', label: 'Battery Issue' },
+      { id: 'flashlight_broken', label: 'Flash Not Working' },
+      { id: 'memory_slot_issue', label: 'Memory Card Slot Issue' },
+      { id: 'buttons_broken', label: 'Buttons/Dials Not Working' },
+      { id: 'power_issue', label: 'Power/Startup Issues' },
+      { id: 'focus_issue', label: 'Auto Focus Issue' },
+      { id: 'lens_fungus', label: 'Lens Fungus' },
+      { id: 'lens_scratches', label: 'Lens Scratches' },
+      { id: 'error_messages', label: 'Error Messages' },
+      { id: 'shutter_issue', label: 'Shutter Problem' }
+    ],
+    'Laptop': [
+      { id: 'display_cracked', label: 'Screen Cracked/Broken' },
+      { id: 'display_scratched', label: 'Screen Scratched' },
+      { id: 'body_dents', label: 'Body Dents/Damage' },
+      { id: 'body_scratches', label: 'Body Scratches' },
+      { id: 'battery_weak', label: 'Battery Not Holding Charge' },
+      { id: 'keyboard_issue', label: 'Keyboard Issue' },
+      { id: 'trackpad_issue', label: 'Trackpad Issue' },
+      { id: 'speaker_broken', label: 'Speaker Not Working' },
+      { id: 'charging_port', label: 'Charging Port Issue' },
+      { id: 'hinge_issue', label: 'Hinge Problem' },
+      { id: 'webcam_issue', label: 'Webcam Not Working' }
+    ],
+    'iPad': [
+      { id: 'display_cracked', label: 'Screen Cracked/Broken' },
+      { id: 'display_scratched', label: 'Screen Scratched' },
+      { id: 'body_dents', label: 'Body Dents/Damage' },
+      { id: 'battery_weak', label: 'Battery Issue' },
+      { id: 'speaker_broken', label: 'Speaker Not Working' },
+      { id: 'buttons_broken', label: 'Buttons Not Working' },
+      { id: 'charging_port', label: 'Charging Port Issue' },
+      { id: 'camera_issue', label: 'Camera Not Working' },
+      { id: 'face_id_issue', label: 'Face ID Issue' }
+    ],
+    'Tablet': [
+      { id: 'display_cracked', label: 'Screen Cracked/Broken' },
+      { id: 'display_scratched', label: 'Screen Scratched' },
+      { id: 'body_dents', label: 'Body Dents/Damage' },
+      { id: 'battery_weak', label: 'Battery Issue' },
+      { id: 'speaker_broken', label: 'Speaker Not Working' },
+      { id: 'buttons_broken', label: 'Buttons Not Working' },
+      { id: 'charging_port', label: 'Charging Port Issue' }
+    ],
+    'Console': [
+      { id: 'power_issue', label: 'Power/Startup Issues' },
+      { id: 'disc_drive', label: 'Disc Drive Issue' },
+      { id: 'hdmi_issue', label: 'HDMI Port Issue' },
+      { id: 'overheating', label: 'Overheating Problem' },
+      { id: 'controller_port', label: 'Controller Port Issue' },
+      { id: 'body_scratches', label: 'Body Scratches' }
+    ]
+  };
+
+  // Default issues for unknown categories
+  const DEFAULT_ISSUES = [
+    { id: 'display_cracked', label: 'Display Cracked' },
+    { id: 'body_dents', label: 'Body Damage' },
+    { id: 'battery_weak', label: 'Battery Issue' },
+    { id: 'power_issue', label: 'Power Issue' }
+  ];
+
+  // Category-specific bonuses
+  const CATEGORY_BONUSES = {
+    'Phone': [
+      { id: 'original_box', label: 'Original Box' },
+      { id: 'original_bill', label: 'Original Bill/Invoice' },
+      { id: 'charger', label: 'Charger Included' },
+      { id: 'earphones', label: 'Earphones Included' },
+      { id: 'warranty_valid', label: 'Valid Warranty' }
+    ],
+    'DSLR/Lens': [
+      { id: 'original_box', label: 'Original Box' },
+      { id: 'original_bill', label: 'Original Bill/Invoice' },
+      { id: 'charger', label: 'Charger/Battery Grip' },
+      { id: 'additional_lens', label: 'Additional Lens' },
+      { id: 'camera_bag', label: 'Camera Bag' },
+      { id: 'warranty_valid', label: 'Valid Warranty' }
+    ],
+    'Laptop': [
+      { id: 'original_box', label: 'Original Box' },
+      { id: 'original_bill', label: 'Original Bill/Invoice' },
+      { id: 'charger', label: 'Charger Included' },
+      { id: 'laptop_bag', label: 'Laptop Bag' },
+      { id: 'warranty_valid', label: 'Valid Warranty' }
+    ],
+    'iPad': [
+      { id: 'original_box', label: 'Original Box' },
+      { id: 'original_bill', label: 'Original Bill/Invoice' },
+      { id: 'charger', label: 'Charger Included' },
+      { id: 'apple_pencil', label: 'Apple Pencil' },
+      { id: 'keyboard', label: 'Keyboard Case' },
+      { id: 'warranty_valid', label: 'Valid Warranty' }
+    ]
+  };
+
+  const DEFAULT_BONUSES = [
+    { id: 'original_box', label: 'Original Box' },
+    { id: 'original_bill', label: 'Original Bill/Invoice' },
+    { id: 'charger', label: 'Charger Included' },
+    { id: 'warranty_valid', label: 'Valid Warranty' }
+  ];
+
+  // Helper to get issues for a category
+  function getIssuesForCategory(category) {
+    return CATEGORY_ISSUES[category] || DEFAULT_ISSUES;
+  }
+
+  // Helper to get bonuses for a category
+  function getBonusesForCategory(category) {
+    return CATEGORY_BONUSES[category] || DEFAULT_BONUSES;
+  }
+
+  // Store all products for filtering
+  let allPricingProducts = [];
+
+  // Populate category and brand filter dropdowns
+  async function populatePricingFilters() {
+    const categorySelect = document.getElementById('pricing-category-filter');
+    const brandSelect = document.getElementById('pricing-brand-filter');
+    if (!categorySelect || !brandSelect || !db) return;
+
+    try {
+      const snapshot = await db.collection('products').get();
+      const categories = new Set();
+      const brands = new Set();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.category) categories.add(data.category);
+        if (data.brand) brands.add(data.brand);
+      });
+
+      // Populate category dropdown
+      categorySelect.innerHTML = '<option value="">All Categories</option>';
+      [...categories].sort().forEach(cat => {
+        categorySelect.innerHTML += `<option value="${cat}">${cat}</option>`;
+      });
+
+      // Populate brand dropdown
+      brandSelect.innerHTML = '<option value="">All Brands</option>';
+      [...brands].sort().forEach(brand => {
+        brandSelect.innerHTML += `<option value="${brand}">${brand}</option>`;
+      });
+
+      // Add filter change listeners
+      categorySelect.onchange = filterPricingProducts;
+      brandSelect.onchange = filterPricingProducts;
+
+    } catch (error) {
+      console.error('Error loading pricing filters:', error);
+    }
+  }
+
+  // Filter products based on selected category and brand
+  function filterPricingProducts() {
+    const categoryFilter = document.getElementById('pricing-category-filter').value;
+    const brandFilter = document.getElementById('pricing-brand-filter').value;
+    const productSelect = document.getElementById('pricing-product-select');
+
+    productSelect.innerHTML = '<option value="">-- Select a Product --</option>';
+
+    let filteredProducts = allPricingProducts;
+
+    if (categoryFilter) {
+      filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
+    }
+    if (brandFilter) {
+      filteredProducts = filteredProducts.filter(p => p.brand === brandFilter);
+    }
+
+    filteredProducts.forEach(p => {
+      const option = document.createElement('option');
+      option.value = p.id;
+      option.textContent = `${p.brand || ''} ${p.name || ''}`.trim();
+      option.dataset.name = p.name;
+      option.dataset.brand = p.brand;
+      option.dataset.category = p.category;
+      option.dataset.price = p.price || 0;
+      productSelect.appendChild(option);
+    });
+
+    // Hide form if product was deselected
+    document.getElementById('pricing-form-container').style.display = 'none';
+    document.getElementById('pricing-empty-state').style.display = 'block';
+  }
+
+  // Populate product dropdown for pricing
+  async function populatePricingProductDropdown() {
+    const select = document.getElementById('pricing-product-select');
+    if (!select || !db) return;
+
+    select.innerHTML = '<option value="">Loading products...</option>';
+
+    try {
+      const snapshot = await db.collection('products').orderBy('name').get();
+      allPricingProducts = []; // Reset
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        allPricingProducts.push({
+          id: doc.id,
+          name: data.name,
+          brand: data.brand,
+          category: data.category,
+          price: data.price || 0
+        });
+      });
+
+      // Populate filters first
+      await populatePricingFilters();
+
+      // Then populate products (unfiltered initially)
+      filterPricingProducts();
+
+      // Add change listener for product selection
+      select.onchange = () => {
+        const selectedOption = select.options[select.selectedIndex];
+        if (selectedOption.value) {
+          loadProductPricing(selectedOption.value, {
+            name: selectedOption.dataset.name,
+            brand: selectedOption.dataset.brand,
+            category: selectedOption.dataset.category,
+            price: Number(selectedOption.dataset.price) || 0
+          });
+        } else {
+          document.getElementById('pricing-form-container').style.display = 'none';
+          document.getElementById('pricing-empty-state').style.display = 'block';
+        }
+      };
+    } catch (error) {
+      select.innerHTML = '<option value="">Error loading products</option>';
+      console.error('Error loading products for pricing:', error);
+    }
+  }
+
+  // Load pricing for a specific product
+  async function loadProductPricing(productId, productInfo) {
+    const formContainer = document.getElementById('pricing-form-container');
+    const emptyState = document.getElementById('pricing-empty-state');
+    const issuesGrid = document.getElementById('pricing-issues-grid');
+    const bonusesGrid = document.getElementById('pricing-bonuses-grid');
+
+    // Show form, hide empty state
+    formContainer.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    // Set product info
+    document.getElementById('pricing-product-name').textContent =
+      `${productInfo.brand || ''} ${productInfo.name || ''}`.trim();
+    document.getElementById('pricing-base-price').textContent =
+      `₹${Number(productInfo.price).toLocaleString('en-IN')}`;
+
+    // Load existing pricing from Firestore
+    let existingPricing = {};
+    try {
+      const pricingDoc = await db.collection('productPricing').doc(productId).get();
+      if (pricingDoc.exists) {
+        existingPricing = pricingDoc.data();
+      }
+    } catch (error) {
+      console.error('Error loading pricing:', error);
+    }
+
+    // Get category-specific issues and bonuses
+    const categoryIssues = getIssuesForCategory(productInfo.category);
+    const categoryBonuses = getBonusesForCategory(productInfo.category);
+
+    // Render issue fields
+    issuesGrid.innerHTML = categoryIssues.map(issue => `
+      <div class="form-group">
+        <label for="issue-${issue.id}">${issue.label}</label>
+        <input type="number" 
+               id="issue-${issue.id}" 
+               class="form-input pricing-issue-input" 
+               data-issue-id="${issue.id}"
+               value="${existingPricing.issues?.[issue.id]?.deduction || 0}" 
+               min="0" 
+               placeholder="₹ Deduction">
+      </div>
+    `).join('');
+
+    // Render bonus fields
+    bonusesGrid.innerHTML = categoryBonuses.map(bonus => `
+      <div class="form-group">
+        <label for="bonus-${bonus.id}">${bonus.label}</label>
+        <input type="number" 
+               id="bonus-${bonus.id}" 
+               class="form-input pricing-bonus-input" 
+               data-bonus-id="${bonus.id}"
+               value="${existingPricing.bonuses?.[bonus.id]?.addition || 0}" 
+               min="0" 
+               placeholder="₹ Addition">
+      </div>
+    `).join('');
+
+    // Load age deductions
+    document.getElementById('age-less-than-1').value = existingPricing.ageDeductions?.['less-than-1'] || 0;
+    document.getElementById('age-1-to-2').value = existingPricing.ageDeductions?.['1-to-2'] || 0;
+    document.getElementById('age-more-than-2').value = existingPricing.ageDeductions?.['more-than-2'] || 0;
+
+    // Store product ID and category for save
+    formContainer.dataset.productId = productId;
+    formContainer.dataset.productName = productInfo.name;
+    formContainer.dataset.productBrand = productInfo.brand;
+    formContainer.dataset.productCategory = productInfo.category;
+    formContainer.dataset.basePrice = productInfo.price;
+  }
+
+  // Save product pricing
+  async function saveProductPricing() {
+    const formContainer = document.getElementById('pricing-form-container');
+    const productId = formContainer.dataset.productId;
+    const statusEl = document.getElementById('pricing-form-status');
+
+    if (!productId) {
+      alert('No product selected');
+      return;
+    }
+
+    // Collect issue deductions
+    const issues = {};
+    document.querySelectorAll('.pricing-issue-input').forEach(input => {
+      const issueId = input.dataset.issueId;
+      const deduction = Number(input.value) || 0;
+      const issueConfig = PRICING_ISSUES.find(i => i.id === issueId);
+      issues[issueId] = {
+        deduction: deduction,
+        label: issueConfig?.label || issueId
+      };
+    });
+
+    // Collect bonuses
+    const bonuses = {};
+    document.querySelectorAll('.pricing-bonus-input').forEach(input => {
+      const bonusId = input.dataset.bonusId;
+      const addition = Number(input.value) || 0;
+      const bonusConfig = PRICING_BONUSES.find(b => b.id === bonusId);
+      bonuses[bonusId] = {
+        addition: addition,
+        label: bonusConfig?.label || bonusId
+      };
+    });
+
+    // Collect age deductions
+    const ageDeductions = {
+      'less-than-1': Number(document.getElementById('age-less-than-1').value) || 0,
+      '1-to-2': Number(document.getElementById('age-1-to-2').value) || 0,
+      'more-than-2': Number(document.getElementById('age-more-than-2').value) || 0
+    };
+
+    const pricingData = {
+      productId: productId,
+      productName: formContainer.dataset.productName,
+      productBrand: formContainer.dataset.productBrand,
+      basePrice: Number(formContainer.dataset.basePrice) || 0,
+      issues: issues,
+      bonuses: bonuses,
+      ageDeductions: ageDeductions,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedBy: firebase.auth().currentUser?.email || 'unknown'
+    };
+
+    // Show saving status
+    statusEl.textContent = 'Saving...';
+    statusEl.style.display = 'block';
+    statusEl.style.color = '#666';
+
+    try {
+      await db.collection('productPricing').doc(productId).set(pricingData, { merge: true });
+      statusEl.textContent = '✅ Pricing saved successfully!';
+      statusEl.style.color = 'green';
+      setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+    } catch (error) {
+      statusEl.textContent = '❌ Error saving: ' + error.message;
+      statusEl.style.color = 'red';
+    }
+  }
+
+  // Attach save button listener
+  const savePricingBtn = document.getElementById('save-pricing-btn');
+  if (savePricingBtn) {
+    savePricingBtn.addEventListener('click', saveProductPricing);
   }
 });

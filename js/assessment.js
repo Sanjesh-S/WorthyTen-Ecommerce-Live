@@ -28,21 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- NEW: Populate Sidebar Info ---
   if (evaluationImage && valuationData.imageUrl) evaluationImage.src = valuationData.imageUrl;
   if (evaluationModel) {
-    const fullName = window.getFullModelName ? 
-      window.getFullModelName(valuationData.brandName, valuationData.modelName) : 
+    const fullName = window.getFullModelName ?
+      window.getFullModelName(valuationData.brandName, valuationData.modelName) :
       `${valuationData.brandName || ''} ${valuationData.modelName || ''}`.trim();
-    
+
     // Add variant info if available
-    const variantText = valuationData.variants && window.formatVariantDisplay ? 
+    const variantText = valuationData.variants && window.formatVariantDisplay ?
       window.formatVariantDisplay(valuationData.variants) : '';
-    
+
     evaluationModel.textContent = fullName + ' ' + variantText;
   }
 
 
   // Get or detect category
   let category = valuationData.category;
-  
+
   // Normalize category names (backward compatibility fix)
   const categoryNormalizer = {
     'DSLR Cameras': 'DSLR/Lens',
@@ -58,16 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     'Laptops': 'Laptop',
     'MacBook': 'Laptop'
   };
-  
+
   if (category && categoryNormalizer[category]) {
     category = categoryNormalizer[category];
   }
-  
+
   // Smart category detection for backward compatibility
   if (!category) {
     const brand = valuationData.brandName || '';
     const model = valuationData.modelName || '';
-    
+
     if (brand === 'Apple' && (model.includes('iPhone') || model.includes('iPad'))) {
       category = 'Phone';
     } else if (brand === 'Apple' && model.includes('MacBook')) {
@@ -77,23 +77,23 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       category = 'Camera'; // Ultimate fallback
     }
-    
+
     if (window.Logger) {
       window.Logger.log('Category auto-detected:', category, 'based on brand:', brand);
     }
   }
-  
+
   // Store normalized category
   valuationData.category = category;
   sessionStorage.setItem('valuationData', JSON.stringify(valuationData));
-  
+
   if (window.Logger) {
     window.Logger.log('Category normalized to:', category);
   }
-  
+
   // Get category-based questions
-  let questions = window.getAssessmentQuestions ? 
-    window.getAssessmentQuestions(category) : 
+  let questions = window.getAssessmentQuestions ?
+    window.getAssessmentQuestions(category) :
     [
       { id: 'powerOn', text: 'Does your camera power on and function properly?', instruction: 'We currently only accept devices that switch on', deduction: 0.30 },
       { id: 'bodyDamage', text: 'Is the camera body free from major damage (cracks, dents, water damage)?', instruction: 'Check your device\'s body or buttons condition carefully', deduction: 0.25 },
@@ -102,19 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
       { id: 'autofocusZoom', text: 'Does autofocus and zoom work properly on your camera/lens?', instruction: 'Check your device\'s autofocus and zoom functionality carefully', deduction: 0.15 },
       { id: 'hasAdditionalLens', text: 'Do you have any additional lens?', instruction: 'Choose this option if you have additional lens of the same brand', deduction: 0, isLensQuestion: true }
     ];
-  
+
   // Remove "additional lens" question for fixed-lens cameras
   if (category === 'Camera' || category === 'DSLR/Lens' || category === 'DSLR Cameras') {
     // Use smart detection if available, fallback to old method
     let isFixed = false;
-    
+
     if (window.detectCameraMountSmart) {
       const mountInfo = window.detectCameraMountSmart(valuationData.brandName, valuationData.modelName);
       isFixed = mountInfo && mountInfo.mountType === 'fixedLens';
     } else if (window.isFixedLensCamera) {
       isFixed = window.isFixedLensCamera(valuationData.brandName, valuationData.modelName);
     }
-    
+
     if (isFixed) {
       questions = questions.filter(q => !q.isLensQuestion);
       if (window.Logger) {
@@ -122,14 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-  
+
   if (window.Logger) {
     window.Logger.log('Assessment - Category:', category, 'Questions:', questions.length);
   }
 
-  const questionsContainer   = document.getElementById('questionsContainer');
-  const finalQuoteContainer  = document.getElementById('finalQuoteContainer');
-  const proceedBtn           = document.getElementById('proceedBtn');
+  const questionsContainer = document.getElementById('questionsContainer');
+  const finalQuoteContainer = document.getElementById('finalQuoteContainer');
+  const proceedBtn = document.getElementById('proceedBtn');
 
   const userAnswers = {}; // { [id]: "yes" | "no" }
 
@@ -152,17 +152,81 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join('');
   }
 
+  // NEW: Store product pricing from Firestore
+  let productPricingData = null;
+
+  // NEW: Load product-specific pricing from Firestore
+  async function loadProductPricing() {
+    if (!window.firebase || !firebase.firestore) {
+      if (window.Logger) window.Logger.warn('Firestore not available for pricing lookup');
+      return null;
+    }
+
+    try {
+      const db = firebase.firestore();
+      // Try to find pricing by product name
+      const snapshot = await db.collection('productPricing')
+        .where('productName', '==', valuationData.modelName)
+        .where('productBrand', '==', valuationData.brandName)
+        .limit(1)
+        .get();
+
+      if (!snapshot.empty) {
+        productPricingData = snapshot.docs[0].data();
+        if (window.Logger) {
+          window.Logger.log('Loaded product pricing:', productPricingData.productName);
+        }
+        return productPricingData;
+      } else {
+        if (window.Logger) {
+          window.Logger.log('No custom pricing found for:', valuationData.modelName);
+        }
+      }
+    } catch (error) {
+      if (window.Logger) {
+        window.Logger.error('Error loading product pricing:', error);
+      }
+    }
+    return null;
+  }
+
+  // Initialize pricing lookup
+  loadProductPricing();
+
   function calculatePriceAndStore() {
     let currentPrice = Number(valuationData.originalQuotePrice || 0);
+
     questions.forEach(q => {
       // Skip lens question in price calculation (it's only for routing)
       if (q.isLensQuestion) return;
-      if (userAnswers[q.id] === 'no') currentPrice -= Number(valuationData.originalQuotePrice || 0) * q.deduction;
+
+      if (userAnswers[q.id] === 'no') {
+        // Use fixed amount from productPricing ONLY
+        if (productPricingData && productPricingData.issues) {
+          // Map question ID to issue ID in pricing
+          const issueMapping = {
+            'powerOn': 'power_issue',
+            'bodyDamage': 'body_dents',
+            'lcdScreen': 'display_cracked',
+            'lensCondition': 'lens_fungus',
+            'autofocusZoom': 'focus_issue'
+          };
+          const issueId = issueMapping[q.id];
+          if (issueId && productPricingData.issues[issueId]) {
+            const deductionAmount = Number(productPricingData.issues[issueId].deduction) || 0;
+            currentPrice -= deductionAmount;
+          }
+          // If issue not configured, no deduction (fixed amount = 0)
+        }
+        // No percentage fallback - if no pricing configured, no deduction
+      }
     });
-    // Floor at minimum price percentage from Config
-    const minPricePercentage = window.Config?.pricing?.minPricePercentage || 0.10;
-    const finalPriceRounded = Math.round(Math.max(currentPrice, Number(valuationData.originalQuotePrice || 0) * minPricePercentage));
+
+    // Floor at minimum price (10% of original)
+    const minPrice = Number(valuationData.originalQuotePrice || 0) * 0.10;
+    const finalPriceRounded = Math.round(Math.max(currentPrice, minPrice));
     valuationData.priceAfterAssessment = finalPriceRounded;
+    valuationData.usedFixedPricing = true;
     sessionStorage.setItem('valuationData', JSON.stringify(valuationData));
   }
 
@@ -196,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const radio = ev.target;
     if (!radio.matches('input[type="radio"]')) return;
 
-    const qid    = radio.getAttribute('data-question-id');
+    const qid = radio.getAttribute('data-question-id');
     const answer = radio.getAttribute('data-answer');
 
     userAnswers[qid] = answer;
@@ -225,10 +289,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Please select an option for:\n"' + firstUnanswered.text + '"');
       return; // Stop execution
     }
-    
+
     // Store lens question answer (only for cameras)
     valuationData.hasAdditionalLens = userAnswers.hasAdditionalLens === 'yes';
-    
+
     // persist answers for later steps
     valuationData.assessmentAnswers = userAnswers;
     sessionStorage.setItem('valuationData', JSON.stringify(valuationData));

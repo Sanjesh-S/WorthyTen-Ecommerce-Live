@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!s) { window.location.href = 'index.html'; return; }
   const vd = JSON.parse(s);
   const basePrice = Number(vd.priceAfterPhysical || 0);
-  
+
   // --- NEW: Sidebar Elements ---
   const evaluationImage = document.getElementById('evaluationImage');
   const evaluationModel = document.getElementById('evaluationModel');
@@ -14,33 +14,33 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- NEW: Populate Sidebar Info ---
   if (evaluationImage && vd.imageUrl) evaluationImage.src = vd.imageUrl;
   if (evaluationModel) {
-    const fullName = window.getFullModelName ? 
-      window.getFullModelName(vd.brandName, vd.modelName) : 
+    const fullName = window.getFullModelName ?
+      window.getFullModelName(vd.brandName, vd.modelName) :
       `${vd.brandName || ''} ${vd.modelName || ''}`.trim();
-    
+
     // Add variant info if available
-    const variantText = vd.variants && window.formatVariantDisplay ? 
+    const variantText = vd.variants && window.formatVariantDisplay ?
       window.formatVariantDisplay(vd.variants) : '';
-    
+
     evaluationModel.textContent = fullName + ' ' + variantText;
   }
 
 
   // Back
-  document.getElementById('backToPhysical')?.addEventListener('click',(e)=>{ e.preventDefault(); history.back(); });
+  document.getElementById('backToPhysical')?.addEventListener('click', (e) => { e.preventDefault(); history.back(); });
 
   // UI
-  const issuesGrid   = document.getElementById('issuesGrid');
-  const noIssuesBtn  = document.getElementById('noIssuesBtn');
-  const proceedBtn   = document.getElementById('proceedToAccessoriesBtn');
+  const issuesGrid = document.getElementById('issuesGrid');
+  const noIssuesBtn = document.getElementById('noIssuesBtn');
+  const proceedBtn = document.getElementById('proceedToAccessoriesBtn');
 
   const issues = [
-    { id: 'battery',     label: 'Battery weak or Not working or Duplicate', img: 'images/issue-battery.svg',     deduction: 0.15 },
-    { id: 'flashlight',  label: 'Flashlight not Working',                    img: 'images/issue-flashlight.svg',   deduction: 0.05 },
-    { id: 'memory_slot', label: 'Memory Card Slot issue',                    img: 'images/issue-memory-card.svg',  deduction: 0.20 },
-    { id: 'speaker',     label: 'Speaker not working',                       img: 'images/issue-speaker.svg',      deduction: 0.10 },
-    { id: 'connectors',  label: 'Connectors not working',                    img: 'images/issue-connectors.svg',   deduction: 0.15 },
-    { id: 'buttons',     label: 'Buttons not working',                       img: 'images/issue-buttons.svg',      deduction: 0.10 }
+    { id: 'battery', label: 'Battery weak or Not working or Duplicate', img: 'images/issue-battery.svg', deduction: 0.15 },
+    { id: 'flashlight', label: 'Flashlight not Working', img: 'images/issue-flashlight.svg', deduction: 0.05 },
+    { id: 'memory_slot', label: 'Memory Card Slot issue', img: 'images/issue-memory-card.svg', deduction: 0.20 },
+    { id: 'speaker', label: 'Speaker not working', img: 'images/issue-speaker.svg', deduction: 0.10 },
+    { id: 'connectors', label: 'Connectors not working', img: 'images/issue-connectors.svg', deduction: 0.15 },
+    { id: 'buttons', label: 'Buttons not working', img: 'images/issue-buttons.svg', deduction: 0.10 }
   ];
   const selected = new Set();
   let noIssuesSelected = false; // NEW: Track "No Issues" state
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateEvaluationSidebar() {
     if (!evaluationList) return;
     evaluationList.innerHTML = ''; // Clear the list
-    
+
     // You can add logic here to show previous steps if needed
     // For now, it just shows this step's selections
 
@@ -94,39 +94,81 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function recalc() {
-    let total = 0;
-    selected.forEach(id => {
-      const it = issues.find(x => x.id === id);
-      if (it) total += Number(it.deduction);
-    });
-    const current = basePrice * (1 - total);
-    const final   = Math.round(Math.max(current, basePrice * 0.05));
-    vd.priceAfterIssues = final;
-    sessionStorage.setItem('valuationData', JSON.stringify(vd));
-    try { window.updateOfferDrawer?.(vd); } catch {}
+  // NEW: Store product pricing from Firestore
+  let productPricingData = null;
+
+  // NEW: Load product-specific pricing from Firestore
+  async function loadProductPricing() {
+    if (!window.firebase || !firebase.firestore) return null;
+    try {
+      const db = firebase.firestore();
+      const snapshot = await db.collection('productPricing')
+        .where('productName', '==', vd.modelName)
+        .where('productBrand', '==', vd.brandName)
+        .limit(1).get();
+      if (!snapshot.empty) {
+        productPricingData = snapshot.docs[0].data();
+      }
+    } catch (error) {
+      console.error('Error loading product pricing:', error);
+    }
+    return productPricingData;
   }
 
-  function updateProceedState(){
+  // Initialize pricing lookup
+  loadProductPricing();
+
+  function recalc() {
+    let current = basePrice;
+
+    // Map local issue IDs to productPricing issue IDs
+    const issueIdMapping = {
+      'battery': 'battery_weak',
+      'flashlight': 'flashlight_broken',
+      'memory_slot': 'memory_slot_issue',
+      'speaker': 'speaker_broken',
+      'connectors': 'connectors_broken',
+      'buttons': 'buttons_broken'
+    };
+
+    selected.forEach(id => {
+      const mappedId = issueIdMapping[id] || id;
+
+      // Use fixed amount from productPricing ONLY
+      if (productPricingData && productPricingData.issues && productPricingData.issues[mappedId]) {
+        const fixedDeduction = Number(productPricingData.issues[mappedId].deduction) || 0;
+        current -= fixedDeduction;
+      }
+      // No percentage fallback - if no pricing configured, no deduction
+    });
+
+    const final = Math.round(Math.max(current, basePrice * 0.05));
+    vd.priceAfterIssues = final;
+    vd.usedFixedPricing = true;
+    sessionStorage.setItem('valuationData', JSON.stringify(vd));
+    try { window.updateOfferDrawer?.(vd); } catch { }
+  }
+
+  function updateProceedState() {
     // This function no longer controls button state
   }
 
   // Clicks
-  issuesGrid.addEventListener('click',(e)=>{
-    const card = e.target.closest('.issue-card'); if(!card) return;
+  issuesGrid.addEventListener('click', (e) => {
+    const card = e.target.closest('.issue-card'); if (!card) return;
     const id = card.dataset.id;
     card.classList.toggle('selected');
-    
+
     noIssuesBtn?.classList.remove('selected');
     noIssuesSelected = false; // NEW
-    
+
     selected.has(id) ? selected.delete(id) : selected.add(id);
     recalc(); updateProceedState();
     updateEvaluationSidebar(); // NEW
   });
 
-  noIssuesBtn?.addEventListener('click', ()=>{
-    issuesGrid.querySelectorAll('.issue-card.selected').forEach(c=>c.classList.remove('selected'));
+  noIssuesBtn?.addEventListener('click', () => {
+    issuesGrid.querySelectorAll('.issue-card.selected').forEach(c => c.classList.remove('selected'));
     selected.clear();
     noIssuesBtn.classList.add('selected');
     noIssuesSelected = true; // NEW
@@ -134,15 +176,15 @@ document.addEventListener("DOMContentLoaded", () => {
     updateEvaluationSidebar(); // NEW
   });
 
-  proceedBtn?.addEventListener('click',(e)=>{
+  proceedBtn?.addEventListener('click', (e) => {
     e.preventDefault();
-    
+
     // NEW: Validation
     if (selected.size === 0 && !noIssuesSelected) {
       alert('Please select any functional issues or "No Functional Issues".');
       return;
     }
-    
+
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
     window.location.href = 'accessories.html';
   });

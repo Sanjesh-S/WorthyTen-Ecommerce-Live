@@ -47,6 +47,18 @@ service cloud.firestore {
       allow delete: if hasRole('superadmin');
     }
     
+    // Product Pricing Collection (NEW)
+    match /productPricing/{productId} {
+      // Anyone can read pricing (needed for valuation flow)
+      allow read: if true;
+      
+      // Only managers and superadmins can manage pricing
+      allow create, update: if isAdmin();
+      
+      // Only superadmins can delete pricing
+      allow delete: if hasRole('superadmin');
+    }
+    
     // Pickup Requests Collection
     match /pickupRequests/{requestId} {
       // Users can read their own requests

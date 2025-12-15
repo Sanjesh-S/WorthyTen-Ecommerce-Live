@@ -1,21 +1,22 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check if we came from variant selection (data in sessionStorage)
+  // Check if we came from variant selection or navigating back (data in sessionStorage)
   const variantData = sessionStorage.getItem('valuationData');
   let modelName, brandName, category, imageUrl, basePrice, variants, adjustedPrice;
 
   if (variantData) {
-    // Coming from variant selection
+    // Coming from variant selection or navigating back
     const vd = JSON.parse(variantData);
     modelName = vd.modelName;
     brandName = vd.brandName;
     category = vd.category;
     imageUrl = vd.imageUrl;
-    basePrice = vd.basePrice;
+    // Use basePrice or originalQuotePrice (for backward compatibility)
+    basePrice = vd.basePrice || vd.originalQuotePrice;
     variants = vd.variants;
     adjustedPrice = vd.adjustedPrice || basePrice;
 
     if (window.Logger) {
-      window.Logger.log('Quote page - using variant data from sessionStorage');
+      window.Logger.log('Quote page - using data from sessionStorage', { basePrice, adjustedPrice });
     }
   } else {
     // Coming from model selection (backward compatible)
@@ -132,6 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         modelName: modelName,
         brandName: brandName,
         imageUrl: imageUrl,
+        basePrice: Number(basePrice), // Store base price for navigation back
         originalQuotePrice: Number(displayPrice),
         variants: variants,
         adjustedPrice: adjustedPrice

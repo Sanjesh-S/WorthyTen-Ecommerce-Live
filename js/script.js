@@ -114,13 +114,13 @@ function populateBrands(categoryName) {
 
   // Brand logo mapping - using logo.dev for reliable CDN logos
   const brandLogos = {
-    Canon: 'https://logo.clearbit.com/canon.com',
-    Nikon: 'https://logo.clearbit.com/nikon.com',
-    Sony: 'https://logo.clearbit.com/sony.com',
-    Fujifilm: 'https://logo.clearbit.com/fujifilm.com',
+    Canon: 'https://firebasestorage.googleapis.com/v0/b/worthyten-otp-a925d.firebasestorage.app/o/Logo%2Fcanon%20logo.jpg?alt=media&token=508660ea-5cb6-45cf-b50d-f852ccce3669',
+    Nikon: 'https://firebasestorage.googleapis.com/v0/b/worthyten-otp-a925d.firebasestorage.app/o/Logo%2FNikon%20Logo.jpg?alt=media&token=364ab77d-c2bf-4eba-9919-e7d68a31e7f4',
+    Sony: 'https://firebasestorage.googleapis.com/v0/b/worthyten-otp-a925d.firebasestorage.app/o/Logo%2FSony%20Logo.jpg?alt=media&token=568a7fc1-d120-4f6c-bc91-6cb162d05912',
+    Fujifilm: 'https://firebasestorage.googleapis.com/v0/b/worthyten-otp-a925d.firebasestorage.app/o/Logo%2Ffujifilm%20logo.jpg?alt=media&token=a5adeb8a-2376-42e9-9bc7-e68841261cee',
     Apple: 'https://logo.clearbit.com/apple.com',
     Samsung: 'https://logo.clearbit.com/samsung.com',
-    GoPro: 'https://logo.clearbit.com/gopro.com',
+    GoPro: 'https://firebasestorage.googleapis.com/v0/b/worthyten-otp-a925d.firebasestorage.app/o/Logo%2FGoPro%20Logo.jpg?alt=media&token=6a5df1ad-7f3b-40b0-9f3e-237a90cf24c0',
     DJI: 'https://logo.clearbit.com/dji.com',
     Panasonic: 'https://logo.clearbit.com/panasonic.com',
     Olympus: 'https://logo.clearbit.com/olympus.com',

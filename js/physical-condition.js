@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Back
   document.getElementById('backToAssessment')?.addEventListener('click', (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     history.back();
   });
 
@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- NEW: Populate Sidebar Info ---
   if (evaluationImage && vd.imageUrl) evaluationImage.src = vd.imageUrl;
   if (evaluationModel) {
-    const fullName = window.getFullModelName ? 
-      window.getFullModelName(vd.brandName, vd.modelName) : 
+    const fullName = window.getFullModelName ?
+      window.getFullModelName(vd.brandName, vd.modelName) :
       `${vd.brandName || ''} ${vd.modelName || ''}`.trim();
-    
+
     // Add variant info if available
-    const variantText = vd.variants && window.formatVariantDisplay ? 
+    const variantText = vd.variants && window.formatVariantDisplay ?
       window.formatVariantDisplay(vd.variants) : '';
-    
+
     evaluationModel.textContent = fullName + ' ' + variantText;
   }
 
@@ -56,22 +56,22 @@ document.addEventListener("DOMContentLoaded", () => {
     category = categoryNormalizer[category];
     vd.category = category; // Update in valuation data
   }
-  
+
   // Get category-based physical conditions
-  const categoryConditions = window.getPhysicalConditions ? 
-    window.getPhysicalConditions(category) : 
+  const categoryConditions = window.getPhysicalConditions ?
+    window.getPhysicalConditions(category) :
     {
       display: [{ id: 'display_good', label: 'Good Condition', img: 'images/display-good.svg', deduction: 0 }],
       body: [{ id: 'body_good', label: 'No Defects', img: 'images/body-no-defects.svg', deduction: 0 }]
     };
-  
+
   const conditions = categoryConditions;
-  
+
   // Dynamically build selections and category names from loaded conditions
   const selections = {};
   const selectionLabels = {};
   const categoryNames = {};
-  
+
   Object.keys(conditions).forEach(key => {
     selections[key] = null;
     selectionLabels[key] = null;
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render only the conditions that exist for this category
     if (conditions.display) {
       set(get('displayConditionGrid'),
-          conditions.display.map(c => card(c, 'display')).join(''));
+        conditions.display.map(c => card(c, 'display')).join(''));
     } else {
       // Hide section if not applicable
       const displaySection = get('displayConditionGrid')?.closest('.condition-section');
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (conditions.body) {
       set(get('bodyConditionGrid'),
-          conditions.body.map(c => card(c, 'body')).join(''));
+        conditions.body.map(c => card(c, 'body')).join(''));
     } else {
       const bodySection = get('bodyConditionGrid')?.closest('.condition-section');
       if (bodySection) bodySection.style.display = 'none';
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (conditions.error) {
       set(get('errorConditionGrid'),
-          conditions.error.map(c => card(c, 'error')).join(''));
+        conditions.error.map(c => card(c, 'error')).join(''));
     } else {
       // Hide error section if not applicable (not a camera)
       const errorSection = get('errorConditionGrid')?.closest('.condition-section');
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const lensSection = (get('lensConditionGrid') || get('lenseConditionGrid'))?.closest('.condition-section');
       if (lensSection) lensSection.style.display = 'none';
     }
-    
+
     // Handle phone-specific frame condition
     if (conditions.frame) {
       // Check if frame section exists, if not, create it dynamically
@@ -146,9 +146,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       set(get('frameConditionGrid'),
-          conditions.frame.map(c => card(c, 'frame')).join(''));
+        conditions.frame.map(c => card(c, 'frame')).join(''));
     }
-    
+
     // Handle laptop-specific keyboard condition
     if (conditions.keyboard) {
       // Check if keyboard section exists, if not, create it dynamically
@@ -167,17 +167,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       set(get('keyboardConditionGrid'),
-          conditions.keyboard.map(c => card(c, 'keyboard')).join(''));
+        conditions.keyboard.map(c => card(c, 'keyboard')).join(''));
     }
 
     // Add click event listeners to all condition cards after rendering
     document.querySelectorAll('.condition-card').forEach(card => {
       card.addEventListener('click', handleCardClick);
     });
-    
+
     // NEW: Initial sidebar render
     updateEvaluationSidebar();
   }
+
+  // NEW: Store product pricing from Firestore
+  let productPricingData = null;
+
+  // NEW: Load product-specific pricing from Firestore
+  async function loadProductPricing() {
+    if (!window.firebase || !firebase.firestore) return null;
+    try {
+      const db = firebase.firestore();
+      const snapshot = await db.collection('productPricing')
+        .where('productName', '==', vd.modelName)
+        .where('productBrand', '==', vd.brandName)
+        .limit(1).get();
+      if (!snapshot.empty) {
+        productPricingData = snapshot.docs[0].data();
+      }
+    } catch (error) {
+      console.error('Error loading product pricing:', error);
+    }
+    return productPricingData;
+  }
+
+  // Initialize pricing lookup
+  loadProductPricing();
 
   function allChosen() {
     // Check all available condition categories for this device type
@@ -185,21 +209,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function recalc() {
-    // This function no longer controls container visibility
-    const total = Object.values(selections).reduce((a,b)=>a+Number(b||0),0);
-    const current = basePrice * (1 - total);
+    let current = basePrice;
+
+    Object.entries(selections).forEach(([cat, deduction]) => {
+      if (deduction === null) return;
+
+      // Use fixed amount from productPricing ONLY
+      if (productPricingData && productPricingData.issues) {
+        const selectedCard = document.querySelector(`.condition-card[data-category="${cat}"].selected`);
+        const selectedId = selectedCard?.dataset.id || '';
+
+        // Look for a matching issue in productPricing
+        let fixedDeduction = 0;
+        Object.entries(productPricingData.issues).forEach(([issueId, issueData]) => {
+          if (selectedId.includes(issueId.replace('_', '')) || issueId.includes(cat)) {
+            if (issueData.deduction > 0) {
+              fixedDeduction = Number(issueData.deduction);
+            }
+          }
+        });
+        current -= fixedDeduction;
+      }
+      // No percentage fallback - if no pricing configured, no deduction
+    });
+
     const finalPrice = Math.round(Math.max(current, basePrice * 0.05));
     vd.priceAfterPhysical = finalPrice;
+    vd.usedFixedPricing = true;
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
-    // live drawer (safe if absent)
-    try { window.updateOfferDrawer?.(vd); } catch {}
+    try { window.updateOfferDrawer?.(vd); } catch { }
   }
 
   // --- NEW: Sidebar Update Function ---
   function updateEvaluationSidebar() {
     if (!evaluationList) return;
     evaluationList.innerHTML = ''; // Clear the list
-    
+
     // Map assessment question IDs to their text
     const questionMap = {
       powerOn: 'Does your camera power on and function properly?',
@@ -209,18 +254,18 @@ document.addEventListener("DOMContentLoaded", () => {
       autofocusZoom: 'Does autofocus and zoom work properly on your camera/lens?',
       hasAdditionalLens: 'Do you have any additional lens?'
     };
-    
+
     // Show previous step's summary
     if (vd.assessmentAnswers) {
-        Object.keys(vd.assessmentAnswers).forEach((key, index) => {
-            const questionText = questionMap[key] || key;
-            const answerText = vd.assessmentAnswers[key] === 'yes' ? 'Yes' : 'No';
-            evaluationList.innerHTML += `
+      Object.keys(vd.assessmentAnswers).forEach((key, index) => {
+        const questionText = questionMap[key] || key;
+        const answerText = vd.assessmentAnswers[key] === 'yes' ? 'Yes' : 'No';
+        evaluationList.innerHTML += `
               <div class="evaluation-item">
-                <span class="evaluation-question">${index+1}. ${questionText}</span>
+                <span class="evaluation-question">${index + 1}. ${questionText}</span>
                 <span class="evaluation-answer">• ${answerText}</span>
               </div>`;
-        });
+      });
     }
 
     // Show current selections
@@ -246,19 +291,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const cat = card.dataset.category;
     const deduction = parseFloat(card.dataset.deduction);
     const label = card.dataset.label;
-    
+
     // Update selection
     selections[cat] = deduction;
     selectionLabels[cat] = label; // NEW: Store label for sidebar
-    
+
     // Remove selected class from all cards in this category
     document.querySelectorAll(`.condition-card[data-category="${cat}"]`).forEach(c => {
       c.classList.remove('selected');
     });
-    
+
     // Add selected class to clicked card
     card.classList.add('selected');
-    
+
     // Recalculate and update UI
     recalc();
     updateProceedButton();
@@ -268,14 +313,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Next button
   proceedBtn?.addEventListener('click', (e) => {
     e.preventDefault();
-    
+
     // NEW: Validation check
     const firstUnanswered = Object.keys(selections).find(k => selections[k] === null);
     if (firstUnanswered) {
       alert(`Please select an option for ${categoryNames[firstUnanswered]}.`);
       return;
     }
-    
+
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
     window.location.href = 'functional-issues.html';
   });

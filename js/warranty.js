@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 500);
   }
-  
+
   // Safe read of valuationData
   let vd = null;
   try {
@@ -51,39 +51,63 @@ document.addEventListener("DOMContentLoaded", () => {
   if (finalBox) finalBox.classList.remove("hidden");
   if (finalPriceLabel) finalPriceLabel.classList.add("hidden");
   if (finalEl) finalEl.classList.add("hidden");
-  
+
   if (img && vd.imageUrl) img.src = vd.imageUrl;
   if (nameEl) nameEl.textContent = `${vd.brandName || ""} ${vd.modelName || ""}`.trim();
 
   const basePrice = Number(vd.priceAfterAccessories || 0);
 
+  // NEW: Store product pricing from Firestore
+  let productPricingData = null;
+
+  // NEW: Load product-specific pricing from Firestore
+  async function loadProductPricing() {
+    if (!window.firebase || !firebase.firestore) return null;
+    try {
+      const db = firebase.firestore();
+      const snapshot = await db.collection('productPricing')
+        .where('productName', '==', vd.modelName)
+        .where('productBrand', '==', vd.brandName)
+        .limit(1).get();
+      if (!snapshot.empty) {
+        productPricingData = snapshot.docs[0].data();
+      }
+    } catch (error) {
+      console.error('Error loading product pricing:', error);
+    }
+    return productPricingData;
+  }
+
+  // Initialize pricing lookup
+  loadProductPricing();
+
   function calcFinal() {
     let price = basePrice;
     const age = document.querySelector('input[name="device_age"]:checked')?.value;
-    const warrantyBonus = window.Config?.pricing?.warrantyBonusPercentage || 0.05;
-    
-    // Apply warranty bonus for devices under 1 year with valid bill
-    if (age === 'less-than-1' && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
-      price *= (1 + warrantyBonus);
+
+    // Use fixed amounts from productPricing ONLY
+    if (productPricingData) {
+      // Apply warranty bonus (fixed amount) for devices under 1 year with valid bill
+      if (age === 'less-than-1' && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
+        const warrantyBonus = Number(productPricingData.bonuses?.['warranty_valid']?.addition) || 0;
+        price += warrantyBonus;
+      }
+
+      // Apply age-based deductions (fixed amounts)
+      if (productPricingData.ageDeductions && productPricingData.ageDeductions[age] !== undefined) {
+        const ageDeduction = Number(productPricingData.ageDeductions[age]) || 0;
+        price -= ageDeduction;
+      }
     }
-    
-    // Apply age-based deductions for older devices
-    const ageDeductions = {
-      'less-than-1': 0,     // No deduction - newest
-      '1-to-2': 0.05,       // 5% deduction
-      'more-than-2': 0.15   // 15% deduction for older devices
-    };
-    
-    if (ageDeductions[age] !== undefined) {
-      price *= (1 - ageDeductions[age]);
-    }
-    
-    price = Math.round(price);
+    // No percentage fallback - if no pricing configured, no deduction/bonus
+
+    price = Math.round(Math.max(price, basePrice * 0.05)); // Floor at 5% of base
     if (finalEl) finalEl.textContent = `₹${price.toLocaleString("en-IN")}`;
     vd.priceAfterWarranty = price;
-    vd.deviceAge = age; // Store selected age
-    try { sessionStorage.setItem("valuationData", JSON.stringify(vd)); } catch (e) {}
-    try { window.updateOfferDrawer?.(vd); } catch {}
+    vd.deviceAge = age;
+    vd.usedFixedPricing = true;
+    try { sessionStorage.setItem("valuationData", JSON.stringify(vd)); } catch (e) { }
+    try { window.updateOfferDrawer?.(vd); } catch { }
   }
 
   ageRadios.forEach(r => r.addEventListener("change", calcFinal));
@@ -99,15 +123,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function revealFinalAndArm() {
-    calcFinal(); 
-    
+    calcFinal();
+
     if (finalPriceLabel) finalPriceLabel.classList.remove("hidden");
     if (finalEl) finalEl.classList.remove("hidden");
 
     if (finishBtn) finishBtn.textContent = "Confirm Order";
     armed = true;
   }
-  
+
   // --- NEW: Define a callback function ---
   // This lets js/login.js tell this page "verification is done"
   window.onLoginVerified = () => {
@@ -159,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         if (window.LoginModal && typeof window.LoginModal.show === 'function') {
           // Show login modal directly - no alert dialog
-          window.LoginModal.show(); 
+          window.LoginModal.show();
         } else {
           // Fallback: redirect to login page with return URL
           if (window.Logger) {
