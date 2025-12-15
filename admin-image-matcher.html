@@ -304,6 +304,20 @@
             <div class="card">
                 <h3 class="section-title">Option 2: Auto-Scan Storage</h3>
                 <button id="loadStorageBtn" class="btn">📁 Scan Storage Folders</button>
+
+                <div style="display:inline-block; margin-right:10px;">
+                    <select id="categorySelect"
+                        style="padding: 14px; border-radius: 8px; background: #0d1b2a; color: white; border: 1px solid #2d3748; cursor: pointer;">
+                        <option value="DSLR/Lens">DSLR/Lens</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Phone">Phone</option>
+                        <option value="iPad">iPad</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Console">Console</option>
+                        <option value="ALL">ALL CATEGORIES</option>
+                    </select>
+                </div>
+
                 <button id="loadProductsBtn" class="btn">📦 Load Products</button>
                 <button id="matchBtn" class="btn warning" disabled>🔗 Match Images</button>
                 <button id="applyBtn" class="btn success" disabled>✅ Apply to Firestore</button>
@@ -446,6 +460,8 @@
                         else if (folder.toLowerCase().includes('nikon')) brand = 'Nikon';
                         else if (folder.toLowerCase().includes('sony')) brand = 'Sony';
                         else if (folder.toLowerCase().includes('fujifilm')) brand = 'Fujifilm';
+                        else if (folder.toLowerCase().includes('gopro')) brand = 'GoPro';
+                        else if (folder.toLowerCase().includes('apple') || folder.toLowerCase().includes('mac')) brand = 'Apple';
 
                         storageImages.push({
                             folder: folder,
@@ -563,9 +579,16 @@
             log('Loading DSLR products...', 'info');
 
             try {
-                const snapshot = await db.collection('products')
-                    .where('category', '==', 'DSLR/Lens')
-                    .get();
+                const category = document.getElementById('categorySelect').value;
+                log(`Loading products for category: ${category}...`, 'info');
+
+                let query = db.collection('products');
+
+                if (category !== 'ALL') {
+                    query = query.where('category', '==', category);
+                }
+
+                const snapshot = await query.get();
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
@@ -595,6 +618,31 @@
             btn.textContent = '📦 Load Products';
         });
 
+        // Helper to normalize strings for matching (remove special chars, lowercase)
+        // Super-Normalizer: Handles typos, spacing, and brand cleaning
+        function normalize(str, brand = '') {
+            let s = str.toLowerCase();
+
+            // 1. Fix common typos
+            s = s.replace(/mark\s*11\b/g, 'mark ii'); // Mark 11 -> Mark II
+            s = s.replace(/mark\s*111\b/g, 'mark iii'); // Mark 111 -> Mark III
+            s = s.replace(/mark\s*ll\b/g, 'mark ii'); // Mark ll -> Mark II
+
+            // 2. Remove filler words and brand
+            const fillers = [
+                'body', 'camera', 'digital', brand.toLowerCase(),
+                'eos', 'powershot', 'cybershot', 'cyber-shot', 'coolpix', 'alpha', 'lumix', 'om-d'
+            ];
+            fillers.forEach(word => {
+                if (word) s = s.replace(new RegExp(`\\b${word}\\b`, 'g'), '');
+            });
+
+            // 3. Remove punctuation and spaces (keep +)
+            // This aligns "G7 X" with "G7X" and "EOS 400D" with "EOS400D"
+            return s.replace(/["']/g, '')
+                .replace(/[^a-z0-9+]/g, '');
+        }
+
         // Match images
         document.getElementById('matchBtn').addEventListener('click', () => {
             log('Matching images to products...', 'info');
@@ -603,22 +651,36 @@
             products.forEach(product => {
                 let matchedImage = null;
                 let matchType = 'none';
-                const prodNameLower = product.name.toLowerCase().trim();
+                const prodNameNorm = normalize(product.name, product.brand);
                 const prodBrandLower = product.brand.toLowerCase().trim();
 
-                // Exact match
-                matchedImage = storageImages.find(img =>
-                    img.productName.toLowerCase().trim() === prodNameLower &&
-                    img.brand.toLowerCase().trim() === prodBrandLower
-                );
+                // Exact match (Normalized)
+                matchedImage = storageImages.find(img => {
+                    const imgNameNorm = normalize(img.productName, img.brand !== 'Unknown' ? img.brand : product.brand);
+                    const imgBrand = img.brand.toLowerCase().trim();
+
+                    const nameMatch = imgNameNorm === prodNameNorm;
+                    const brandMatch = (imgBrand === prodBrandLower) || (imgBrand === 'unknown');
+
+                    return nameMatch && brandMatch;
+                });
                 if (matchedImage) matchType = 'exact';
 
-                // Partial match
+                // Partial match (Re-enabled with stricter directional check)
+                // RULE: Product Name can contain Image Name (e.g. Prod "iPhone 12 64GB" matches Img "iPhone 12")
+                // but Image Name CANNOT contain Product Name (e.g. prevents Prod "S21" matching Img "S21 Ultra")
                 if (!matchedImage) {
                     matchedImage = storageImages.find(img => {
-                        const imgName = img.productName.toLowerCase().trim();
-                        const sameBrand = img.brand.toLowerCase().trim() === prodBrandLower;
-                        return sameBrand && (imgName.includes(prodNameLower) || prodNameLower.includes(imgName));
+                        const brandToStrip = img.brand !== 'Unknown' ? img.brand : product.brand;
+                        const imgNameNorm = normalize(img.productName, brandToStrip);
+                        const imgBrand = img.brand.toLowerCase().trim();
+
+                        const brandMatch = (imgBrand === prodBrandLower) || (imgBrand === 'unknown');
+
+                        // Strict Directional Match: Product includes Image (not vice versa)
+                        const nameMatch = prodNameNorm.includes(imgNameNorm) && imgNameNorm.length > 3;
+
+                        return brandMatch && nameMatch;
                     });
                     if (matchedImage) matchType = 'partial';
                 }
