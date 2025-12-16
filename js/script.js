@@ -715,21 +715,48 @@ function showSearchSuggestions(searchTerm, container) {
     return;
   }
 
+  // Split search into individual words for flexible matching
+  const searchWords = searchTerm.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+
   // Search through all products, excluding lenses
   const matches = allProducts
-    .filter(product => {
+    .map(product => {
       // Exclude lenses - only show cameras and other products
       if (product.subcategory === 'Lens') {
-        return false;
+        return null;
       }
       if (!product.price || product.price <= 0 || isNaN(Number(product.price))) {
-        return false;
+        return null;
       }
-      const nameMatch = product.name && product.name.toLowerCase().includes(searchTerm);
-      const brandMatch = product.brand && product.brand.toLowerCase().includes(searchTerm);
-      const categoryMatch = product.category && product.category.toLowerCase().includes(searchTerm);
-      return nameMatch || brandMatch || categoryMatch;
+
+      // Build searchable text from product name, brand, and category
+      const searchableText = [
+        product.name || '',
+        product.brand || '',
+        product.category || ''
+      ].join(' ').toLowerCase();
+
+      // Count how many search words match
+      let matchCount = 0;
+      for (const word of searchWords) {
+        if (searchableText.includes(word)) {
+          matchCount++;
+        }
+      }
+
+      // Only include if ALL search words match (for multi-word searches)
+      // OR if any word matches (for single word)
+      const allWordsMatch = matchCount === searchWords.length;
+      const anyWordMatch = matchCount > 0;
+
+      if (searchWords.length > 1 ? allWordsMatch : anyWordMatch) {
+        return { product, score: matchCount };
+      }
+      return null;
     })
+    .filter(m => m !== null)
+    .sort((a, b) => b.score - a.score) // Sort by match count (best matches first)
+    .map(m => m.product)
     .slice(0, 8); // Limit to 8 results
 
   if (matches.length === 0) {
