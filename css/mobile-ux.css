@@ -1,0 +1,336 @@
+/* ============================================
+   Mobile UX Improvements
+   Enhanced touch targets, gestures, navigation
+   ============================================ */
+
+/* ========== Touch Target Sizes ========== */
+@media (max-width: 768px) {
+
+    /* Minimum 44px touch targets for accessibility */
+    button,
+    .btn,
+    a.btn,
+    .brand-card,
+    .model-card,
+    .category-card,
+    input[type="checkbox"],
+    input[type="radio"],
+    select {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Larger tap areas for cards */
+    .brand-card,
+    .model-card {
+        padding: 16px;
+    }
+
+    /* Better spacing for touch */
+    .btn+.btn,
+    button+button {
+        margin-left: 12px;
+    }
+}
+
+/* ========== Mobile Navigation ========== */
+@media (max-width: 768px) {
+
+    /* Sticky bottom navigation for mobile */
+    .mobile-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--card, #fff);
+        border-top: 1px solid var(--border, #e5e7eb);
+        display: flex;
+        justify-content: space-around;
+        padding: 8px 0;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom));
+        z-index: 1000;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 16px;
+        color: var(--text-light, #6e6e73);
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .mobile-nav-item.active,
+    .mobile-nav-item:hover {
+        color: var(--primary, #0071e3);
+    }
+
+    .mobile-nav-item i {
+        font-size: 20px;
+    }
+
+    /* Add bottom padding to body when mobile nav is present */
+    body.has-mobile-nav {
+        padding-bottom: 70px;
+    }
+}
+
+/* ========== Swipe Gestures Support ========== */
+.swipeable {
+    touch-action: pan-x;
+    user-select: none;
+}
+
+.swipe-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.swipe-container::-webkit-scrollbar {
+    display: none;
+}
+
+.swipe-item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+/* ========== Pull to Refresh ========== */
+.pull-refresh-indicator {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--card, #fff);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: top 0.3s ease;
+    z-index: 1001;
+}
+
+.pull-refresh-indicator.active {
+    top: 20px;
+}
+
+.pull-refresh-indicator i {
+    font-size: 20px;
+    color: var(--primary, #0071e3);
+}
+
+.pull-refresh-indicator.refreshing i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== Safe Area Support ========== */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .site-header {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .footer-ultra {
+        padding-bottom: calc(32px + env(safe-area-inset-bottom));
+    }
+
+    .pwa-install-btn,
+    .theme-toggle {
+        bottom: calc(24px + env(safe-area-inset-bottom));
+    }
+}
+
+/* ========== PWA Install Button ========== */
+.pwa-install-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0071e3, #00c896);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.pwa-install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
+}
+
+.pwa-install-btn i {
+    font-size: 16px;
+}
+
+/* ========== PWA Install Banner ========== */
+.pwa-install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card, #fff);
+    border-top: 1px solid var(--border, #e5e7eb);
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 1002;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.pwa-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.pwa-banner-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #0071e3, #00c896);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pwa-banner-icon img {
+    border-radius: 8px;
+}
+
+.pwa-banner-text {
+    flex: 1;
+}
+
+.pwa-banner-text strong {
+    display: block;
+    font-size: 15px;
+    color: var(--text, #1d1d1f);
+}
+
+.pwa-banner-text p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text-light, #6e6e73);
+}
+
+.pwa-banner-install {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #0071e3, #00c896);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.pwa-banner-install:hover {
+    transform: scale(1.02);
+}
+
+.pwa-banner-close {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-light, #6e6e73);
+    border-radius: 50%;
+    transition: background 0.2s ease;
+}
+
+.pwa-banner-close:hover {
+    background: var(--border, #e5e7eb);
+}
+
+/* Fade out animation */
+.pwa-install-banner.fade-out {
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ========== Mobile Form Improvements ========== */
+@media (max-width: 768px) {
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+    }
+
+    /* Full width buttons on mobile */
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Stack buttons vertically */
+    .btn-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* ========== Haptic Feedback Indication ========== */
+@media (hover: none) {
+
+    /* Styles for touch devices */
+    .brand-card:active,
+    .model-card:active,
+    button:active:not(:disabled) {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+}
+
+/* ========== Reduced Motion ========== */
+@media (prefers-reduced-motion: reduce) {
+
+    .pull-refresh-indicator,
+    .pwa-install-btn,
+    .pwa-install-banner {
+        transition: none;
+    }
+
+    .pull-refresh-indicator.refreshing i {
+        animation: none;
+    }
+}

@@ -3,15 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://*.firebaseio.com https://*.googleapis.com;
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
-  img-src 'self' data: https: blob:;
-  connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com wss://*.firebaseio.com;
-  frame-src 'self' https://*.firebaseapp.com https://*.google.com;
-" />
+  <!-- CSP headers are configured in firebase.json for production -->
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
   <title>WorthyTen - Sell Your Device Instantly | Get Best Price</title>
   <meta name="description"
@@ -88,6 +80,10 @@
   <link href="css/style.css?v=1.3.2" rel="stylesheet" />
   <link href="css/how-it-works-ultra.css?v=2.1.0" rel="stylesheet" />
   <link href="css/reviews-faq-ultra.css?v=2.0.0" rel="stylesheet" />
+  <link href="css/loading-skeletons.css?v=1.0.0" rel="stylesheet" />
+  <link href="css/dark-mode.css?v=1.0.0" rel="stylesheet" />
+  <link href="css/animations.css?v=1.0.0" rel="stylesheet" />
+  <link href="css/mobile-ux.css?v=1.0.0" rel="stylesheet" />
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#1b4c87">
   <meta name="mobile-web-app-capable" content="yes">
@@ -96,6 +92,10 @@
   <meta name="apple-mobile-web-app-title" content="WorthyTen">
   <script src="js/logger.js"></script>
   <script src="js/accessibility.js"></script>
+  <script src="js/loading-skeletons.js"></script>
+  <script src="js/theme-toggle.js"></script>
+  <script src="js/pwa-install.js" defer></script>
+</head>
 
 <body data-step="1">
   <a href="#main-content" class="skip-link">Skip to main content</a>

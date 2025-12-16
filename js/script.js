@@ -913,8 +913,10 @@ if (searchInput) {
 
 // Initialize function - works with both immediate and deferred loading
 function initScript() {
-  // Show a loading message
-  if (categoryGrid) {
+  // Show skeleton loading UI while fetching products
+  if (categoryGrid && window.SkeletonUI) {
+    window.SkeletonUI.showSkeleton(categoryGrid, 4, 'category');
+  } else if (categoryGrid) {
     categoryGrid.innerHTML = '<p>Loading products...</p>';
   }
 

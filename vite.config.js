@@ -7,12 +7,12 @@ import { join } from 'path';
 export default defineConfig({
   // Base public path
   base: './',
-  
+
   // Build configuration
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    
+
     // Code splitting
     rollupOptions: {
       input: {
@@ -38,27 +38,32 @@ export default defineConfig({
           if (id.includes('firebase')) {
             return null;
           }
-          
-          // Common utilities
-          if (id.includes('logger.js') || id.includes('ui.js') || id.includes('state-helper.js') || id.includes('config.js')) {
+
+          // Large product data - lazy loadable
+          if (id.includes('product-data.js')) {
+            return 'product-data';
+          }
+
+          // Common utilities including loading skeletons
+          if (id.includes('logger.js') || id.includes('ui.js') || id.includes('state-helper.js') || id.includes('config.js') || id.includes('loading-skeletons.js')) {
             return 'utils';
           }
-          
+
           // Accessibility
           if (id.includes('accessibility.js')) {
             return 'accessibility';
           }
-          
+
           // Analytics & monitoring
           if (id.includes('analytics.js') || id.includes('error-tracking.js') || id.includes('performance.js')) {
             return 'monitoring';
           }
-          
+
           // Admin features
           if (id.includes('admin-') || id.includes('rbac.js') || id.includes('user-management.js')) {
             return 'admin';
           }
-          
+
           // Default chunking
           if (id.includes('node_modules')) {
             return 'vendor';
@@ -70,7 +75,7 @@ export default defineConfig({
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
       }
     },
-    
+
     // Minification
     minify: 'terser',
     terserOptions: {
@@ -91,23 +96,23 @@ export default defineConfig({
         safari10: true
       }
     },
-    
+
     // Source maps (disable for production)
     sourcemap: false,
-    
+
     // CSS code splitting
     cssCodeSplit: true,
-    
+
     // Asset inlining threshold (4kb)
     assetsInlineLimit: 4096,
-    
+
     // Report bundle size
     reportCompressedSize: true,
-    
+
     // Chunk size warning limit
     chunkSizeWarningLimit: 500
   },
-  
+
   // Server configuration (for development)
   server: {
     port: 3000,
@@ -117,19 +122,19 @@ export default defineConfig({
       overlay: true
     }
   },
-  
+
   // Preview server (for production build preview)
   preview: {
     port: 4173,
     open: true
   },
-  
+
   // Optimizations
   optimizeDeps: {
     exclude: ['firebase'],
     include: []
   },
-  
+
   // CSS preprocessing
   css: {
     devSourcemap: true,
@@ -138,7 +143,7 @@ export default defineConfig({
       // Add any preprocessor options here
     }
   },
-  
+
   // Plugin configuration
   plugins: [
     // Plugin to copy js folder
@@ -147,18 +152,18 @@ export default defineConfig({
       writeBundle() {
         const jsDir = resolve(__dirname, 'js');
         const distJsDir = resolve(__dirname, 'dist', 'js');
-        
+
         if (!existsSync(distJsDir)) {
           mkdirSync(distJsDir, { recursive: true });
         }
-        
+
         function copyRecursive(src, dest) {
           const entries = readdirSync(src, { withFileTypes: true });
-          
+
           for (const entry of entries) {
             const srcPath = join(src, entry.name);
             const destPath = join(dest, entry.name);
-            
+
             if (entry.isDirectory()) {
               if (!existsSync(destPath)) {
                 mkdirSync(destPath, { recursive: true });
@@ -169,12 +174,12 @@ export default defineConfig({
             }
           }
         }
-        
+
         if (existsSync(jsDir)) {
           copyRecursive(jsDir, distJsDir);
           console.log('✅ Copied js folder to dist');
         }
-        
+
         // Copy images folder
         const imagesDir = resolve(__dirname, 'images');
         const distImagesDir = resolve(__dirname, 'dist', 'images');
@@ -185,7 +190,7 @@ export default defineConfig({
           copyRecursive(imagesDir, distImagesDir);
           console.log('✅ Copied images folder to dist');
         }
-        
+
         // Copy other static files
         const staticFiles = ['manifest.json', 'robots.txt', 'sitemap.xml', 'sw.js'];
         staticFiles.forEach(file => {
@@ -199,7 +204,7 @@ export default defineConfig({
       }
     }
   ],
-  
+
   // Environment variables
   define: {
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0')

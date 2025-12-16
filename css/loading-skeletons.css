@@ -1,0 +1,303 @@
+/* ========================================
+   Loading Skeletons & Progress Indicator
+   Phase 1 Performance Enhancement
+   ======================================== */
+
+/* ---------- Skeleton Cards ---------- */
+.skeleton-card {
+    background: var(--card, #fff);
+    border-radius: var(--radius, 12px);
+    padding: var(--space-4, 16px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3, 12px);
+    box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.06));
+    overflow: hidden;
+}
+
+.skeleton-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+}
+
+.skeleton-text {
+    width: 70%;
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+}
+
+/* Pulse animation for skeleton loading */
+.skeleton-pulse {
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Category skeleton specific */
+.skeleton-category .skeleton-image {
+    width: 60px;
+    height: 60px;
+}
+
+/* Model skeleton specific */
+.skeleton-model .skeleton-image {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+}
+
+/* Brand skeleton specific */
+.skeleton-brand .skeleton-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+
+/* ---------- Loading Spinner ---------- */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+}
+
+.spinner-ring {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(27, 76, 135, 0.2);
+    border-top-color: var(--brand, #1b4c87);
+    border-radius: 50%;
+    animation: spinner-rotate 0.8s linear infinite;
+}
+
+.loading-spinner-small .spinner-ring {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+}
+
+.loading-spinner-large .spinner-ring {
+    width: 56px;
+    height: 56px;
+    border-width: 4px;
+}
+
+@keyframes spinner-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    color: var(--text-muted, #6b7280);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ---------- Loading Overlay ---------- */
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: inherit;
+}
+
+/* ---------- Progress Indicator ---------- */
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    background: var(--surface, #f8fafc);
+    border-radius: var(--radius, 12px);
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.06));
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.progress-step.active {
+    opacity: 1;
+}
+
+.progress-step[aria-current="step"] .step-number {
+    background: var(--brand, #1b4c87);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(27, 76, 135, 0.3);
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--border, #e2e8f0);
+    color: var(--text-muted, #6b7280);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.progress-step.active .step-number {
+    background: var(--success, #10b981);
+    color: white;
+}
+
+.step-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted, #6b7280);
+    white-space: nowrap;
+}
+
+.progress-step.active .step-label {
+    color: var(--text, #1a1a2e);
+}
+
+.step-connector {
+    width: 40px;
+    height: 2px;
+    background: var(--border, #e2e8f0);
+    margin: 0 12px;
+    margin-bottom: 24px;
+    transition: background 0.3s ease;
+}
+
+.progress-step.active+.step-connector,
+.progress-step.active~.step-connector {
+    background: var(--success, #10b981);
+}
+
+/* Mobile responsive progress */
+@media (max-width: 600px) {
+    .progress-bar {
+        padding: 16px 12px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+
+    .step-connector {
+        width: 24px;
+        margin: 0 6px;
+        margin-bottom: 24px;
+    }
+
+    .step-label {
+        font-size: 10px;
+        max-width: 60px;
+        text-align: center;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+/* ---------- Fade In Animation ---------- */
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply fade-in to grid items after loading */
+.category-grid .brand-card,
+.brand-grid .brand-card,
+.model-grid .model-card {
+    animation: fadeIn 0.3s ease-out;
+    animation-fill-mode: both;
+}
+
+/* Stagger animation for grid items */
+.category-grid .brand-card:nth-child(1),
+.brand-grid .brand-card:nth-child(1),
+.model-grid .model-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.category-grid .brand-card:nth-child(2),
+.brand-grid .brand-card:nth-child(2),
+.model-grid .model-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.category-grid .brand-card:nth-child(3),
+.brand-grid .brand-card:nth-child(3),
+.model-grid .model-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.category-grid .brand-card:nth-child(4),
+.brand-grid .brand-card:nth-child(4),
+.model-grid .model-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.category-grid .brand-card:nth-child(5),
+.brand-grid .brand-card:nth-child(5),
+.model-grid .model-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.category-grid .brand-card:nth-child(6),
+.brand-grid .brand-card:nth-child(6),
+.model-grid .model-card:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+/* ---------- Reduce Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+    .skeleton-pulse,
+    .spinner-ring,
+    .fade-in,
+    .category-grid .brand-card,
+    .brand-grid .brand-card,
+    .model-grid .model-card {
+        animation: none;
+    }
+}
