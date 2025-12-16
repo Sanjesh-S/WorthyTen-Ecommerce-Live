@@ -134,7 +134,10 @@ module.exports = {
           /^whatsapp-/, // WhatsApp widget
           /^price-lock/,// Price lock
           /^lock-/,     // Lock status
-          /^share-/     // Share buttons
+          /^share-/,    // Share buttons
+          /^modal-/,    // Modal component
+          /^toast-/,    // Toast notifications
+          /^privacy-/   // Privacy settings
         ],
 
         // Greedy safelist (keep entire rules)
