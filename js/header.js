@@ -45,18 +45,6 @@
           <span></span>
         </button>
       </div>
-      
-      <!-- Mobile Menu -->
-      <div class="mobile-menu" id="mobileMenu">
-        <nav class="mobile-nav">
-          <a href="index.html">Home</a>
-          <a href="about.html">About Us</a>
-          <a href="our-stores.html">Our Stores</a>
-          <a href="contact.html">Contact</a>
-          <a href="account.html">My Account</a>
-          <a href="index.html#categories" class="mobile-cta">Sell Now →</a>
-        </nav>
-      </div>
     </header>
   `;
 
@@ -65,22 +53,21 @@
   function initHeader() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const header = document.querySelector('.site-header');
+    const headerNav = document.querySelector('.header-nav');
 
-    if (menuToggle && mobileMenu) {
+    if (menuToggle && headerNav) {
       menuToggle.addEventListener('click', () => {
         const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
         menuToggle.setAttribute('aria-expanded', !isOpen);
-        mobileMenu.classList.toggle('open');
         menuToggle.classList.toggle('active');
+        headerNav.classList.toggle('mobile-active');
         document.body.style.overflow = isOpen ? '' : 'hidden';
       });
 
       // Close menu when clicking a link
-      mobileMenu.querySelectorAll('a').forEach(link => {
+      headerNav.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
+          headerNav.classList.remove('mobile-active');
           menuToggle.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
           document.body.style.overflow = '';
@@ -90,7 +77,7 @@
 
     // Highlight current page in nav
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a, .mobile-nav a').forEach(link => {
+    document.querySelectorAll('.nav-links a').forEach(link => {
       const href = link.getAttribute('href');
       if (href && (href === currentPage || (currentPage === '' && href === 'index.html'))) {
         link.classList.add('active');
