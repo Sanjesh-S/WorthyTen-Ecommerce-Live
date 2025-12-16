@@ -1357,9 +1357,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('');
 
     // Load age deductions
-    document.getElementById('age-less-than-1').value = existingPricing.ageDeductions?.['less-than-1'] || 0;
-    document.getElementById('age-1-to-2').value = existingPricing.ageDeductions?.['1-to-2'] || 0;
-    document.getElementById('age-more-than-2').value = existingPricing.ageDeductions?.['more-than-2'] || 0;
+    document.getElementById('age-less-than-3').value = existingPricing.ageDeductions?.['less-than-3'] || 0;
+    document.getElementById('age-4-to-12').value = existingPricing.ageDeductions?.['4-to-12'] || 0;
+    document.getElementById('age-above-12').value = existingPricing.ageDeductions?.['above-12'] || 0;
 
     // Store product ID and category for save
     formContainer.dataset.productId = productId;
@@ -1411,9 +1411,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Collect age deductions
     const ageDeductions = {
-      'less-than-1': Number(document.getElementById('age-less-than-1').value) || 0,
-      '1-to-2': Number(document.getElementById('age-1-to-2').value) || 0,
-      'more-than-2': Number(document.getElementById('age-more-than-2').value) || 0
+      'less-than-3': Number(document.getElementById('age-less-than-3').value) || 0,
+      '4-to-12': Number(document.getElementById('age-4-to-12').value) || 0,
+      'above-12': Number(document.getElementById('age-above-12').value) || 0
     };
 
     const pricingData = {

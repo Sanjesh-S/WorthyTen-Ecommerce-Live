@@ -93,8 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Use fixed amounts from productPricing ONLY
     if (productPricingData) {
-      // Apply warranty bonus (fixed amount) for devices under 1 year with valid bill
-      if (age === 'less-than-1' && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
+      // Apply warranty bonus (fixed amount) for devices under 3 months with valid bill
+      if (age === 'less-than-3' && Array.isArray(vd.accessories) && vd.accessories.includes("bill")) {
         const warrantyBonus = Number(productPricingData.bonuses?.['warranty_valid']?.addition) || 0;
         price += warrantyBonus;
       }
