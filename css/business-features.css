@@ -1,0 +1,274 @@
+/* ============================================
+   Business Features Styles
+   WhatsApp widget, Price lock, Quote sharing
+   ============================================ */
+
+/* ========== WhatsApp Chat Widget ========== */
+.whatsapp-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    z-index: 998;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-widget.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.whatsapp-widget:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-widget i {
+    font-size: 32px;
+    color: #fff;
+}
+
+.whatsapp-widget.pulse::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #25D366;
+    animation: whatsapp-pulse 2s infinite;
+    z-index: -1;
+}
+
+@keyframes whatsapp-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.whatsapp-tooltip {
+    position: absolute;
+    right: 70px;
+    background: #333;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.whatsapp-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: #333;
+}
+
+.whatsapp-widget:hover .whatsapp-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Position adjustment for theme toggle */
+.theme-toggle~.whatsapp-widget,
+body .whatsapp-widget {
+    bottom: 90px;
+}
+
+/* ========== Price Lock Feature ========== */
+.price-lock-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 16px;
+}
+
+.price-lock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+
+.price-lock-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.price-lock-btn i {
+    font-size: 16px;
+}
+
+/* Locked Status */
+.price-locked-status {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.price-locked-status.expired {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+.lock-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.lock-badge i {
+    font-size: 18px;
+}
+
+.lock-timer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.lock-id {
+    font-size: 12px;
+    opacity: 0.9;
+    font-family: monospace;
+}
+
+/* ========== Quote Sharing ========== */
+.share-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+}
+
+.share-btn.whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
+.share-btn.email {
+    background: #ea4335;
+    color: #fff;
+}
+
+.share-btn.copy {
+    background: var(--primary, #1b4c87);
+    color: #fff;
+}
+
+/* ========== Dark Mode Support ========== */
+[data-theme="dark"] .price-locked-status {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .whatsapp-tooltip {
+    background: #1a1a1a;
+}
+
+[data-theme="dark"] .whatsapp-tooltip::after {
+    border-left-color: #1a1a1a;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+    .whatsapp-widget {
+        width: 54px;
+        height: 54px;
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .whatsapp-widget i {
+        font-size: 28px;
+    }
+
+    .theme-toggle~.whatsapp-widget,
+    body .whatsapp-widget {
+        bottom: 80px;
+    }
+
+    .whatsapp-tooltip {
+        display: none;
+    }
+
+    .price-locked-status {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .share-buttons {
+        flex-wrap: wrap;
+    }
+}
+
+/* ========== Reduced Motion ========== */
+@media (prefers-reduced-motion: reduce) {
+    .whatsapp-widget.pulse::after {
+        animation: none;
+    }
+
+    .whatsapp-widget,
+    .price-lock-btn,
+    .share-btn {
+        transition: none;
+    }
+}

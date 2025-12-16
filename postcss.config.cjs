@@ -130,7 +130,11 @@ module.exports = {
           /^pwa-/,      // PWA install
           /^mobile-/,   // Mobile nav
           /^swipe-/,    // Swipe gestures
-          /^pull-/      // Pull refresh
+          /^pull-/,     // Pull refresh
+          /^whatsapp-/, // WhatsApp widget
+          /^price-lock/,// Price lock
+          /^lock-/,     // Lock status
+          /^share-/     // Share buttons
         ],
 
         // Greedy safelist (keep entire rules)
