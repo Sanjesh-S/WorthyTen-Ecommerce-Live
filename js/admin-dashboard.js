@@ -1380,12 +1380,17 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Get category for this product
+    const productCategory = formContainer.dataset.productCategory || '';
+    const categoryIssues = getIssuesForCategory(productCategory);
+    const categoryBonuses = getBonusesForCategory(productCategory);
+
     // Collect issue deductions
     const issues = {};
     document.querySelectorAll('.pricing-issue-input').forEach(input => {
       const issueId = input.dataset.issueId;
       const deduction = Number(input.value) || 0;
-      const issueConfig = PRICING_ISSUES.find(i => i.id === issueId);
+      const issueConfig = categoryIssues.find(i => i.id === issueId);
       issues[issueId] = {
         deduction: deduction,
         label: issueConfig?.label || issueId
@@ -1397,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.pricing-bonus-input').forEach(input => {
       const bonusId = input.dataset.bonusId;
       const addition = Number(input.value) || 0;
-      const bonusConfig = PRICING_BONUSES.find(b => b.id === bonusId);
+      const bonusConfig = categoryBonuses.find(b => b.id === bonusId);
       bonuses[bonusId] = {
         addition: addition,
         label: bonusConfig?.label || bonusId
