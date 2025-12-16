@@ -17,7 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Header data
   document.getElementById('modelNameText').textContent = valuationData.modelName || '';
-  document.getElementById('fullModelName').textContent = `${valuationData.brandName || ''} ${valuationData.modelName || ''}`.trim();
+
+  // Use helper function to avoid duplicate brand names (e.g., "Canon Canon EOS 5D Mark II")
+  const fullModelDisplay = window.getFullModelName
+    ? window.getFullModelName(valuationData.brandName, valuationData.modelName)
+    : (valuationData.modelName || '').trim();
+  document.getElementById('fullModelName').textContent = fullModelDisplay;
+
   if (valuationData.imageUrl) document.getElementById('productImage').src = valuationData.imageUrl;
 
   // --- NEW: Sidebar Elements ---

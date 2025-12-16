@@ -84,9 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Populate Main Card ---
   if (imgEl && vd.imageUrl) imgEl.src = vd.imageUrl;
-  if (modelEl) modelEl.textContent = `${vd.brandName || ''} ${vd.modelName || ''}`.trim();
+
+  // Use helper to avoid duplicate brand names
+  const displayName = window.getFullModelName
+    ? window.getFullModelName(vd.brandName, vd.modelName)
+    : (vd.modelName || '').trim();
+
+  if (modelEl) modelEl.textContent = displayName;
   if (finalSellingPriceEl) finalSellingPriceEl.textContent = money(finalPrice);
-  if (deviceBrandModel) deviceBrandModel.textContent = `${vd.brandName || ''} ${vd.modelName || ''}`.trim();
+  if (deviceBrandModel) deviceBrandModel.textContent = displayName;
 
   // --- Populate Mobile Footer ---
   if (mobileFinalPriceEl) mobileFinalPriceEl.textContent = money(finalPrice);
