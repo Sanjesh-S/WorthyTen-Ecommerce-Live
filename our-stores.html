@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
+    <title>Our Stores - WorthyTen Showroom Locations</title>
+    <meta name="description"
+        content="Visit WorthyTen showrooms in Coimbatore, Chennai, Madurai, and Trichy. Find many products with unique discounts at our stores." />
+    <meta name="keywords"
+        content="WorthyTen stores, showroom locations, Coimbatore, Chennai, Madurai, Trichy, electronics store" />
+    <meta name="author" content="WorthyTen" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://worthyten.com/our-stores.html" />
+    <meta property="og:title" content="Our Stores - WorthyTen Showroom Locations" />
+    <meta property="og:description" content="Visit WorthyTen showrooms in Coimbatore, Chennai, Madurai, and Trichy." />
+    <meta property="og:image" content="https://worthyten.com/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://worthyten.com/our-stores.html" />
+    <meta name="twitter:title" content="Our Stores - WorthyTen Showroom Locations" />
+    <meta name="twitter:description" content="Visit WorthyTen showrooms in Coimbatore, Chennai, Madurai, and Trichy." />
+    <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg" />
+
+    <link rel="canonical" href="https://worthyten.com/our-stores.html" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
+    <style>
+        .stores-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d6db5 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .stores-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .stores-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stores-intro {
+            padding: 60px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stores-intro h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .stores-intro p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .stores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            padding: 0 24px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .store-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .store-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .store-header {
+            background: linear-gradient(135deg, var(--primary), #2d6db5);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .store-header h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .store-header i {
+            font-size: 1.2rem;
+        }
+
+        .store-body {
+            padding: 24px;
+        }
+
+        .store-address {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .store-address i {
+            color: var(--accent);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .store-contact {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .store-contact a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .store-contact a:hover {
+            text-decoration: underline;
+        }
+
+        .store-description {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.7;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .store-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .store-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .store-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .store-btn.primary:hover {
+            background: #164070;
+        }
+
+        .store-btn.secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .store-btn.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .services-section {
+            background: var(--surface);
+            padding: 60px 24px;
+        }
+
+        .services-section h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .service-item {
+            text-align: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+        }
+
+        .service-item i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .service-item h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .service-item p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .stores-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .stores-grid {
+                padding: 0 16px 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="header"></div>
+    <script src="js/header.js"></script>
+
+    <main id="main-content">
+
+        <!-- Hero Section -->
+        <section class="stores-hero">
+            <h1><i class="fa-solid fa-store"></i> Our Stores</h1>
+            <p>Find many products with unique discounts. Visit our showrooms across Tamil Nadu.</p>
+        </section>
+
+        <!-- Introduction -->
+        <section class="stores-intro">
+            <h2>Welcome to WorthyTen Recommerce Pvt Ltd</h2>
+            <p>
+                Welcome to WorthyTen Recommerce Pvt Ltd., your premier destination for buying, selling, and exchanging
+                electronic gadgets in Chennai, Coimbatore, Madurai, and Trichy. Our showroom locations offer a diverse
+                selection of high-quality products at competitive prices, backed by our commitment to customer
+                satisfaction and excellence.
+            </p>
+        </section>
+
+        <!-- Stores Grid -->
+        <section class="stores-grid" aria-label="Store locations">
+
+            <!-- Coimbatore -->
+            <div class="store-card">
+                <div class="store-header">
+                    <h3><i class="fa-solid fa-location-dot"></i> COIMBATORE</h3>
+                </div>
+                <div class="store-body">
+                    <div class="store-address">
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <span>Avinashi Rd, opp. to SMS Hotel, Peelamedu, Masakalipalayam, Coimbatore, Tamil Nadu
+                            641004</span>
+                    </div>
+                    <div class="store-contact">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="tel:+919843010746">+91 98430 10746</a>
+                    </div>
+                    <p class="store-description">
+                        Coimbatore, known as the "Manchester of South India," is our headquarters. The city has a
+                        thriving textile industry and is also a major hub for engineering goods, automotive components,
+                        and IT services.
+                    </p>
+                    <div class="store-actions">
+                        <a href="tel:+919843010746" class="store-btn primary"><i class="fa-solid fa-phone"></i> Call</a>
+                        <a href="https://maps.google.com/?q=Avinashi+Rd+Peelamedu+Coimbatore" target="_blank"
+                            rel="noopener" class="store-btn secondary"><i class="fa-solid fa-directions"></i>
+                            Directions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chennai -->
+            <div class="store-card">
+                <div class="store-header">
+                    <h3><i class="fa-solid fa-location-dot"></i> CHENNAI</h3>
+                </div>
+                <div class="store-body">
+                    <div class="store-address">
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <span>No 5, 40, AVM Ave 1st Main Rd, near S.K Mahal, AVM Avenue, Virugambakkam, Chennai, Tamil
+                            Nadu 600092</span>
+                    </div>
+                    <div class="store-contact">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="tel:+919843010716">+91 98430 10716</a>
+                    </div>
+                    <p class="store-description">
+                        Chennai, the "Detroit of India," is known for its large automobile industry and robust IT
+                        sector. Our Marina Beach city store serves the metropolitan area with premium electronics.
+                    </p>
+                    <div class="store-actions">
+                        <a href="tel:+919843010716" class="store-btn primary"><i class="fa-solid fa-phone"></i> Call</a>
+                        <a href="https://maps.google.com/?q=AVM+Avenue+Virugambakkam+Chennai" target="_blank"
+                            rel="noopener" class="store-btn secondary"><i class="fa-solid fa-directions"></i>
+                            Directions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Madurai -->
+            <div class="store-card">
+                <div class="store-header">
+                    <h3><i class="fa-solid fa-location-dot"></i> MADURAI</h3>
+                </div>
+                <div class="store-body">
+                    <div class="store-address">
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <span>First Floor 141A, 142, Alagarkoil Road, next to Manapuran Finance, Tallakulam, Madurai,
+                            Tamil Nadu 625002</span>
+                    </div>
+                    <div class="store-contact">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="tel:+919843010781">+91 98430 10781</a>
+                    </div>
+                    <p class="store-description">
+                        Madurai is renowned for the Meenakshi Amman Temple and is one of the oldest continuously
+                        inhabited cities in the world. Our store serves this historic cultural center.
+                    </p>
+                    <div class="store-actions">
+                        <a href="tel:+919843010781" class="store-btn primary"><i class="fa-solid fa-phone"></i> Call</a>
+                        <a href="https://maps.google.com/?q=Alagarkoil+Road+Tallakulam+Madurai" target="_blank"
+                            rel="noopener" class="store-btn secondary"><i class="fa-solid fa-directions"></i>
+                            Directions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trichy -->
+            <div class="store-card">
+                <div class="store-header">
+                    <h3><i class="fa-solid fa-location-dot"></i> TRICHY</h3>
+                </div>
+                <div class="store-body">
+                    <div class="store-address">
+                        <i class="fa-solid fa-map-marker-alt"></i>
+                        <span>First Floor, F-3, Karur Bypass Rd, Annamalai Nagar, Tiruchirappalli, Tamil Nadu
+                            620018</span>
+                    </div>
+                    <div class="store-contact">
+                        <i class="fa-solid fa-phone"></i>
+                        <a href="tel:+919843010774">+91 98430 10774</a>
+                    </div>
+                    <p class="store-description">
+                        Tiruchirapalli (Trichy) is a rapidly growing commercial and industrial center. Home to NIT and
+                        famous for the iconic Rockfort Temple and Ranganathaswamy Temple.
+                    </p>
+                    <div class="store-actions">
+                        <a href="tel:+919843010774" class="store-btn primary"><i class="fa-solid fa-phone"></i> Call</a>
+                        <a href="https://maps.google.com/?q=Karur+Bypass+Rd+Annamalai+Nagar+Trichy" target="_blank"
+                            rel="noopener" class="store-btn secondary"><i class="fa-solid fa-directions"></i>
+                            Directions</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Services at Stores -->
+        <section class="services-section">
+            <h2>What We Offer at Our Stores</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <h4>Buy</h4>
+                    <p>Discover curated collection of electronic gadgets at unbeatable prices</p>
+                </div>
+                <div class="service-item">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <h4>Sell</h4>
+                    <p>Get competitive prices for your used electronics with fair evaluations</p>
+                </div>
+                <div class="service-item">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <h4>Exchange</h4>
+                    <p>Trade in old gadgets for store credit or upgrade to newer models</p>
+                </div>
+                <div class="service-item">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h4>Service</h4>
+                    <p>Expert repairs and servicing for cameras and electronics</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-banner">
+            <div class="wrap cta-wrap">
+                <h2>Visit Us Today!</h2>
+                <p>Experience the WorthyTen difference at our showrooms. We're here to meet all your electronics needs.
+                </p>
+                <a class="cta-button" href="contact.html" aria-label="Contact us">Contact Us <span
+                        aria-hidden="true">→</span></a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3 class="footer-logo">WorthyTen</h3>
+                    <p class="footer-description">Sell your old devices instantly and get the best price. Fast, secure,
+                        and hassle-free device selling experience.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/worthyten" target="_blank" rel="noopener noreferrer"
+                            aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/worthytenofficial/" target="_blank" rel="noopener noreferrer"
+                            aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@WorthyTen" target="_blank" rel="noopener noreferrer"
+                            aria-label="YouTube" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="our-stores.html">Our Stores</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Policies</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                        <li><a href="warranty-policy.html">Warranty Policy</a></li>
+                        <li><a href="refund-policy.html">Return/Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fa-solid fa-envelope"></i><a
+                                href="mailto:support@worthyten.com">support@worthyten.com</a></li>
+                        <li><i class="fa-solid fa-phone"></i><a href="tel:+919843010746">+91 98430 10746</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i><span>Coimbatore, Tamil Nadu, India</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.
+                    </p>
+                    <div class="footer-legal">
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-conditions.html">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/ui.js" defer></script>
+    <script src="js/lazy-loading.js"></script>
+    <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

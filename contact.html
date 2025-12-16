@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
+    <title>Contact Us - WorthyTen | Get in Touch</title>
+    <meta name="description"
+        content="Contact WorthyTen for any questions about buying or selling electronics. Reach us via phone, email, or visit our stores in Tamil Nadu." />
+    <meta name="keywords" content="contact WorthyTen, customer support, electronics help, reach us" />
+    <meta name="author" content="WorthyTen" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://worthyten.com/contact.html" />
+    <meta property="og:title" content="Contact Us - WorthyTen | Get in Touch" />
+    <meta property="og:description"
+        content="Contact WorthyTen for any questions about buying or selling electronics." />
+    <meta property="og:image" content="https://worthyten.com/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://worthyten.com/contact.html" />
+    <meta name="twitter:title" content="Contact Us - WorthyTen" />
+    <meta name="twitter:description"
+        content="Contact WorthyTen for any questions about buying or selling electronics." />
+    <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg" />
+
+    <link rel="canonical" href="https://worthyten.com/contact.html" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
+    <style>
+        .contact-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d6db5 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .contact-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .contact-form-section h2 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .contact-form-section>p {
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .contact-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(27, 76, 135, 0.1);
+        }
+
+        .contact-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .contact-submit {
+            background: var(--primary);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .contact-submit:hover {
+            background: #164070;
+            transform: translateY(-2px);
+        }
+
+        .contact-submit:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-status {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .form-status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .form-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .contact-info-section h2 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 32px;
+        }
+
+        .contact-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-card {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            background: var(--surface);
+            border-radius: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon i {
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .contact-card-content h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .contact-card-content p {
+            color: var(--muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .contact-card-content a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card-content a:hover {
+            text-decoration: underline;
+        }
+
+        .hours-list {
+            margin-top: 8px;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.95rem;
+        }
+
+        .hours-list .day {
+            color: var(--text);
+        }
+
+        .hours-list .time {
+            color: var(--muted);
+        }
+
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .quick-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .quick-link-btn:hover {
+            background: #164070;
+        }
+
+        .quick-link-btn.whatsapp {
+            background: #25D366;
+        }
+
+        .quick-link-btn.whatsapp:hover {
+            background: #1da851;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="header"></div>
+    <script src="js/header.js"></script>
+
+    <main id="main-content">
+
+        <!-- Hero Section -->
+        <section class="contact-hero">
+            <h1><i class="fa-solid fa-envelope"></i> Contact Us</h1>
+            <p>Have questions? We're here to help. Reach out to us anytime.</p>
+        </section>
+
+        <div class="contact-container">
+
+            <!-- Contact Form -->
+            <section class="contact-form-section">
+                <h2>Send Us a Message</h2>
+                <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactName">Full Name *</label>
+                            <input type="text" id="contactName" name="name" placeholder="Enter your name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number *</label>
+                            <input type="tel" id="contactPhone" name="phone" placeholder="Enter 10-digit number"
+                                maxlength="10" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" name="email" placeholder="Enter your email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactSubject">Subject *</label>
+                        <select id="contactSubject" name="subject" required>
+                            <option value="">Select a topic</option>
+                            <option value="sell">Selling a Device</option>
+                            <option value="buy">Buying a Product</option>
+                            <option value="pickup">Pickup Related Query</option>
+                            <option value="warranty">Warranty Support</option>
+                            <option value="refund">Refund/Return Query</option>
+                            <option value="feedback">Feedback/Suggestion</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactMessage">Your Message *</label>
+                        <textarea id="contactMessage" name="message" placeholder="Describe your query in detail..."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="contact-submit" id="contactSubmitBtn">
+                        <i class="fa-solid fa-paper-plane"></i> Send Message
+                    </button>
+
+                    <div class="form-status" id="formStatus"></div>
+                </form>
+            </section>
+
+            <!-- Contact Information -->
+            <section class="contact-info-section">
+                <h2>Get in Touch</h2>
+
+                <div class="contact-cards">
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="contact-card-content">
+                            <h4>Call Us</h4>
+                            <p><a href="tel:+919843010746">+91 98430 10746</a></p>
+                            <p style="font-size: 0.9rem; margin-top: 4px;">Mon-Fri: 10AM to 6PM</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contact-card-content">
+                            <h4>Email Us</h4>
+                            <p><a href="mailto:support@worthyten.com">support@worthyten.com</a></p>
+                            <p style="font-size: 0.9rem; margin-top: 4px;">We respond within 24 hours</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="contact-card-content">
+                            <h4>Head Office</h4>
+                            <p>Avinashi Rd, opp. to SMS Hotel,<br>Peelamedu, Coimbatore,<br>Tamil Nadu 641004</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="contact-card-content">
+                            <h4>Business Hours</h4>
+                            <ul class="hours-list">
+                                <li><span class="day">Monday - Friday</span><span class="time">10:00 AM - 6:00 PM</span>
+                                </li>
+                                <li><span class="day">Saturday</span><span class="time">10:00 AM - 4:00 PM</span></li>
+                                <li><span class="day">Sunday</span><span class="time">Closed</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Quick Actions -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--primary);">Quick Actions</h3>
+                <div class="quick-links-grid">
+                    <a href="https://wa.me/919843010746?text=Hi%20WorthyTen,%20I%20have%20a%20query" target="_blank"
+                        rel="noopener" class="quick-link-btn whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="tel:+919843010746" class="quick-link-btn">
+                        <i class="fa-solid fa-phone"></i> Call Now
+                    </a>
+                    <a href="our-stores.html" class="quick-link-btn">
+                        <i class="fa-solid fa-store"></i> View Stores
+                    </a>
+                    <a href="index.html" class="quick-link-btn">
+                        <i class="fa-solid fa-tag"></i> Sell Device
+                    </a>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3 class="footer-logo">WorthyTen</h3>
+                    <p class="footer-description">Sell your old devices instantly and get the best price. Fast, secure,
+                        and hassle-free device selling experience.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/worthyten" target="_blank" rel="noopener noreferrer"
+                            aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/worthytenofficial/" target="_blank" rel="noopener noreferrer"
+                            aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@WorthyTen" target="_blank" rel="noopener noreferrer"
+                            aria-label="YouTube" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="our-stores.html">Our Stores</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Policies</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                        <li><a href="warranty-policy.html">Warranty Policy</a></li>
+                        <li><a href="refund-policy.html">Return/Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fa-solid fa-envelope"></i><a
+                                href="mailto:support@worthyten.com">support@worthyten.com</a></li>
+                        <li><i class="fa-solid fa-phone"></i><a href="tel:+919843010746">+91 98430 10746</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i><span>Coimbatore, Tamil Nadu, India</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.
+                    </p>
+                    <div class="footer-legal">
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-conditions.html">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/ui.js" defer></script>
+    <script src="js/lazy-loading.js"></script>
+    <script>
+        document.getElementById('yearNow').textContent = new Date().getFullYear();
+
+        // Simple contact form handling
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('contactSubmitBtn');
+            const status = document.getElementById('formStatus');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+            // Simulate form submission (replace with actual backend integration)
+            setTimeout(() => {
+                status.className = 'form-status success';
+                status.textContent = '✓ Message sent successfully! We will get back to you soon.';
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
+
+                // Reset form
+                document.getElementById('contactForm').reset();
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

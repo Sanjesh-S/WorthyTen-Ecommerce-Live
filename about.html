@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
+    <title>About Us - WorthyTen | Trusted Buy & Sell Marketplace</title>
+    <meta name="description"
+        content="About WorthyTen - Your trusted destination for buying and selling electronics. Founded in 2022 in Tamil Nadu, India by Mr. Aravindhan Sakthivel." />
+    <meta name="keywords"
+        content="about WorthyTen, company history, buy sell electronics, recommerce India, Aravindhan Sakthivel" />
+    <meta name="author" content="WorthyTen" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://worthyten.com/about.html" />
+    <meta property="og:title" content="About Us - WorthyTen | Trusted Buy & Sell Marketplace" />
+    <meta property="og:description"
+        content="About WorthyTen - Your trusted destination for buying and selling electronics. Founded in 2022 in Tamil Nadu, India." />
+    <meta property="og:image" content="https://worthyten.com/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://worthyten.com/about.html" />
+    <meta name="twitter:title" content="About Us - WorthyTen | Trusted Buy & Sell Marketplace" />
+    <meta name="twitter:description"
+        content="About WorthyTen - Your trusted destination for buying and selling electronics." />
+    <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg" />
+
+    <link rel="canonical" href="https://worthyten.com/about.html" />
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d6db5 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .about-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-section {
+            padding: 60px 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-section h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .about-section p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .founder-section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .founder-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .founder-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .founder-info .title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+            padding-left: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .why-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .why-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .why-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .why-card h4 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .why-card p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            background: linear-gradient(135deg, var(--primary), #2d6db5);
+            padding: 40px;
+            border-radius: 16px;
+            margin: 40px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-item .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .stat-item .label {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            .about-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .founder-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+
+            .about-section h2::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .about-section h2 {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="header"></div>
+    <script src="js/header.js"></script>
+
+    <main id="main-content">
+
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <h1>About WorthyTen</h1>
+            <p>Your trusted destination for buying and selling electronics with confidence since 2022</p>
+        </section>
+
+        <!-- Main About Section -->
+        <section class="about-section">
+            <h2>Our Story</h2>
+            <p>
+                WorthyTen, established in Tamil Nadu, India, in 2022 as WorthyTen Recommerce Pvt Ltd, specializes in a
+                wide range of cameras, including DSLR and SLR cameras, action cameras, lenses, smartphones and laptops.
+                The company focuses on offering pre-owned, lightly used, and refurbished products, ensuring a
+                hassle-free experience for both buyers and sellers.
+            </p>
+            <p>
+                Committed to providing the best prices possible, WorthyTen aims to create a safe environment for
+                electronics transactions. To enhance customer satisfaction, we also offer free coupons, gift cards,
+                delivery, and pickup services.
+            </p>
+
+            <!-- Founder Section -->
+            <div class="founder-section">
+                <div class="founder-image">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="founder-info">
+                    <h3>Mr. Aravindhan Sakthivel</h3>
+                    <p class="title">Founder & CEO</p>
+                    <p style="margin: 0;">
+                        Aravindhan launched WorthyTen Recommerce Pvt. Ltd. in March 2022 with a mission to establish a
+                        trustworthy marketplace that meets the needs of consumers and supports a sustainable economy.
+                        His vision extends beyond commerce — it aims to foster a marketplace where enthusiasts of
+                        cameras, smartphones, laptops, and other gadgets can buy and sell with confidence.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar" role="region" aria-label="Company statistics">
+                <div class="stat-item">
+                    <div class="number">50,000+</div>
+                    <div class="label">Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">4</div>
+                    <div class="label">Store Locations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">700+</div>
+                    <div class="label">Device Models</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">₹10Cr+</div>
+                    <div class="label">Paid to Sellers</div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <h2>Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>March 2022</h4>
+                    <p>WorthyTen Recommerce Pvt. Ltd. founded in Tamil Nadu, India</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2022</h4>
+                    <p>First WorthyTen showroom opened in Coimbatore</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2023</h4>
+                    <p>Second showroom launched in Chennai</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2023</h4>
+                    <p>Private corporate office established in Coimbatore</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2024</h4>
+                    <p>Third showroom opened in Madurai, expansion to Trichy</p>
+                </div>
+            </div>
+
+            <!-- Why Choose Us -->
+            <h2>Why Buy & Sell at WorthyTen?</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <i class="fa-solid fa-tag"></i>
+                    <h4>Top Price for Your Devices</h4>
+                    <p>We believe in giving you the best value for your electronics. Our team of experts assesses the
+                        condition and specifications to ensure you receive the highest possible offer.</p>
+                </div>
+                <div class="why-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Secure Transactions</h4>
+                    <p>Security is our top priority. We've implemented state-of-the-art security measures to safeguard
+                        your personal information and ensure secure transactions.</p>
+                </div>
+                <div class="why-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Easy & Hassle-Free Process</h4>
+                    <p>Selling your devices with WorthyTen is a breeze. Our user-friendly platform allows you to get
+                        quotes quickly, and our team takes care of the rest.</p>
+                </div>
+                <div class="why-card">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    <h4>Wide Range of Devices</h4>
+                    <p>Whether you're selling the latest smartphone or a high-end camera, WorthyTen accepts a wide
+                        variety of devices across brands and models.</p>
+                </div>
+                <div class="why-card">
+                    <i class="fa-solid fa-handshake"></i>
+                    <h4>Trust & Transparency</h4>
+                    <p>WorthyTen is built on a foundation of trust and transparency. We provide accurate assessments and
+                        fair quotes for your electronics.</p>
+                </div>
+                <div class="why-card">
+                    <i class="fa-solid fa-headset"></i>
+                    <h4>Dedicated Customer Support</h4>
+                    <p>Our dedicated customer support team is just a message away, ready to provide the support you need
+                        with any questions or concerns.</p>
+                </div>
+            </div>
+
+            <!-- Vision -->
+            <h2 style="margin-top: 60px;">Our Vision</h2>
+            <p>
+                One of our key aims is to inspire sustainable practices by championing the responsible recycling and
+                reuse of electronic gadgets. Through WorthyTen, we envision a thriving ecosystem where technology lovers
+                can not only buy and sell devices but also play a vital role in reducing electronic waste, paving the
+                way for a more sustainable future.
+            </p>
+            <p>
+                The success of our initial showrooms marked the beginning of WorthyTen's venture to establish a
+                nationwide presence. Under Aravindhan Sakthivel's visionary leadership, the goal is to create branches
+                across the country, forming a network where people from various parts of India can visit, interact, and
+                engage with the vibrant community of camera and electronic gadget enthusiasts.
+            </p>
+
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="cta-banner">
+            <div class="wrap cta-wrap">
+                <h2>Ready to sell your device?</h2>
+                <p>Get a free quote in under a minute.</p>
+                <a class="cta-button" href="index.html" aria-label="Start selling your device now">Start Now <span
+                        aria-hidden="true">→</span></a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3 class="footer-logo">WorthyTen</h3>
+                    <p class="footer-description">Sell your old devices instantly and get the best price. Fast, secure,
+                        and hassle-free device selling experience.</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/worthyten" target="_blank" rel="noopener noreferrer"
+                            aria-label="Facebook" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/worthytenofficial/" target="_blank" rel="noopener noreferrer"
+                            aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@WorthyTen" target="_blank" rel="noopener noreferrer"
+                            aria-label="YouTube" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="our-stores.html">Our Stores</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Policies</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                        <li><a href="warranty-policy.html">Warranty Policy</a></li>
+                        <li><a href="refund-policy.html">Return/Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fa-solid fa-envelope"></i><a
+                                href="mailto:support@worthyten.com">support@worthyten.com</a></li>
+                        <li><i class="fa-solid fa-phone"></i><a href="tel:+919843010746">+91 98430 10746</a></li>
+                        <li><i class="fa-solid fa-location-dot"></i><span>Coimbatore, Tamil Nadu, India</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.
+                    </p>
+                    <div class="footer-legal">
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-conditions.html">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/ui.js" defer></script>
+    <script src="js/lazy-loading.js"></script>
+    <script>document.getElementById('yearNow').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

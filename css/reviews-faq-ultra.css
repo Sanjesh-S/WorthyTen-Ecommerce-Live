@@ -55,13 +55,16 @@
 }
 
 @keyframes orbFloat {
+
   0%,
   100% {
     transform: translate(0, 0) scale(1);
   }
+
   33% {
     transform: translate(80px, -100px) scale(1.1);
   }
+
   66% {
     transform: translate(-60px, 80px) scale(0.9);
   }
@@ -157,10 +160,12 @@
 }
 
 @keyframes gradientFlow {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -212,23 +217,23 @@
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(
-    90deg,
-    #c8102e 0%,
-    #ff9933 25%,
-    #f4c430 50%,
-    #138808 75%,
-    #c8102e 100%
-  );
+  background: linear-gradient(90deg,
+      #c8102e 0%,
+      #ff9933 25%,
+      #f4c430 50%,
+      #138808 75%,
+      #c8102e 100%);
   background-size: 200% 100%;
   animation: gradientShift 3s ease infinite;
 }
 
 @keyframes gradientShift {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -632,18 +637,22 @@
 .reveal-scale:nth-child(1) {
   transition-delay: 0.1s;
 }
+
 .reveal-scale:nth-child(2) {
   transition-delay: 0.2s;
 }
+
 .reveal-scale:nth-child(3) {
   transition-delay: 0.3s;
 }
+
 .reveal-scale:nth-child(4) {
   transition-delay: 0.4s;
 }
 
 /* ========== Responsive Design - South Indian Style ========== */
 @media (max-width: 1024px) {
+
   .reviews-title,
   .faq-title {
     font-size: 42px;
@@ -660,6 +669,7 @@
 }
 
 @media (max-width: 768px) {
+
   .reviews-ultra,
   .faq-ultra {
     padding: 50px 16px;
@@ -803,6 +813,7 @@
 }
 
 @media (max-width: 480px) {
+
   .reviews-ultra,
   .faq-ultra {
     padding: 40px 12px;
@@ -932,5 +943,198 @@
 
   .faq-cta-text {
     font-size: 13px;
+  }
+}
+
+/* ========== GOOGLE REVIEWS SPECIFIC STYLES ========== */
+
+/* Google Reviews Badge */
+.google-reviews-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e5e5e7;
+  border-radius: 50px;
+  padding: 10px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.google-logo {
+  flex-shrink: 0;
+}
+
+.google-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #34A853;
+  background: #e6f4ea;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.verified-badge i {
+  font-size: 12px;
+}
+
+.rating-count {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Google Review Header (in each card) */
+.google-review-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 153, 51, 0.2);
+}
+
+.google-icon-small {
+  flex-shrink: 0;
+}
+
+.review-date {
+  font-size: 13px;
+  color: #6e6e73;
+  font-weight: 500;
+}
+
+/* Avatar Initials (instead of images) */
+.review-avatar-initial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4285F4, #34A853);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+}
+
+/* Google Reviews CTA */
+.google-reviews-cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.google-reviews-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(66, 133, 244, 0.3);
+}
+
+.google-reviews-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(66, 133, 244, 0.4);
+  color: #fff;
+}
+
+.google-reviews-btn svg {
+  flex-shrink: 0;
+}
+
+.google-reviews-btn i {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.google-reviews-btn:hover i {
+  transform: translateX(4px);
+}
+
+.google-cta-note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #8b4513;
+  opacity: 0.8;
+}
+
+/* Clickable card cursor */
+.review-card-ultra[onclick] {
+  cursor: pointer;
+}
+
+.review-card-ultra[onclick]:hover::after {
+  content: 'View on Google →';
+  position: absolute;
+  bottom: 12px;
+  right: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4285F4;
+  opacity: 0.8;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .google-reviews-badge {
+    padding: 8px 16px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .google-text {
+    font-size: 14px;
+  }
+
+  .verified-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .google-review-header {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .review-date {
+    font-size: 12px;
+  }
+
+  .review-avatar-initial {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .google-reviews-btn {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  .google-cta-note {
+    font-size: 12px;
+  }
+
+  .review-card-ultra[onclick]:hover::after {
+    display: none;
   }
 }
