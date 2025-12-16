@@ -53,7 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (finalEl) finalEl.classList.add("hidden");
 
   if (img && vd.imageUrl) img.src = vd.imageUrl;
-  if (nameEl) nameEl.textContent = `${vd.brandName || ""} ${vd.modelName || ""}`.trim();
+  // Use getFullModelName to avoid duplicate brand name
+  if (nameEl) {
+    const fullName = window.getFullModelName
+      ? window.getFullModelName(vd.brandName, vd.modelName)
+      : vd.modelName || `${vd.brandName || ""} ${vd.modelName || ""}`.trim();
+    nameEl.textContent = fullName;
+  }
 
   const basePrice = Number(vd.priceAfterAccessories || 0);
 
