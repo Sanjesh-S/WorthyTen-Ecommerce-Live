@@ -1122,6 +1122,207 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'power_issue', label: 'Power Issue' }
   ];
 
+  // Category-specific assessment questions (matches user-facing assessment.html)
+  const CATEGORY_ASSESSMENT_QUESTIONS = {
+    'DSLR/Lens': [
+      { id: 'powerOn', label: 'Device powers on and functions properly?' },
+      { id: 'bodyDamage', label: 'Body free from major damage?' },
+      { id: 'lcdScreen', label: 'LCD/Touchscreen working properly?' },
+      { id: 'lensCondition', label: 'Lens free from scratches/fungus/dust?' },
+      { id: 'autofocusZoom', label: 'Autofocus and zoom work properly?' }
+    ],
+    'Phone': [
+      { id: 'powerOn', label: 'Device powers on and functions properly?' },
+      { id: 'screenCondition', label: 'Screen working without cracks/touch issues?' },
+      { id: 'bodyDamage', label: 'Body/frame free from major damage?' },
+      { id: 'batteryHealth', label: 'Battery health above 80%?' },
+      { id: 'faceIDTouchID', label: 'Face ID/Touch ID working?' },
+      { id: 'camerasFunctional', label: 'All cameras working properly?' },
+      { id: 'waterDamage', label: 'Free from water damage?' }
+    ],
+    'Laptop': [
+      { id: 'powerOn', label: 'Device powers on and boots properly?' },
+      { id: 'screenCondition', label: 'Screen free from dead pixels/cracks?' },
+      { id: 'keyboardTrackpad', label: 'Keyboard and trackpad functional?' },
+      { id: 'bodyDamage', label: 'Body/chassis free from major damage?' },
+      { id: 'batteryCycles', label: 'Battery cycle count under 300?' },
+      { id: 'portsFunctional', label: 'All ports working properly?' },
+      { id: 'chargingWorks', label: 'Laptop charges properly?' }
+    ],
+    'iPad': [
+      { id: 'powerOn', label: 'Device powers on and functions properly?' },
+      { id: 'screenCondition', label: 'Screen working without cracks/touch issues?' },
+      { id: 'bodyDamage', label: 'Body free from major damage?' },
+      { id: 'batteryHealth', label: 'Battery health above 80%?' },
+      { id: 'portsFunctional', label: 'Charging port working properly?' },
+      { id: 'camerasFunctional', label: 'All cameras working properly?' },
+      { id: 'applePencilSupport', label: 'Apple Pencil works (if supported)?' }
+    ]
+  };
+
+  const DEFAULT_ASSESSMENT_QUESTIONS = [
+    { id: 'powerOn', label: 'Device powers on and functions properly?' },
+    { id: 'bodyDamage', label: 'Body free from major damage?' },
+    { id: 'screenCondition', label: 'Screen/Display working properly?' }
+  ];
+
+  // Helper to get assessment questions for a category
+  function getAssessmentQuestionsForCategory(category) {
+    return CATEGORY_ASSESSMENT_QUESTIONS[category] || DEFAULT_ASSESSMENT_QUESTIONS;
+  }
+
+  // Category-specific physical conditions (matches physical-condition.html options)
+  const CATEGORY_PHYSICAL_CONDITIONS = {
+    'DSLR/Lens': {
+      display: [
+        { id: 'display_excellent', label: 'Excellent - No scratches' },
+        { id: 'display_good', label: 'Good - Minor scratches' },
+        { id: 'display_fair', label: 'Fair - Visible scratches' },
+        { id: 'display_cracked', label: 'Cracked/Broken Display' }
+      ],
+      body: [
+        { id: 'body_excellent', label: 'Excellent - Like New' },
+        { id: 'body_good', label: 'Good - Minor wear' },
+        { id: 'body_fair', label: 'Fair - Visible scratches/dents' },
+        { id: 'body_poor', label: 'Poor - Heavy damage' }
+      ],
+      error: [
+        { id: 'error_none', label: 'No Error Messages' },
+        { id: 'error_minor', label: 'Minor Errors (occasionally)' },
+        { id: 'error_frequent', label: 'Frequent Error Messages' },
+        { id: 'error_no_lens', label: 'Without Lens Error' }
+      ],
+      lens: [
+        { id: 'lense_good', label: 'Good Condition' },
+        { id: 'lense_focus_issue', label: 'Auto Focus/Manual Focus Issue' },
+        { id: 'lense_fungus', label: 'Fungus Issue' },
+        { id: 'lense_scratches', label: 'Scratches' }
+      ]
+    },
+    'Phone': {
+      display: [
+        { id: 'display_flawless', label: 'Flawless - No scratches' },
+        { id: 'display_minor', label: 'Minor scratches' },
+        { id: 'display_visible', label: 'Visible scratches' },
+        { id: 'display_cracked', label: 'Cracked screen' }
+      ],
+      body: [
+        { id: 'body_pristine', label: 'Pristine - Like new' },
+        { id: 'body_light', label: 'Light wear/scratches' },
+        { id: 'body_moderate', label: 'Moderate scratches/dents' },
+        { id: 'body_heavy', label: 'Heavy damage/dents' }
+      ],
+      frame: [
+        { id: 'frame_perfect', label: 'Perfect condition' },
+        { id: 'frame_minor', label: 'Minor scuffs' },
+        { id: 'frame_visible', label: 'Visible scratches' },
+        { id: 'frame_damaged', label: 'Bent/Damaged frame' }
+      ]
+    },
+    'Laptop': {
+      display: [
+        { id: 'display_perfect', label: 'Perfect - No issues' },
+        { id: 'display_minor', label: 'Minor scratches/marks' },
+        { id: 'display_spots', label: 'Dead pixels/bright spots' },
+        { id: 'display_damaged', label: 'Cracked/Damaged screen' }
+      ],
+      body: [
+        { id: 'body_mint', label: 'Mint condition' },
+        { id: 'body_light', label: 'Light wear' },
+        { id: 'body_moderate', label: 'Moderate scratches/dents' },
+        { id: 'body_heavy', label: 'Heavy damage/dents' }
+      ],
+      keyboard: [
+        { id: 'keyboard_perfect', label: 'All keys perfect' },
+        { id: 'keyboard_shine', label: 'Key shine/wear' },
+        { id: 'keyboard_sticky', label: 'Some sticky/loose keys' },
+        { id: 'keyboard_broken', label: 'Broken/missing keys' }
+      ]
+    },
+    'iPad': {
+      display: [
+        { id: 'display_flawless', label: 'Flawless - No scratches' },
+        { id: 'display_minor', label: 'Minor scratches' },
+        { id: 'display_visible', label: 'Visible scratches' },
+        { id: 'display_cracked', label: 'Cracked screen' }
+      ],
+      body: [
+        { id: 'body_pristine', label: 'Pristine - Like new' },
+        { id: 'body_light', label: 'Light wear/scratches' },
+        { id: 'body_moderate', label: 'Moderate scratches/dents' },
+        { id: 'body_heavy', label: 'Heavy damage/bent' }
+      ],
+      ports: [
+        { id: 'ports_perfect', label: 'Port works perfectly' },
+        { id: 'ports_loose', label: 'Slightly loose connection' },
+        { id: 'ports_intermittent', label: 'Intermittent charging' },
+        { id: 'ports_broken', label: 'Port not working' }
+      ]
+    }
+  };
+
+  const DEFAULT_PHYSICAL_CONDITIONS = {
+    display: [
+      { id: 'display_good', label: 'Good Condition' },
+      { id: 'display_cracked', label: 'Cracked/Damaged' }
+    ],
+    body: [
+      { id: 'body_good', label: 'Good Condition' },
+      { id: 'body_damaged', label: 'Damaged' }
+    ]
+  };
+
+  // Helper to get physical conditions for a category
+  function getPhysicalConditionsForCategory(category) {
+    return CATEGORY_PHYSICAL_CONDITIONS[category] || DEFAULT_PHYSICAL_CONDITIONS;
+  }
+
+  // Category-specific functional issues
+  const CATEGORY_FUNCTIONAL_ISSUES = {
+    'DSLR/Lens': [
+      { id: 'battery_weak', label: 'Battery Weak or Not Working' },
+      { id: 'flashlight_broken', label: 'Flashlight Not Working' },
+      { id: 'memory_slot_issue', label: 'Memory Card Slot Issue' },
+      { id: 'speaker_broken', label: 'Speaker Not Working' },
+      { id: 'connectors_broken', label: 'Connectors Not Working' },
+      { id: 'buttons_broken', label: 'Buttons Not Working' }
+    ],
+    'Phone': [
+      { id: 'earpiece_issue', label: 'Earpiece/Speaker Issue' },
+      { id: 'mic_issue', label: 'Microphone Not Working' },
+      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
+      { id: 'sensor_issue', label: 'Sensors Not Working' },
+      { id: 'vibration_issue', label: 'Vibration Not Working' },
+      { id: 'buttons_broken', label: 'Physical Buttons Issue' }
+    ],
+    'Laptop': [
+      { id: 'speaker_broken', label: 'Speakers Not Working' },
+      { id: 'mic_issue', label: 'Microphone Not Working' },
+      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
+      { id: 'webcam_issue', label: 'Webcam Not Working' },
+      { id: 'usb_ports_issue', label: 'USB Ports Not Working' },
+      { id: 'battery_drain', label: 'Battery Drains Quickly' }
+    ],
+    'iPad': [
+      { id: 'speaker_broken', label: 'Speakers Not Working' },
+      { id: 'mic_issue', label: 'Microphone Not Working' },
+      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
+      { id: 'sensor_issue', label: 'Sensors Not Working' },
+      { id: 'buttons_broken', label: 'Physical Buttons Issue' },
+      { id: 'pencil_issue', label: 'Apple Pencil Not Detected' }
+    ]
+  };
+
+  const DEFAULT_FUNCTIONAL_ISSUES = [
+    { id: 'speaker_broken', label: 'Speaker Not Working' },
+    { id: 'buttons_broken', label: 'Buttons Not Working' }
+  ];
+
+  // Helper to get functional issues for a category
+  function getFunctionalIssuesForCategory(category) {
+    return CATEGORY_FUNCTIONAL_ISSUES[category] || DEFAULT_FUNCTIONAL_ISSUES;
+  }
+
   // Category-specific bonuses
   const CATEGORY_BONUSES = {
     'Phone': [
@@ -1234,7 +1435,12 @@ document.addEventListener('DOMContentLoaded', () => {
     filteredProducts.forEach(p => {
       const option = document.createElement('option');
       option.value = p.id;
-      option.textContent = `${p.brand || ''} ${p.name || ''}`.trim();
+      // Avoid duplicate brand name (e.g., "Canon Canon EOS 200D")
+      const brand = p.brand || '';
+      const name = p.name || '';
+      option.textContent = name.toLowerCase().startsWith(brand.toLowerCase())
+        ? name
+        : `${brand} ${name}`.trim();
       option.dataset.name = p.name;
       option.dataset.brand = p.brand;
       option.dataset.category = p.category;
@@ -1300,16 +1506,19 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadProductPricing(productId, productInfo) {
     const formContainer = document.getElementById('pricing-form-container');
     const emptyState = document.getElementById('pricing-empty-state');
-    const issuesGrid = document.getElementById('pricing-issues-grid');
     const bonusesGrid = document.getElementById('pricing-bonuses-grid');
 
     // Show form, hide empty state
     formContainer.style.display = 'block';
     emptyState.style.display = 'none';
 
-    // Set product info
-    document.getElementById('pricing-product-name').textContent =
-      `${productInfo.brand || ''} ${productInfo.name || ''}`.trim();
+    // Set product info - avoid duplicate brand name (e.g., "Canon Canon EOS 200D")
+    const brand = productInfo.brand || '';
+    const name = productInfo.name || '';
+    const displayName = name.toLowerCase().startsWith(brand.toLowerCase())
+      ? name
+      : `${brand} ${name}`.trim();
+    document.getElementById('pricing-product-name').textContent = displayName;
     document.getElementById('pricing-base-price').textContent =
       `₹${Number(productInfo.price).toLocaleString('en-IN')}`;
 
@@ -1324,23 +1533,75 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error loading pricing:', error);
     }
 
-    // Get category-specific issues and bonuses
-    const categoryIssues = getIssuesForCategory(productInfo.category);
+    // Get category-specific data
     const categoryBonuses = getBonusesForCategory(productInfo.category);
+    const categoryAssessmentQuestions = getAssessmentQuestionsForCategory(productInfo.category);
+    const categoryPhysicalConditions = getPhysicalConditionsForCategory(productInfo.category);
 
-    // Render issue fields
-    issuesGrid.innerHTML = categoryIssues.map(issue => `
-      <div class="form-group">
-        <label for="issue-${issue.id}">${issue.label}</label>
-        <input type="number" 
-               id="issue-${issue.id}" 
-               class="form-input pricing-issue-input" 
-               data-issue-id="${issue.id}"
-               value="${existingPricing.issues?.[issue.id]?.deduction || 0}" 
-               min="0" 
-               placeholder="₹ Deduction">
-      </div>
-    `).join('');
+    // Render assessment question fields
+    const assessmentGrid = document.getElementById('pricing-assessment-grid');
+    if (assessmentGrid) {
+      assessmentGrid.innerHTML = categoryAssessmentQuestions.map(question => `
+        <div class="form-group">
+          <label for="assessment-${question.id}">${question.label}</label>
+          <input type="number" 
+                 id="assessment-${question.id}" 
+                 class="form-input pricing-assessment-input" 
+                 data-question-id="${question.id}"
+                 value="${existingPricing.assessmentDeductions?.[question.id]?.deduction || 0}" 
+                 min="0" 
+                 placeholder="₹ Deduction">
+        </div>
+      `).join('');
+    }
+
+    // Render physical condition options (grouped by category - Display, Body, Error, Lens)
+    const conditionsContainer = document.getElementById('pricing-conditions-container');
+    if (conditionsContainer) {
+      let html = '';
+      Object.entries(categoryPhysicalConditions).forEach(([groupName, options]) => {
+        const groupTitle = groupName.charAt(0).toUpperCase() + groupName.slice(1);
+        html += `
+          <div style="margin-bottom: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="margin: 0 0 12px 0; color: #333;">${groupTitle} Condition</h4>
+            <div class="product-form-grid">
+              ${options.map(opt => `
+                <div class="form-group">
+                  <label for="condition-${opt.id}">${opt.label}</label>
+                  <input type="number" 
+                         id="condition-${opt.id}" 
+                         class="form-input pricing-condition-input" 
+                         data-condition-id="${opt.id}"
+                         data-condition-group="${groupName}"
+                         value="${existingPricing.conditionDeductions?.[opt.id]?.deduction || 0}" 
+                         min="0" 
+                         placeholder="₹ Deduction">
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      conditionsContainer.innerHTML = html;
+    }
+
+    // Render functional issues fields
+    const categoryFunctionalIssues = getFunctionalIssuesForCategory(productInfo.category);
+    const functionalGrid = document.getElementById('pricing-functional-grid');
+    if (functionalGrid) {
+      functionalGrid.innerHTML = categoryFunctionalIssues.map(issue => `
+        <div class="form-group">
+          <label for="functional-${issue.id}">${issue.label}</label>
+          <input type="number" 
+                 id="functional-${issue.id}" 
+                 class="form-input pricing-functional-input" 
+                 data-functional-id="${issue.id}"
+                 value="${existingPricing.functionalIssueDeductions?.[issue.id]?.deduction || 0}" 
+                 min="0" 
+                 placeholder="₹ Deduction">
+        </div>
+      `).join('');
+    }
 
     // Render bonus fields
     bonusesGrid.innerHTML = categoryBonuses.map(bonus => `
@@ -1384,16 +1645,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const productCategory = formContainer.dataset.productCategory || '';
     const categoryIssues = getIssuesForCategory(productCategory);
     const categoryBonuses = getBonusesForCategory(productCategory);
+    const categoryAssessmentQuestions = getAssessmentQuestionsForCategory(productCategory);
 
-    // Collect issue deductions
-    const issues = {};
-    document.querySelectorAll('.pricing-issue-input').forEach(input => {
-      const issueId = input.dataset.issueId;
+    // Collect assessment question deductions
+    const assessmentDeductions = {};
+    document.querySelectorAll('.pricing-assessment-input').forEach(input => {
+      const questionId = input.dataset.questionId;
       const deduction = Number(input.value) || 0;
-      const issueConfig = categoryIssues.find(i => i.id === issueId);
-      issues[issueId] = {
+      const questionConfig = categoryAssessmentQuestions.find(q => q.id === questionId);
+      assessmentDeductions[questionId] = {
         deduction: deduction,
-        label: issueConfig?.label || issueId
+        label: questionConfig?.label || questionId
+      };
+    });
+
+    // Collect physical condition deductions
+    const conditionDeductions = {};
+    const categoryPhysicalConditions = getPhysicalConditionsForCategory(productCategory);
+    document.querySelectorAll('.pricing-condition-input').forEach(input => {
+      const conditionId = input.dataset.conditionId;
+      const groupName = input.dataset.conditionGroup;
+      const deduction = Number(input.value) || 0;
+      // Find label from conditions
+      let label = conditionId;
+      if (categoryPhysicalConditions[groupName]) {
+        const conditionConfig = categoryPhysicalConditions[groupName].find(c => c.id === conditionId);
+        if (conditionConfig) label = conditionConfig.label;
+      }
+      conditionDeductions[conditionId] = {
+        deduction: deduction,
+        label: label,
+        group: groupName
+      };
+    });
+
+    // Collect functional issue deductions
+    const functionalIssueDeductions = {};
+    const categoryFunctionalIssues = getFunctionalIssuesForCategory(productCategory);
+    document.querySelectorAll('.pricing-functional-input').forEach(input => {
+      const functionalId = input.dataset.functionalId;
+      const deduction = Number(input.value) || 0;
+      const issueConfig = categoryFunctionalIssues.find(i => i.id === functionalId);
+      functionalIssueDeductions[functionalId] = {
+        deduction: deduction,
+        label: issueConfig?.label || functionalId
       };
     });
 
@@ -1421,7 +1716,9 @@ document.addEventListener('DOMContentLoaded', () => {
       productName: formContainer.dataset.productName,
       productBrand: formContainer.dataset.productBrand,
       basePrice: Number(formContainer.dataset.basePrice) || 0,
-      issues: issues,
+      assessmentDeductions: assessmentDeductions,
+      conditionDeductions: conditionDeductions,
+      functionalIssueDeductions: functionalIssueDeductions,
       bonuses: bonuses,
       ageDeductions: ageDeductions,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),

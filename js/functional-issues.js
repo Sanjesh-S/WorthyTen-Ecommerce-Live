@@ -35,12 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const proceedBtn = document.getElementById('proceedToAccessoriesBtn');
 
   const issues = [
-    { id: 'battery', label: 'Battery weak or Not working or Duplicate', img: 'images/issue-battery.svg', deduction: 0.15 },
-    { id: 'flashlight', label: 'Flashlight not Working', img: 'images/issue-flashlight.svg', deduction: 0.05 },
-    { id: 'memory_slot', label: 'Memory Card Slot issue', img: 'images/issue-memory-card.svg', deduction: 0.20 },
-    { id: 'speaker', label: 'Speaker not working', img: 'images/issue-speaker.svg', deduction: 0.10 },
-    { id: 'connectors', label: 'Connectors not working', img: 'images/issue-connectors.svg', deduction: 0.15 },
-    { id: 'buttons', label: 'Buttons not working', img: 'images/issue-buttons.svg', deduction: 0.10 }
+    { id: 'battery', label: 'Battery weak or Not working or Duplicate', icon: 'fa-solid fa-battery-half', deduction: 0.15 },
+    { id: 'flashlight', label: 'Flashlight not Working', icon: 'fa-solid fa-lightbulb', deduction: 0.05 },
+    { id: 'memory_slot', label: 'Memory Card Slot issue', icon: 'fa-solid fa-memory', deduction: 0.20 },
+    { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark', deduction: 0.10 },
+    { id: 'connectors', label: 'Connectors not working', icon: 'fa-solid fa-plug', deduction: 0.15 },
+    { id: 'buttons', label: 'Buttons not working', icon: 'fa-regular fa-circle-dot', deduction: 0.10 }
   ];
   const selected = new Set();
   let noIssuesSelected = false; // NEW: Track "No Issues" state
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderIssues() {
     issuesGrid.innerHTML = issues.map(i => `
       <div class="issue-card" data-id="${i.id}" data-deduction="${i.deduction}" data-label="${i.label}">
-        <img src="${i.img}" alt="${i.label}" class="issue-image" loading="lazy" width="120" height="120">
+        <i class="${i.icon} issue-icon"></i>
         <p class="issue-label">${i.label}</p>
       </div>
     `).join('');
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function recalc() {
     let current = basePrice;
 
-    // Map local issue IDs to productPricing issue IDs
+    // Map local issue IDs to productPricing functional issue IDs
     const issueIdMapping = {
       'battery': 'battery_weak',
       'flashlight': 'flashlight_broken',
@@ -134,9 +134,9 @@ document.addEventListener("DOMContentLoaded", () => {
     selected.forEach(id => {
       const mappedId = issueIdMapping[id] || id;
 
-      // Use fixed amount from productPricing ONLY
-      if (productPricingData && productPricingData.issues && productPricingData.issues[mappedId]) {
-        const fixedDeduction = Number(productPricingData.issues[mappedId].deduction) || 0;
+      // Use fixed amount from productPricing functionalIssueDeductions
+      if (productPricingData && productPricingData.functionalIssueDeductions && productPricingData.functionalIssueDeductions[mappedId]) {
+        const fixedDeduction = Number(productPricingData.functionalIssueDeductions[mappedId].deduction) || 0;
         current -= fixedDeduction;
       }
       // No percentage fallback - if no pricing configured, no deduction

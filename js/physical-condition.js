@@ -1,4 +1,6 @@
-// js/physical-condition.js (v6 - FIXED)
+// js/physical-condition.js
+// NOTE: All price deductions are now sourced from Firestore productPricing collection
+
 document.addEventListener("DOMContentLoaded", () => {
   // Load data
   const s = sessionStorage.getItem('valuationData');
@@ -17,12 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const finalQuoteContainer = document.getElementById('finalQuoteContainer');
   const proceedBtn = document.getElementById('proceedToIssuesBtn');
 
-  // --- NEW: Sidebar Elements ---
+  // --- Sidebar Elements ---
   const evaluationImage = document.getElementById('evaluationImage');
   const evaluationModel = document.getElementById('evaluationModel');
   const evaluationList = document.getElementById('evaluation-summary-list');
 
-  // --- NEW: Populate Sidebar Info ---
+  // --- Populate Sidebar Info ---
   if (evaluationImage && vd.imageUrl) evaluationImage.src = vd.imageUrl;
   if (evaluationModel) {
     const fullName = window.getFullModelName ?
@@ -57,12 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
     vd.category = category; // Update in valuation data
   }
 
-  // Get category-based physical conditions
+  // Get category-based physical conditions (no deduction values - those come from Firestore)
   const categoryConditions = window.getPhysicalConditions ?
     window.getPhysicalConditions(category) :
     {
-      display: [{ id: 'display_good', label: 'Good Condition', img: 'images/display-good.svg', deduction: 0 }],
-      body: [{ id: 'body_good', label: 'No Defects', img: 'images/body-no-defects.svg', deduction: 0 }]
+      display: [{ id: 'display_good', label: 'Good Condition', img: 'images/display-good.svg' }],
+      body: [{ id: 'body_good', label: 'No Defects', img: 'images/body-no-defects.svg' }]
     };
 
   const conditions = categoryConditions;
@@ -70,21 +72,28 @@ document.addEventListener("DOMContentLoaded", () => {
   // Dynamically build selections and category names from loaded conditions
   const selections = {};
   const selectionLabels = {};
+  const selectionIds = {}; // Store selected condition IDs for Firestore lookup
   const categoryNames = {};
 
   Object.keys(conditions).forEach(key => {
     selections[key] = null;
     selectionLabels[key] = null;
+    selectionIds[key] = null;
     // Capitalize first letter for display
     categoryNames[key] = key.charAt(0).toUpperCase() + key.slice(1) + ' Condition';
   });
 
   function card(c, cat) {
+    // Support both icon (Font Awesome) and img (image file) properties
+    const visualElement = c.icon
+      ? `<i class="${c.icon} condition-icon"></i>`
+      : `<img src="${c.img}" alt="${c.label}" class="condition-image" loading="lazy" width="140" height="140" onerror="this.style.display='none'">`;
+
     return `
-      <div class="condition-card" data-id="${c.id}" data-category="${cat}" data-deduction="${c.deduction}" data-label="${c.label}">
-        <img src="${c.img}" alt="${c.label}" class="condition-image" loading="lazy" width="140" height="140">
-        <p class="condition-label">${c.label}</p>
-      </div>`;
+    <div class="condition-card" data-id="${c.id}" data-category="${cat}" data-label="${c.label}">
+      ${visualElement}
+      <p class="condition-label">${c.label}</p>
+    </div>`;
   }
 
   // Gracefully support either #lensConditionGrid or #lenseConditionGrid in your HTML
@@ -170,19 +179,38 @@ document.addEventListener("DOMContentLoaded", () => {
         conditions.keyboard.map(c => card(c, 'keyboard')).join(''));
     }
 
+    // Handle iPad-specific ports condition
+    if (conditions.ports) {
+      let portsSection = get('portsConditionGrid')?.closest('.condition-section');
+      if (!portsSection) {
+        const bodySection = get('bodyConditionGrid')?.closest('.condition-section');
+        if (bodySection) {
+          portsSection = document.createElement('div');
+          portsSection.className = 'condition-section';
+          portsSection.innerHTML = `
+            <h2 class="condition-title">Ports Condition</h2>
+            <div class="condition-grid" id="portsConditionGrid"></div>
+          `;
+          bodySection.after(portsSection);
+        }
+      }
+      set(get('portsConditionGrid'),
+        conditions.ports.map(c => card(c, 'ports')).join(''));
+    }
+
     // Add click event listeners to all condition cards after rendering
     document.querySelectorAll('.condition-card').forEach(card => {
       card.addEventListener('click', handleCardClick);
     });
 
-    // NEW: Initial sidebar render
+    // Initial sidebar render
     updateEvaluationSidebar();
   }
 
-  // NEW: Store product pricing from Firestore
+  // Store product pricing from Firestore
   let productPricingData = null;
 
-  // NEW: Load product-specific pricing from Firestore
+  // Load product-specific pricing from Firestore
   async function loadProductPricing() {
     if (!window.firebase || !firebase.firestore) return null;
     try {
@@ -203,6 +231,62 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize pricing lookup
   loadProductPricing();
 
+  // Map condition IDs to Firestore issue IDs
+  const CONDITION_TO_ISSUE_MAP = {
+    // Display conditions
+    'display_excellent': null, // No deduction
+    'display_good': 'display_scratched',
+    'display_fair': 'display_scratched',
+    'display_cracked': 'display_cracked',
+    'display_flawless': null,
+    'display_minor': 'display_scratched',
+    'display_visible': 'display_scratched',
+    'display_perfect': null,
+    'display_spots': 'display_scratched',
+    'display_damaged': 'display_cracked',
+
+    // Body conditions
+    'body_excellent': null,
+    'body_good': 'body_scratches',
+    'body_fair': 'body_scratches',
+    'body_poor': 'body_dents',
+    'body_pristine': null,
+    'body_light': 'body_scratches',
+    'body_moderate': 'body_scratches',
+    'body_heavy': 'body_dents',
+    'body_mint': null,
+
+    // Error conditions (DSLR)
+    'error_none': null,
+    'error_minor': 'error_messages',
+    'error_frequent': 'error_messages',
+    'error_no_lens': 'error_messages',
+
+    // Lens conditions (DSLR)
+    'lense_good': null,
+    'lense_focus_issue': 'focus_issue',
+    'lense_fungus': 'lens_fungus',
+    'lense_scratches': 'lens_scratches',
+
+    // Frame conditions (Phone)
+    'frame_perfect': null,
+    'frame_minor': 'body_scratches',
+    'frame_visible': 'body_scratches',
+    'frame_damaged': 'body_dents',
+
+    // Keyboard conditions (Laptop)
+    'keyboard_perfect': null,
+    'keyboard_shine': null,
+    'keyboard_sticky': 'keyboard_issue',
+    'keyboard_broken': 'keyboard_issue',
+
+    // Ports conditions (iPad)
+    'ports_perfect': null,
+    'ports_loose': 'charging_port',
+    'ports_intermittent': 'charging_port',
+    'ports_broken': 'charging_port'
+  };
+
   function allChosen() {
     // Check all available condition categories for this device type
     return Object.keys(conditions).every(k => selections[k] !== null);
@@ -211,90 +295,60 @@ document.addEventListener("DOMContentLoaded", () => {
   function recalc() {
     let current = basePrice;
 
-    Object.entries(selections).forEach(([cat, deduction]) => {
-      if (deduction === null) return;
+    // Only apply deductions if we have Firestore pricing data with conditionDeductions
+    if (productPricingData && productPricingData.conditionDeductions) {
+      Object.entries(selectionIds).forEach(([cat, conditionId]) => {
+        if (!conditionId) return;
 
-      // Use fixed amount from productPricing ONLY
-      if (productPricingData && productPricingData.issues) {
-        const selectedCard = document.querySelector(`.condition-card[data-category="${cat}"].selected`);
-        const selectedId = selectedCard?.dataset.id || '';
+        // Look up deduction directly by condition ID
+        if (productPricingData.conditionDeductions[conditionId]) {
+          const deduction = Number(productPricingData.conditionDeductions[conditionId].deduction) || 0;
+          current -= deduction;
+        }
+        // If condition not configured in admin, no deduction
+      });
+    }
+    // If no productPricingData, no deductions - price stays at base
 
-        // Look for a matching issue in productPricing
-        let fixedDeduction = 0;
-        Object.entries(productPricingData.issues).forEach(([issueId, issueData]) => {
-          if (selectedId.includes(issueId.replace('_', '')) || issueId.includes(cat)) {
-            if (issueData.deduction > 0) {
-              fixedDeduction = Number(issueData.deduction);
-            }
-          }
-        });
-        current -= fixedDeduction;
-      }
-      // No percentage fallback - if no pricing configured, no deduction
-    });
-
+    // Floor at minimum (5% of base to avoid negative/zero)
     const finalPrice = Math.round(Math.max(current, basePrice * 0.05));
     vd.priceAfterPhysical = finalPrice;
-    vd.usedFixedPricing = true;
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
     try { window.updateOfferDrawer?.(vd); } catch { }
   }
 
-  // --- NEW: Sidebar Update Function ---
+  // --- Sidebar Update Function ---
   function updateEvaluationSidebar() {
     if (!evaluationList) return;
     evaluationList.innerHTML = ''; // Clear the list
 
-    // Map assessment question IDs to their text
-    const questionMap = {
-      powerOn: 'Does your camera power on and function properly?',
-      bodyDamage: 'Is the camera body free from major damage (cracks, dents, water damage)?',
-      lcdScreen: 'Is the LCD/Touchscreen working without cracks or display issues?',
-      lensCondition: 'Is the lens (if included) free from scratches, fungus, or dust?',
-      autofocusZoom: 'Does autofocus and zoom work properly on your camera/lens?',
-      hasAdditionalLens: 'Do you have any additional lens?'
-    };
-
-    // Show previous step's summary
-    if (vd.assessmentAnswers) {
-      Object.keys(vd.assessmentAnswers).forEach((key, index) => {
-        const questionText = questionMap[key] || key;
-        const answerText = vd.assessmentAnswers[key] === 'yes' ? 'Yes' : 'No';
-        evaluationList.innerHTML += `
-              <div class="evaluation-item">
-                <span class="evaluation-question">${index + 1}. ${questionText}</span>
-                <span class="evaluation-answer">• ${answerText}</span>
-              </div>`;
-      });
-    }
-
-    // Show current selections
+    // Show ONLY selected physical conditions (like assessment page)
     Object.keys(selections).forEach(cat => {
       if (selectionLabels[cat]) {
         evaluationList.innerHTML += `
-          <div class="evaluation-item">
-            <span class="evaluation-question">${categoryNames[cat]}</span>
-            <span class="evaluation-answer">• ${selectionLabels[cat]}</span>
-          </div>`;
+        <div class="evaluation-item">
+          <span class="evaluation-question">${categoryNames[cat]}</span>
+          <span class="evaluation-answer">• ${selectionLabels[cat]}</span>
+        </div>`;
       }
     });
   }
 
   function updateProceedButton() {
-    // This function is no longer needed as button is always visible
-    // and validation is on click
+    // Button is always visible, validation is on click
   }
 
   // Fixed click handler
   function handleCardClick(e) {
-    const card = e.currentTarget; // Use currentTarget instead of closest
+    const card = e.currentTarget;
     const cat = card.dataset.category;
-    const deduction = parseFloat(card.dataset.deduction);
+    const conditionId = card.dataset.id;
     const label = card.dataset.label;
 
     // Update selection
-    selections[cat] = deduction;
-    selectionLabels[cat] = label; // NEW: Store label for sidebar
+    selections[cat] = true; // Mark as selected
+    selectionLabels[cat] = label;
+    selectionIds[cat] = conditionId; // Store the condition ID for Firestore lookup
 
     // Remove selected class from all cards in this category
     document.querySelectorAll(`.condition-card[data-category="${cat}"]`).forEach(c => {
@@ -307,20 +361,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Recalculate and update UI
     recalc();
     updateProceedButton();
-    updateEvaluationSidebar(); // NEW: Update sidebar
+    updateEvaluationSidebar();
   }
 
   // Next button
   proceedBtn?.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // NEW: Validation check
+    // Validation check
     const firstUnanswered = Object.keys(selections).find(k => selections[k] === null);
     if (firstUnanswered) {
       alert(`Please select an option for ${categoryNames[firstUnanswered]}.`);
       return;
     }
 
+    // Store selected condition IDs for reference
+    vd.physicalConditions = selectionIds;
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
     window.location.href = 'functional-issues.html';
   });

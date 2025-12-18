@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
+    <title>Additional Lens - WorthyTen</title>
+    <meta name="description" content="Select additional lenses for your camera." />
+
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link href="css/style.css?v=1.3.2" rel="stylesheet" />
+    <link href="css/dark-mode.css?v=1.0.0" rel="stylesheet" />
+    <link href="css/mobile-ux.css?v=1.0.0" rel="stylesheet" />
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#1b4c87">
+    <script src="js/logger.js"></script>
+    <script src="js/theme-toggle.js"></script>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="index.html" aria-label="WorthyTen Home">
+                    <h1 class="logo-text">WorthyTen</h1>
+                </a>
+            </div>
+
+            <nav class="header-nav" aria-label="Main navigation">
+                <ul class="nav-links">
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#reviews">Reviews</a></li>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="account.html">My Account</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="admin-login.html" class="btn-secondary">Admin</a>
+                <a href="index.html" class="btn-primary">Sell Now</a>
+            </div>
+
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <script src="js/header.js"></script>
+    <script src="js/ui.js"></script>
+
+    <main id="main-content" class="main-container">
+
+        <div class="brand-divider"><span class="divider-text">Additional Lens</span></div>
+
+        <div class="page-layout">
+            <!-- Main Content -->
+            <div class="selection-container" id="lens-selection" role="region" aria-label="Lens selection">
+                <!-- Back Button - Left aligned like other pages -->
+                <a href="#" id="backToAssessment" class="back-button" aria-label="Go back to assessment">
+                    ← Back to Assessment
+                </a>
+
+                <h1 class="page-title">Select Your Additional Lens</h1>
+                <p class="page-subtitle">Choose any compatible lenses you want to sell along with your camera</p>
+
+                <!-- Search Bar -->
+                <div class="search-bar-container" style="max-width: 600px; margin: 0 0 1.5rem 0;">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                        <label for="lens-search-input" class="sr-only">Search for a lens</label>
+                        <input placeholder="Search for a lens" type="text" id="lens-search-input"
+                            aria-label="Search for a lens" autocomplete="off" />
+                    </div>
+                </div>
+
+                <!-- Lens Dropdown Section -->
+                <div class="lens-form-section">
+                    <label class="form-label">DSLR Camera Lens</label>
+
+                    <div class="lens-dropdown-wrapper" id="lensDropdownWrapper">
+                        <select id="lensSelect" class="lens-dropdown">
+                            <option value="">Select a lens...</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                    </div>
+
+                    <!-- Selected Lenses List -->
+                    <div id="selectedLensesList" class="selected-lenses-list"></div>
+
+                    <!-- Add Another Lens Button -->
+                    <button type="button" id="addAnotherBtn" class="add-another-btn" style="display: none;">
+                        <i class="fa-solid fa-plus"></i> Add Another Lens
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="loading-state">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>Loading compatible lenses...</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="physical-condition.html" class="skip-link-btn" id="skipBtn">
+                        <i class="fa-solid fa-forward"></i> Skip - I don't have additional lens
+                    </a>
+                    <button id="continueBtn" class="cta-button">
+                        Continue with selected lens →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Device Evaluation Sidebar -->
+            <aside class="evaluation-sidebar" id="evaluationSidebar">
+                <h2 class="sidebar-title">Device Evaluation</h2>
+
+                <div class="device-info">
+                    <img id="sidebarDeviceImage" src="" alt="Camera" class="device-image" />
+                    <h3 id="sidebarDeviceName" class="device-name">Loading...</h3>
+                </div>
+
+                <div class="sidebar-divider"></div>
+
+                <div class="selected-lenses-sidebar">
+                    <h4 class="sidebar-section-title">Selected Lenses</h4>
+                    <div id="sidebarSelectedLenses" class="sidebar-lens-list">
+                        <p class="no-lenses-text">No lenses selected yet</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <div class="footer-bottom-content">
+                    <p class="copyright">© <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('yearNow').textContent = new Date().getFullYear();
+    </script>
+
+    <!-- Firebase -->
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script defer src="js/firebase-config.js"></script>
+
+    <!-- Lens Compatibility -->
+    <script src="js/lens-compatibility-smart.js"></script>
+
+    <!-- Page Logic -->
+    <script defer src="js/lens-selection.js?v=3.0.0"></script>
+
+    <style>
+        /* Match other pages styling */
+        .selection-container {
+            padding: 2rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0 0 2rem;
+        }
+
+        .lens-form-section {
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lens-dropdown-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .lens-dropdown {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            font-size: 1rem;
+            color: var(--text);
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lens-dropdown:hover {
+            border-color: var(--primary);
+        }
+
+        .lens-dropdown:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(27, 76, 135, 0.1);
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .selected-lenses-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .selected-lens-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .selected-lens-name {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .remove-lens-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .remove-lens-btn:hover {
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .add-another-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.5rem 0;
+        }
+
+        .add-another-btn:hover {
+            text-decoration: underline;
+        }
+
+        .loading-state {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .loading-state.hidden {
+            display: none;
+        }
+
+        /* Action Buttons - Similar to other pages */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+            margin-top: 2rem;
+        }
+
+        .skip-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .skip-link-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(27, 76, 135, 0.05);
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+
+        /* Two-column page layout */
+        .page-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Device Evaluation Sidebar */
+        .evaluation-sidebar {
+            position: sticky;
+            top: 100px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0 0 1.25rem;
+        }
+
+        .device-info {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .device-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin: 0 auto 0.75rem;
+            display: block;
+            background: var(--background);
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        .device-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1rem 0;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-lens-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar-lens-item {
+            padding: 0.5rem 0.75rem;
+            background: var(--background);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-lens-item::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .no-lenses-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .evaluation-sidebar {
+                position: static;
+                order: -1;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .selection-container {
+                padding: 1rem;
+            }
+
+            .action-buttons {
+                max-width: 100%;
+            }
+        }
+    </style>
+</body>
+
+</html>

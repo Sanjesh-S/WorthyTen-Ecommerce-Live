@@ -39,6 +39,58 @@
   <script src="js/accessibility.js"></script>
   <script src="js/theme-toggle.js"></script>
   <script src="js/pwa-install.js" defer></script>
+
+  <style>
+    /* Condition card icon styling */
+    .condition-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    /* Icon color classes */
+    .condition-icon.text-success {
+      color: #22c55e;
+    }
+
+    .condition-icon.text-info {
+      color: #3b82f6;
+    }
+
+    .condition-icon.text-warning {
+      color: #f59e0b;
+    }
+
+    .condition-icon.text-danger {
+      color: #ef4444;
+    }
+
+    .condition-icon.text-muted {
+      color: #9ca3af;
+    }
+
+    /* Condition card styling improvements */
+    .condition-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      min-height: 120px;
+    }
+
+    .condition-label {
+      font-size: 0.85rem;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    /* Hide broken images */
+    .condition-image[src=""] {
+      display: none;
+    }
+  </style>
 </head>
 
 <body data-step="4">

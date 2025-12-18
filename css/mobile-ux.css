@@ -146,7 +146,8 @@
 /* ========== Safe Area Support ========== */
 @supports (padding: env(safe-area-inset-bottom)) {
     .site-header {
-        padding-top: env(safe-area-inset-top);
+        /* Add safe area inset ON TOP of existing 16px padding */
+        padding-top: calc(16px + env(safe-area-inset-top));
     }
 
     .footer-ultra {

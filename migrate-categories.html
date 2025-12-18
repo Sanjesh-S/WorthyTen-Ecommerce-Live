@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Migration - Split DSLR/Lens</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1b4c87;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Login Section */
+        .login-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-section h2 {
+            margin-top: 0;
+            color: #495057;
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1b4c87;
+            box-shadow: 0 0 0 3px rgba(27, 76, 135, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #d4edda;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-info .email {
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .warning strong {
+            color: #856404;
+        }
+
+        .stats {
+            background: #e7f5ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+
+        .stats-label {
+            color: #495057;
+        }
+
+        .stats-value {
+            font-weight: bold;
+            color: #1b4c87;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #1b4c87;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #15396a;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        #log {
+            background: #1a1a2e;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.85rem;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 1.5rem;
+        }
+
+        .log-info {
+            color: #00ff00;
+        }
+
+        .log-warn {
+            color: #ffcc00;
+        }
+
+        .log-error {
+            color: #ff4444;
+        }
+
+        .log-success {
+            color: #00ff88;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .login-error {
+            color: #dc3545;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔄 Category Migration</h1>
+        <p class="subtitle">Split "DSLR/Lens" into separate "DSLR" and "Lens" categories</p>
+
+        <!-- Login Section -->
+        <div class="login-section" id="login-section">
+            <h2>🔐 Admin Login Required</h2>
+            <p style="color: #666; margin-bottom: 1rem;">You must be logged in as an admin to run the migration.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter admin email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn-primary" id="login-btn">Login</button>
+                <p class="login-error hidden" id="login-error"></p>
+            </form>
+        </div>
+
+        <!-- Logged In User Info -->
+        <div class="user-info hidden" id="user-info">
+            <span>Logged in as: <span class="email" id="user-email"></span></span>
+            <button class="btn-secondary" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Migration Content (hidden until logged in) -->
+        <div id="migration-content" class="hidden">
+            <div class="warning">
+                <strong>⚠️ Warning:</strong> This will permanently modify your Firebase database.
+                Make sure you have a backup before proceeding.
+            </div>
+
+            <div class="stats" id="stats">
+                <div class="stats-row">
+                    <span class="stats-label">Camera bodies to migrate:</span>
+                    <span class="stats-value" id="camera-count">Loading...</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">Lenses to migrate:</span>
+                    <span class="stats-value" id="lens-count">Loading...</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">Total products affected:</span>
+                    <span class="stats-value" id="total-count">Loading...</span>
+                </div>
+            </div>
+
+            <div>
+                <button class="btn-success" id="backupBtn" onclick="takeBackup()" disabled>💾 Take Backup</button>
+                <button class="btn-secondary" onclick="previewMigration()">👁️ Preview Changes</button>
+                <button class="btn-primary" id="migrateBtn" onclick="runMigration()" disabled>🚀 Run Migration</button>
+            </div>
+        </div>
+
+        <div id="log"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        const logEl = document.getElementById('log');
+        let cameraBodies = [];
+        let lenses = [];
+        let currentUser = null;
+
+        function log(msg, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logEl.innerHTML += `<span class="log-${type}">[${timestamp}] ${msg}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            errorEl.classList.add('hidden');
+
+            try {
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                log(`Logged in as ${userCredential.user.email}`, 'success');
+            } catch (error) {
+                log(`Login failed: ${error.message}`, 'error');
+                errorEl.textContent = error.message;
+                errorEl.classList.remove('hidden');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        function logout() {
+            firebase.auth().signOut();
+            log('Logged out', 'warn');
+        }
+
+        // ===== AUTH STATE =====
+        async function init() {
+            log('Initializing Firebase...');
+
+            // Wait for Firebase
+            await new Promise(resolve => {
+                const check = () => {
+                    if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 100);
+                    }
+                };
+                check();
+            });
+
+            log('Firebase ready', 'success');
+
+            // Listen for auth state
+            firebase.auth().onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('user-info').classList.remove('hidden');
+                    document.getElementById('user-email').textContent = user.email;
+                    document.getElementById('migration-content').classList.remove('hidden');
+
+                    log(`Authenticated as ${user.email}`, 'success');
+                    await loadProducts();
+                } else {
+                    currentUser = null;
+                    document.getElementById('login-section').classList.remove('hidden');
+                    document.getElementById('user-info').classList.add('hidden');
+                    document.getElementById('migration-content').classList.add('hidden');
+                }
+            });
+        }
+
+        async function loadProducts() {
+            const db = firebase.firestore();
+            const snapshot = await db.collection('products')
+                .where('category', '==', 'DSLR/Lens')
+                .get();
+
+            cameraBodies = [];
+            lenses = [];
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.subcategory === 'Lens' || data.type === 'lens') {
+                    lenses.push({ id: doc.id, ...data });
+                } else {
+                    cameraBodies.push({ id: doc.id, ...data });
+                }
+            });
+
+            document.getElementById('camera-count').textContent = cameraBodies.length;
+            document.getElementById('lens-count').textContent = lenses.length;
+            document.getElementById('total-count').textContent = cameraBodies.length + lenses.length;
+
+            log(`Found ${cameraBodies.length} camera bodies and ${lenses.length} lenses`);
+
+            if (cameraBodies.length > 0 || lenses.length > 0) {
+                document.getElementById('migrateBtn').disabled = false;
+                document.getElementById('backupBtn').disabled = false;
+            }
+        }
+
+        function takeBackup() {
+            log('Creating backup...', 'warn');
+
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                totalProducts: cameraBodies.length + lenses.length,
+                cameraBodies: cameraBodies,
+                lenses: lenses
+            };
+
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dslr-lens-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            log(`✅ Backup downloaded: ${cameraBodies.length} camera bodies + ${lenses.length} lenses`, 'success');
+        }
+
+        function previewMigration() {
+            log('--- PREVIEW: Camera Bodies (will become category: "DSLR") ---', 'warn');
+            cameraBodies.slice(0, 5).forEach(p => {
+                log(`  • ${p.name} (₹${p.price})`);
+            });
+            if (cameraBodies.length > 5) {
+                log(`  ... and ${cameraBodies.length - 5} more`);
+            }
+
+            log('--- PREVIEW: Lenses (will become category: "Lens") ---', 'warn');
+            lenses.slice(0, 5).forEach(p => {
+                log(`  • ${p.name} (₹${p.price})`);
+            });
+            if (lenses.length > 5) {
+                log(`  ... and ${lenses.length - 5} more`);
+            }
+        }
+
+        async function runMigration() {
+            if (!currentUser) {
+                log('Error: Not logged in!', 'error');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to run the migration? This will modify your database.')) {
+                return;
+            }
+
+            const btn = document.getElementById('migrateBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Running...';
+
+            const db = firebase.firestore();
+            const batch = db.batch();
+            let updateCount = 0;
+
+            log('Starting migration...', 'warn');
+
+            // Update camera bodies: DSLR/Lens → DSLR
+            log(`Updating ${cameraBodies.length} camera bodies to category: "DSLR"...`);
+            for (const camera of cameraBodies) {
+                const docRef = db.collection('products').doc(camera.id);
+                batch.update(docRef, { category: 'DSLR' });
+                updateCount++;
+            }
+
+            // Update lenses: DSLR/Lens → Lens
+            log(`Updating ${lenses.length} lenses to category: "Lens"...`);
+            for (const lens of lenses) {
+                const docRef = db.collection('products').doc(lens.id);
+                batch.update(docRef, {
+                    category: 'Lens',
+                    subcategory: null
+                });
+                updateCount++;
+            }
+
+            try {
+                await batch.commit();
+                log(`✅ Migration complete! Updated ${updateCount} products.`, 'success');
+                log('Camera bodies now have category: "DSLR"', 'success');
+                log('Lenses now have category: "Lens"', 'success');
+
+                btn.textContent = '✅ Complete';
+                btn.className = 'btn-success';
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                btn.disabled = false;
+                btn.textContent = '🚀 Retry Migration';
+            }
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+
+</html>

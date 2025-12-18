@@ -1,6 +1,7 @@
 /**
  * Assessment Page Logic
  * Handles device condition assessment questions and price calculations
+ * NOTE: All price deductions are now sourced from Firestore productPricing collection
  * @file js/assessment.js
  */
 
@@ -26,12 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (valuationData.imageUrl) document.getElementById('productImage').src = valuationData.imageUrl;
 
-  // --- NEW: Sidebar Elements ---
+  // --- Sidebar Elements ---
   const evaluationImage = document.getElementById('evaluationImage');
   const evaluationModel = document.getElementById('evaluationModel');
   const evaluationList = document.getElementById('evaluation-summary-list');
 
-  // --- NEW: Populate Sidebar Info ---
+  // --- Populate Sidebar Info ---
   if (evaluationImage && valuationData.imageUrl) evaluationImage.src = valuationData.imageUrl;
   if (evaluationModel) {
     const fullName = window.getFullModelName ?
@@ -97,16 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.Logger.log('Category normalized to:', category);
   }
 
-  // Get category-based questions
+  // Get category-based questions from config (no deduction values - those come from Firestore)
   let questions = window.getAssessmentQuestions ?
     window.getAssessmentQuestions(category) :
     [
-      { id: 'powerOn', text: 'Does your camera power on and function properly?', instruction: 'We currently only accept devices that switch on', deduction: 0.30 },
-      { id: 'bodyDamage', text: 'Is the camera body free from major damage (cracks, dents, water damage)?', instruction: 'Check your device\'s body or buttons condition carefully', deduction: 0.25 },
-      { id: 'lcdScreen', text: 'Is the LCD/Touchscreen working without cracks or display issues?', instruction: 'Check your device\'s display condition carefully', deduction: 0.20 },
-      { id: 'lensCondition', text: 'Is the lens (if included) free from scratches, fungus, or dust?', instruction: 'Check your lens condition carefully', deduction: 0.15 },
-      { id: 'autofocusZoom', text: 'Does autofocus and zoom work properly on your camera/lens?', instruction: 'Check your device\'s autofocus and zoom functionality carefully', deduction: 0.15 },
-      { id: 'hasAdditionalLens', text: 'Do you have any additional lens?', instruction: 'Choose this option if you have additional lens of the same brand', deduction: 0, isLensQuestion: true }
+      { id: 'powerOn', text: 'Does your camera power on and function properly?', instruction: 'We currently only accept devices that switch on' },
+      { id: 'bodyDamage', text: 'Is the camera body free from major damage (cracks, dents, water damage)?', instruction: 'Check your device\'s body or buttons condition carefully' },
+      { id: 'lcdScreen', text: 'Is the LCD/Touchscreen working without cracks or display issues?', instruction: 'Check your device\'s display condition carefully' },
+      { id: 'lensCondition', text: 'Is the lens (if included) free from scratches, fungus, or dust?', instruction: 'Check your lens condition carefully' },
+      { id: 'autofocusZoom', text: 'Does autofocus and zoom work properly on your camera/lens?', instruction: 'Check your device\'s autofocus and zoom functionality carefully' },
+      { id: 'hasAdditionalLens', text: 'Do you have any additional lens?', instruction: 'Choose this option if you have additional lens of the same brand', isLensQuestion: true }
     ];
 
   // Remove "additional lens" question for fixed-lens cameras
@@ -158,10 +159,10 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join('');
   }
 
-  // NEW: Store product pricing from Firestore
+  // Store product pricing from Firestore
   let productPricingData = null;
 
-  // NEW: Load product-specific pricing from Firestore
+  // Load product-specific pricing from Firestore
   async function loadProductPricing() {
     if (!window.firebase || !firebase.firestore) {
       if (window.Logger) window.Logger.warn('Firestore not available for pricing lookup');
@@ -202,41 +203,32 @@ document.addEventListener("DOMContentLoaded", () => {
   function calculatePriceAndStore() {
     let currentPrice = Number(valuationData.originalQuotePrice || 0);
 
-    questions.forEach(q => {
-      // Skip lens question in price calculation (it's only for routing)
-      if (q.isLensQuestion) return;
+    // Only apply deductions if we have Firestore pricing data with assessmentDeductions
+    if (productPricingData && productPricingData.assessmentDeductions) {
+      questions.forEach(q => {
+        // Skip lens question in price calculation (it's only for routing)
+        if (q.isLensQuestion) return;
 
-      if (userAnswers[q.id] === 'no') {
-        // Use fixed amount from productPricing ONLY
-        if (productPricingData && productPricingData.issues) {
-          // Map question ID to issue ID in pricing
-          const issueMapping = {
-            'powerOn': 'power_issue',
-            'bodyDamage': 'body_dents',
-            'lcdScreen': 'display_cracked',
-            'lensCondition': 'lens_fungus',
-            'autofocusZoom': 'focus_issue'
-          };
-          const issueId = issueMapping[q.id];
-          if (issueId && productPricingData.issues[issueId]) {
-            const deductionAmount = Number(productPricingData.issues[issueId].deduction) || 0;
+        if (userAnswers[q.id] === 'no') {
+          // Look up deduction directly by question ID
+          if (productPricingData.assessmentDeductions[q.id]) {
+            const deductionAmount = Number(productPricingData.assessmentDeductions[q.id].deduction) || 0;
             currentPrice -= deductionAmount;
           }
-          // If issue not configured, no deduction (fixed amount = 0)
+          // If question not configured in admin dashboard, no deduction is applied
         }
-        // No percentage fallback - if no pricing configured, no deduction
-      }
-    });
+      });
+    }
+    // If no productPricingData, no deductions are applied - price stays at base
 
-    // Floor at minimum price (10% of original)
-    const minPrice = Number(valuationData.originalQuotePrice || 0) * 0.10;
+    // Floor at minimum price (5% of original to avoid negative/zero)
+    const minPrice = Number(valuationData.originalQuotePrice || 0) * 0.05;
     const finalPriceRounded = Math.round(Math.max(currentPrice, minPrice));
     valuationData.priceAfterAssessment = finalPriceRounded;
-    valuationData.usedFixedPricing = true;
     sessionStorage.setItem('valuationData', JSON.stringify(valuationData));
   }
 
-  // --- NEW: Sidebar Update Function ---
+  // --- Sidebar Update Function ---
   function updateEvaluationSidebar() {
     if (!evaluationList) return;
     evaluationList.innerHTML = ''; // Clear the list
@@ -255,10 +247,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // MODIFIED: This function no longer needs to hide/show or disable the button
   function updateProceedVisibility() {
-    // This function is no longer responsible for button visibility.
-    // Validation is now handled on click.
+    // Validation is handled on click, button is always visible
   }
 
   // Handle radio button changes
@@ -285,11 +275,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Proceed
-  // MODIFIED: Added validation alert and conditional navigation
   proceedBtn?.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // NEW: Validation check
+    // Validation check
     const firstUnanswered = questions.find(q => !userAnswers[q.id]);
     if (firstUnanswered) {
       alert('Please select an option for:\n"' + firstUnanswered.text + '"');
@@ -303,15 +292,59 @@ document.addEventListener("DOMContentLoaded", () => {
     valuationData.assessmentAnswers = userAnswers;
     sessionStorage.setItem('valuationData', JSON.stringify(valuationData));
 
-    // Navigate to physical condition assessment
-    // Note: Lens selection is now handled inline in the assessment flow
-    window.location.href = 'physical-condition.html';
+    // Navigate based on additional lens answer
+    if (valuationData.hasAdditionalLens) {
+      // User has additional lens - go to lens selection page
+      window.location.href = 'lens-selection.html';
+    } else {
+      // No additional lens - go directly to physical condition
+      window.location.href = 'physical-condition.html';
+    }
   });
+
+  // ===== RESTORE SAVED ANSWERS =====
+  // Fix for back button issue - restore answers from sessionStorage
+  function restoreSavedAnswers() {
+    const savedAnswers = valuationData.assessmentAnswers;
+    if (!savedAnswers || Object.keys(savedAnswers).length === 0) {
+      return;
+    }
+
+    if (window.Logger) {
+      window.Logger.log('Restoring saved assessment answers:', savedAnswers);
+    }
+
+    // Restore each answer
+    Object.entries(savedAnswers).forEach(([questionId, answer]) => {
+      // Update userAnswers state
+      userAnswers[questionId] = answer;
+
+      // Find and check the corresponding radio button
+      const radio = document.querySelector(`input[name="${questionId}"][value="${answer}"]`);
+      if (radio) {
+        radio.checked = true;
+
+        // Update visual state - add selected class to the parent label
+        const questionItem = radio.closest('.question-item');
+        if (questionItem) {
+          questionItem.querySelectorAll('.radio-option-box').forEach(box => {
+            box.classList.remove('selected');
+          });
+          radio.closest('.radio-option-box').classList.add('selected');
+        }
+      }
+    });
+
+    // Update sidebar and price
+    calculatePriceAndStore();
+    updateEvaluationSidebar();
+  }
 
   // Initial render
   if (questions && questions.length > 0) {
     renderQuestions();
-    updateProceedVisibility(); // keep disabled until user answers everything
+    restoreSavedAnswers(); // Restore answers after rendering
+    updateProceedVisibility();
   } else {
     // Fallback: If no questions loaded, show error
     if (questionsContainer) {
