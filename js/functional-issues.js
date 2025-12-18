@@ -34,20 +34,75 @@ document.addEventListener("DOMContentLoaded", () => {
   const noIssuesBtn = document.getElementById('noIssuesBtn');
   const proceedBtn = document.getElementById('proceedToAccessoriesBtn');
 
-  const issues = [
-    { id: 'battery', label: 'Battery weak or Not working or Duplicate', icon: 'fa-solid fa-battery-half', deduction: 0.15 },
-    { id: 'flashlight', label: 'Flashlight not Working', icon: 'fa-solid fa-lightbulb', deduction: 0.05 },
-    { id: 'memory_slot', label: 'Memory Card Slot issue', icon: 'fa-solid fa-memory', deduction: 0.20 },
-    { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark', deduction: 0.10 },
-    { id: 'connectors', label: 'Connectors not working', icon: 'fa-solid fa-plug', deduction: 0.15 },
-    { id: 'buttons', label: 'Buttons not working', icon: 'fa-regular fa-circle-dot', deduction: 0.10 }
-  ];
+  // Category-specific functional issues
+  const categoryIssues = {
+    'DSLR/Lens': [
+      { id: 'battery', label: 'Battery weak or Not working or Duplicate', icon: 'fa-solid fa-battery-half' },
+      { id: 'flashlight', label: 'Flashlight not Working', icon: 'fa-solid fa-lightbulb' },
+      { id: 'memory_slot', label: 'Memory Card Slot issue', icon: 'fa-solid fa-sd-card' },
+      { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark' },
+      { id: 'connectors', label: 'Connectors not working', icon: 'fa-solid fa-plug' },
+      { id: 'buttons', label: 'Buttons not working', icon: 'fa-regular fa-circle-dot' }
+    ],
+    'Laptop': [
+      { id: 'battery', label: 'Battery weak / Drains fast', icon: 'fa-solid fa-battery-quarter' },
+      { id: 'keyboard', label: 'Keyboard not working', icon: 'fa-solid fa-keyboard' },
+      { id: 'trackpad', label: 'Trackpad not working', icon: 'fa-solid fa-hand-pointer' },
+      { id: 'display', label: 'Display flickering / Dead pixels', icon: 'fa-solid fa-desktop' },
+      { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark' },
+      { id: 'usb_ports', label: 'USB Ports not working', icon: 'fa-brands fa-usb' },
+      { id: 'charging', label: 'Charging port issue', icon: 'fa-solid fa-plug' },
+      { id: 'wifi', label: 'WiFi / Bluetooth issue', icon: 'fa-solid fa-wifi' },
+      { id: 'webcam', label: 'Webcam not working', icon: 'fa-solid fa-video' }
+    ],
+    'Phone': [
+      { id: 'battery', label: 'Battery drains fast', icon: 'fa-solid fa-battery-quarter' },
+      { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark' },
+      { id: 'microphone', label: 'Microphone not working', icon: 'fa-solid fa-microphone-slash' },
+      { id: 'charging', label: 'Charging port issue', icon: 'fa-solid fa-plug' },
+      { id: 'camera', label: 'Camera not working', icon: 'fa-solid fa-camera' },
+      { id: 'touch', label: 'Touch screen unresponsive', icon: 'fa-solid fa-hand-pointer' },
+      { id: 'wifi', label: 'WiFi / Bluetooth issue', icon: 'fa-solid fa-wifi' },
+      { id: 'face_id', label: 'Face ID / Touch ID not working', icon: 'fa-solid fa-face-smile' },
+      { id: 'buttons', label: 'Buttons not working', icon: 'fa-regular fa-circle-dot' }
+    ],
+    'iPad': [
+      { id: 'battery', label: 'Battery drains fast', icon: 'fa-solid fa-battery-quarter' },
+      { id: 'speaker', label: 'Speaker not working', icon: 'fa-solid fa-volume-xmark' },
+      { id: 'charging', label: 'Charging port issue', icon: 'fa-solid fa-plug' },
+      { id: 'camera', label: 'Camera not working', icon: 'fa-solid fa-camera' },
+      { id: 'touch', label: 'Touch screen unresponsive', icon: 'fa-solid fa-hand-pointer' },
+      { id: 'wifi', label: 'WiFi / Bluetooth issue', icon: 'fa-solid fa-wifi' },
+      { id: 'face_id', label: 'Face ID / Touch ID not working', icon: 'fa-solid fa-face-smile' },
+      { id: 'apple_pencil', label: 'Apple Pencil not pairing', icon: 'fa-solid fa-pen' },
+      { id: 'buttons', label: 'Buttons not working', icon: 'fa-regular fa-circle-dot' }
+    ]
+  };
+
+  // Normalize category name to match config
+  let category = vd.category || 'DSLR/Lens';
+  const categoryNormalizer = {
+    'DSLR Cameras': 'DSLR/Lens',
+    'DSLR Camera': 'DSLR/Lens',
+    'Camera': 'DSLR/Lens',
+    'Cameras': 'DSLR/Lens',
+    'DSLR': 'DSLR/Lens',
+    'phone': 'Phone',
+    'laptop': 'Laptop',
+    'ipad': 'iPad'
+  };
+  category = categoryNormalizer[category] || category;
+
+  // Get issues for current category
+  const issues = categoryIssues[category] || categoryIssues['DSLR/Lens'];
+  console.log('Functional Issues - Category:', category, 'Issues count:', issues.length);
+
   const selected = new Set();
   let noIssuesSelected = false; // NEW: Track "No Issues" state
 
   function renderIssues() {
     issuesGrid.innerHTML = issues.map(i => `
-      <div class="issue-card" data-id="${i.id}" data-deduction="${i.deduction}" data-label="${i.label}">
+      <div class="issue-card" data-id="${i.id}" data-label="${i.label}">
         <i class="${i.icon} issue-icon"></i>
         <p class="issue-label">${i.label}</p>
       </div>

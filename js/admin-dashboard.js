@@ -1277,45 +1277,54 @@ document.addEventListener('DOMContentLoaded', () => {
     return CATEGORY_PHYSICAL_CONDITIONS[category] || DEFAULT_PHYSICAL_CONDITIONS;
   }
 
-  // Category-specific functional issues
+  // Category-specific functional issues (matches functional-issues.js)
   const CATEGORY_FUNCTIONAL_ISSUES = {
     'DSLR/Lens': [
-      { id: 'battery_weak', label: 'Battery Weak or Not Working' },
-      { id: 'flashlight_broken', label: 'Flashlight Not Working' },
-      { id: 'memory_slot_issue', label: 'Memory Card Slot Issue' },
-      { id: 'speaker_broken', label: 'Speaker Not Working' },
-      { id: 'connectors_broken', label: 'Connectors Not Working' },
-      { id: 'buttons_broken', label: 'Buttons Not Working' }
+      { id: 'battery', label: 'Battery Weak or Not Working' },
+      { id: 'flashlight', label: 'Flashlight Not Working' },
+      { id: 'memory_slot', label: 'Memory Card Slot Issue' },
+      { id: 'speaker', label: 'Speaker Not Working' },
+      { id: 'connectors', label: 'Connectors Not Working' },
+      { id: 'buttons', label: 'Buttons Not Working' }
     ],
     'Phone': [
-      { id: 'earpiece_issue', label: 'Earpiece/Speaker Issue' },
-      { id: 'mic_issue', label: 'Microphone Not Working' },
-      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
-      { id: 'sensor_issue', label: 'Sensors Not Working' },
-      { id: 'vibration_issue', label: 'Vibration Not Working' },
-      { id: 'buttons_broken', label: 'Physical Buttons Issue' }
+      { id: 'battery', label: 'Battery Drains Fast' },
+      { id: 'speaker', label: 'Speaker Not Working' },
+      { id: 'microphone', label: 'Microphone Not Working' },
+      { id: 'charging', label: 'Charging Port Issue' },
+      { id: 'camera', label: 'Camera Not Working' },
+      { id: 'touch', label: 'Touch Screen Unresponsive' },
+      { id: 'wifi', label: 'WiFi / Bluetooth Issue' },
+      { id: 'face_id', label: 'Face ID / Touch ID Not Working' },
+      { id: 'buttons', label: 'Buttons Not Working' }
     ],
     'Laptop': [
-      { id: 'speaker_broken', label: 'Speakers Not Working' },
-      { id: 'mic_issue', label: 'Microphone Not Working' },
-      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
-      { id: 'webcam_issue', label: 'Webcam Not Working' },
-      { id: 'usb_ports_issue', label: 'USB Ports Not Working' },
-      { id: 'battery_drain', label: 'Battery Drains Quickly' }
+      { id: 'battery', label: 'Battery Weak / Drains Fast' },
+      { id: 'keyboard', label: 'Keyboard Not Working' },
+      { id: 'trackpad', label: 'Trackpad Not Working' },
+      { id: 'display', label: 'Display Flickering / Dead Pixels' },
+      { id: 'speaker', label: 'Speaker Not Working' },
+      { id: 'usb_ports', label: 'USB Ports Not Working' },
+      { id: 'charging', label: 'Charging Port Issue' },
+      { id: 'wifi', label: 'WiFi / Bluetooth Issue' },
+      { id: 'webcam', label: 'Webcam Not Working' }
     ],
     'iPad': [
-      { id: 'speaker_broken', label: 'Speakers Not Working' },
-      { id: 'mic_issue', label: 'Microphone Not Working' },
-      { id: 'wifi_issue', label: 'Wi-Fi/Bluetooth Not Working' },
-      { id: 'sensor_issue', label: 'Sensors Not Working' },
-      { id: 'buttons_broken', label: 'Physical Buttons Issue' },
-      { id: 'pencil_issue', label: 'Apple Pencil Not Detected' }
+      { id: 'battery', label: 'Battery Drains Fast' },
+      { id: 'speaker', label: 'Speaker Not Working' },
+      { id: 'charging', label: 'Charging Port Issue' },
+      { id: 'camera', label: 'Camera Not Working' },
+      { id: 'touch', label: 'Touch Screen Unresponsive' },
+      { id: 'wifi', label: 'WiFi / Bluetooth Issue' },
+      { id: 'face_id', label: 'Face ID / Touch ID Not Working' },
+      { id: 'apple_pencil', label: 'Apple Pencil Not Pairing' },
+      { id: 'buttons', label: 'Buttons Not Working' }
     ]
   };
 
   const DEFAULT_FUNCTIONAL_ISSUES = [
-    { id: 'speaker_broken', label: 'Speaker Not Working' },
-    { id: 'buttons_broken', label: 'Buttons Not Working' }
+    { id: 'speaker', label: 'Speaker Not Working' },
+    { id: 'buttons', label: 'Buttons Not Working' }
   ];
 
   // Helper to get functional issues for a category

@@ -47,19 +47,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   const deviceFullName = document.getElementById('deviceFullName');
   const deviceName = document.getElementById('deviceName');
   const deviceImage = document.getElementById('deviceImage');
-  const basePriceElement = document.getElementById('basePrice');
+  const basePriceElement = document.getElementById('basePrice'); // May not exist
   const storageButtons = document.getElementById('storageButtons');
   const ramButtons = document.getElementById('ramButtons');
   const ramGroup = document.getElementById('ramGroup');
-  const pricePreview = document.getElementById('pricePreview');
-  const estimatedPrice = document.getElementById('estimatedPrice');
+  const pricePreview = document.getElementById('pricePreview'); // May not exist
+  const estimatedPrice = document.getElementById('estimatedPrice'); // May not exist
   const continueBtn = document.getElementById('continueBtn');
   const backBtn = document.getElementById('backToModels');
 
-  // Breadcrumb
-  document.getElementById('categoryBreadcrumb').textContent = category;
-  document.getElementById('brandBreadcrumb').textContent = brandName;
-  document.getElementById('modelBreadcrumb').textContent = modelName;
+  // Breadcrumb (optional - only update if exists)
+  const categoryBreadcrumb = document.getElementById('categoryBreadcrumb');
+  const brandBreadcrumb = document.getElementById('brandBreadcrumb');
+  const modelBreadcrumb = document.getElementById('modelBreadcrumb');
+  if (categoryBreadcrumb) categoryBreadcrumb.textContent = category;
+  if (brandBreadcrumb) brandBreadcrumb.textContent = brandName;
+  if (modelBreadcrumb) modelBreadcrumb.textContent = modelName;
 
   // Display device info
   const fullName = window.getFullModelName ?
@@ -68,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   deviceFullName.textContent = fullName;
   deviceName.textContent = fullName;
-  basePriceElement.textContent = basePrice.toLocaleString('en-IN');
+  if (basePriceElement) basePriceElement.textContent = basePrice.toLocaleString('en-IN');
 
   if (imageUrl && imageUrl !== 'null') {
     deviceImage.src = imageUrl;
@@ -169,20 +172,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Parse RAM/Storage from variant string like "8GB/128GB"
-    const parts = variant.split('/');
-    let ram = null, storage = null;
-
-    if (parts.length === 2) {
-      ram = parts[0].trim();
-      storage = parts[1].trim();
-    } else {
-      storage = variant;
-    }
-
-    // Show price preview
-    estimatedPrice.textContent = basePrice.toLocaleString('en-IN');
-    pricePreview.style.display = 'block';
+    // Show price preview (if exists)
+    if (estimatedPrice) estimatedPrice.textContent = basePrice.toLocaleString('en-IN');
+    if (pricePreview) pricePreview.style.display = 'block';
 
     validateSelection();
   }
@@ -284,8 +276,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.classList.toggle('selected', btn.getAttribute('data-variant') === variant.variant);
     });
 
-    estimatedPrice.textContent = selectedStoragePrice.toLocaleString('en-IN');
-    pricePreview.style.display = 'block';
+    if (estimatedPrice) estimatedPrice.textContent = selectedStoragePrice.toLocaleString('en-IN');
+    if (pricePreview) pricePreview.style.display = 'block';
     validateSelection();
   }
 
@@ -325,8 +317,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       btn.classList.toggle('selected', btn.getAttribute('data-value') === option.value);
     });
 
-    estimatedPrice.textContent = Math.round(selectedStoragePrice).toLocaleString('en-IN');
-    pricePreview.style.display = 'block';
+    if (estimatedPrice) estimatedPrice.textContent = Math.round(selectedStoragePrice).toLocaleString('en-IN');
+    if (pricePreview) pricePreview.style.display = 'block';
     validateSelection();
   }
 
@@ -367,7 +359,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let variantInfo = {};
 
     if (selectedCombinedVariant) {
-      // Using Firebase combined variant
+      // Using Firebase combined variant - keep modelName unchanged
       const parts = selectedCombinedVariant.split('/');
       if (parts.length === 2) {
         variantInfo.ram = parts[0].trim();
@@ -376,11 +368,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         variantInfo.storage = selectedCombinedVariant;
       }
       variantInfo.combined = selectedCombinedVariant;
-      finalName = `${modelName} (${selectedCombinedVariant})`;
+      // Don't add variant to finalName - let quote page handle display
+      finalName = modelName;
       finalPrice = basePrice;
     } else if (selectedVariant) {
       // Using sessionStorage variant
-      finalName = selectedVariant.name;
+      finalName = modelName; // Keep base name
       finalPrice = selectedStoragePrice;
       variantInfo.storage = selectedVariant.variant;
       if (selectedRAM) {
@@ -395,7 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (selectedRAM) {
         variantInfo.ram = selectedRAM;
       }
-      finalName = `${modelName} (${variantInfo.storage || ''})`;
+      finalName = modelName; // Keep base name
       finalPrice = selectedStoragePrice || basePrice;
     }
 
@@ -416,7 +409,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.Logger.log('Variant selected:', variantInfo, 'Final price:', finalPrice);
     }
 
-    // Navigate to quote page
+    // Navigate to quote page - pass variant info separately
     window.location.href = `quote.html?model=${encodeURIComponent(finalName)}&brand=${encodeURIComponent(brandName)}&category=${encodeURIComponent(category)}&image=${encodeURIComponent(imageUrl)}&price=${encodeURIComponent(finalPrice)}`;
   });
 

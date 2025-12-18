@@ -15,30 +15,64 @@ const variantConfig = {
 
     // RAM options for phones (model-specific defaults)
     ram: {
-      // iPhone models
+      // iPhone 16 Series
       'iPhone 16 Pro Max': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
       'iPhone 16 Pro': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
       'iPhone 16 Plus': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
       'iPhone 16': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 15 Series
       'iPhone 15 Pro Max': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
       'iPhone 15 Pro': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
       'iPhone 15 Plus': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 15': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 14 Series
       'iPhone 14 Pro Max': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 14 Pro': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 14 Plus': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 14': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 13 Series
       'iPhone 13 Pro Max': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 13 Pro': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 13': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 13 Mini': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 12 Series
       'iPhone 12 Pro Max': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 12 Pro': [{ value: '6GB', label: '6 GB', priceMultiplier: 1.0 }],
       'iPhone 12': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 12 Mini': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 11 Series
       'iPhone 11 Pro Max': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 11 Pro': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
       'iPhone 11': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+
+      // iPhone XS/XR/X Series
+      'iPhone XS Max': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+      'iPhone XS': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+      'iPhone XR': [{ value: '3GB', label: '3 GB', priceMultiplier: 1.0 }],
+      'iPhone X': [{ value: '3GB', label: '3 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 8 Series
+      'iPhone 8 Plus': [{ value: '3GB', label: '3 GB', priceMultiplier: 1.0 }],
+      'iPhone 8': [{ value: '2GB', label: '2 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 7 Series
+      'iPhone 7 Plus': [{ value: '3GB', label: '3 GB', priceMultiplier: 1.0 }],
+      'iPhone 7': [{ value: '2GB', label: '2 GB', priceMultiplier: 1.0 }],
+
+      // iPhone SE Series
+      'iPhone SE 2024': [{ value: '8GB', label: '8 GB', priceMultiplier: 1.0 }],
+      'iPhone SE 2022': [{ value: '4GB', label: '4 GB', priceMultiplier: 1.0 }],
+      'iPhone SE 2020': [{ value: '3GB', label: '3 GB', priceMultiplier: 1.0 }],
+      'iPhone SE': [{ value: '2GB', label: '2 GB', priceMultiplier: 1.0 }],
+
+      // iPhone 6S Series
+      'iPhone 6S Plus': [{ value: '2GB', label: '2 GB', priceMultiplier: 1.0 }],
+      'iPhone 6S': [{ value: '2GB', label: '2 GB', priceMultiplier: 1.0 }],
 
       // Samsung Galaxy S Series
       'Samsung Galaxy S24 Ultra': [{ value: '12GB', label: '12 GB', priceMultiplier: 1.0 }],
@@ -116,12 +150,13 @@ const variantConfig = {
 
     // RAM options for laptops
     ram: {
-      // MacBook models
-      'MacBook Air M1': [
+      // MacBook Air - M3 (2024)
+      'MacBook Air M3 2024': [
         { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
-        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
       ],
-      'MacBook Air M2': [
+      'MacBook Air M3 15': [
         { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
         { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
@@ -131,6 +166,195 @@ const variantConfig = {
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
         { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
       ],
+
+      // MacBook Air - M2 (2022-2023)
+      'MacBook Air M2 2023': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
+      ],
+      'MacBook Air M2 2022': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
+      ],
+      'MacBook Air M2': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
+      ],
+
+      // MacBook Air - M1 (2020)
+      'MacBook Air M1 2020': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Air M1': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+
+      // MacBook Air - Intel (2018-2020)
+      'MacBook Air 2020': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Air 2019': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Air 2018': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+
+      // MacBook Pro 16" - M3 (2023-2024)
+      'MacBook Pro 16 M3 Max': [
+        { value: '36GB', label: '36 GB', priceMultiplier: 0.90 },
+        { value: '48GB', label: '48 GB', priceMultiplier: 0.95 },
+        { value: '128GB', label: '128 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 16 M3 Pro': [
+        { value: '18GB', label: '18 GB', priceMultiplier: 0.95 },
+        { value: '36GB', label: '36 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 16 M3': [
+        { value: '18GB', label: '18 GB', priceMultiplier: 0.95 },
+        { value: '36GB', label: '36 GB', priceMultiplier: 1.0 },
+        { value: '48GB', label: '48 GB', priceMultiplier: 1.10 },
+        { value: '128GB', label: '128 GB', priceMultiplier: 1.30 }
+      ],
+
+      // MacBook Pro 16" - M2 (2023)
+      'MacBook Pro 16 M2 Max': [
+        { value: '32GB', label: '32 GB', priceMultiplier: 0.90 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.0 },
+        { value: '96GB', label: '96 GB', priceMultiplier: 1.15 }
+      ],
+      'MacBook Pro 16 M2 Pro': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 16 M2': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.90 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.15 },
+        { value: '96GB', label: '96 GB', priceMultiplier: 1.30 }
+      ],
+
+      // MacBook Pro 16" - M1 (2021)
+      'MacBook Pro 16 M1 Max': [
+        { value: '32GB', label: '32 GB', priceMultiplier: 0.90 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 16 M1 Pro': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 16 2021': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.90 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.20 }
+      ],
+
+      // MacBook Pro 16" - Intel (2019)
+      'MacBook Pro 16 2019': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.90 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.20 }
+      ],
+
+      // MacBook Pro 14" - M3 (2023-2024)
+      'MacBook Pro 14 M3 Max': [
+        { value: '36GB', label: '36 GB', priceMultiplier: 0.90 },
+        { value: '48GB', label: '48 GB', priceMultiplier: 0.95 },
+        { value: '96GB', label: '96 GB', priceMultiplier: 1.0 },
+        { value: '128GB', label: '128 GB', priceMultiplier: 1.10 }
+      ],
+      'MacBook Pro 14 M3 Pro': [
+        { value: '18GB', label: '18 GB', priceMultiplier: 0.95 },
+        { value: '36GB', label: '36 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 14 M3': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.85 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.0 }
+      ],
+
+      // MacBook Pro 14" - M2 (2023)
+      'MacBook Pro 14 M2 Max': [
+        { value: '32GB', label: '32 GB', priceMultiplier: 0.90 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.0 },
+        { value: '96GB', label: '96 GB', priceMultiplier: 1.15 }
+      ],
+      'MacBook Pro 14 M2 Pro': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 14 M2': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.20 },
+        { value: '96GB', label: '96 GB', priceMultiplier: 1.40 }
+      ],
+
+      // MacBook Pro 14" - M1 (2021)
+      'MacBook Pro 14 M1 Max': [
+        { value: '32GB', label: '32 GB', priceMultiplier: 0.90 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 14 M1 Pro': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 14 2021': [
+        { value: '16GB', label: '16 GB', priceMultiplier: 0.95 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.0 },
+        { value: '64GB', label: '64 GB', priceMultiplier: 1.20 }
+      ],
+
+      // MacBook Pro 13" - M2 (2022)
+      'MacBook Pro 13 M2': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
+      ],
+      'MacBook Pro 13 M2 2022': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '24GB', label: '24 GB', priceMultiplier: 1.10 }
+      ],
+
+      // MacBook Pro 13" - M1 (2020)
+      'MacBook Pro 13 M1': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 13 M1 2020': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+
+      // MacBook Pro 13" - Intel (2016-2020)
+      'MacBook Pro 13 2020': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
+        { value: '32GB', label: '32 GB', priceMultiplier: 1.15 }
+      ],
+      'MacBook Pro 13 2019': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 13 2018': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'MacBook Pro 13 2017': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+
+      // Generic fallback patterns
       'MacBook Pro 13': [
         { value: '8GB', label: '8 GB', priceMultiplier: 0.90 },
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 },
@@ -164,6 +388,7 @@ const variantConfig = {
   iPad: {
     // Storage options for iPads
     storage: [
+      { value: '32GB', label: '32 GB', priceMultiplier: 0.75 },
       { value: '64GB', label: '64 GB', priceMultiplier: 0.85 },
       { value: '128GB', label: '128 GB', priceMultiplier: 0.95 },
       { value: '256GB', label: '256 GB', priceMultiplier: 1.0 },
@@ -172,16 +397,97 @@ const variantConfig = {
       { value: '2TB', label: '2 TB', priceMultiplier: 1.60 }
     ],
 
-    // RAM for iPads (most don't advertise RAM, but Pro models do)
+    // RAM for iPads
     ram: {
+      // iPad Pro 12.9" - All generations (M4, M2, M1)
+      'iPad Pro 12.9 M4': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 M2': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 M1': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 2022': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 2021': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 2020': [
+        { value: '6GB', label: '6 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 12.9 2018': [
+        { value: '4GB', label: '4 GB', priceMultiplier: 0.95 },
+        { value: '6GB', label: '6 GB', priceMultiplier: 1.0 }
+      ],
       'iPad Pro 12.9': [
         { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+
+      // iPad Pro 11" - All generations
+      'iPad Pro 11 M4': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 M2': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 M1': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 2022': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 2021': [
+        { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
+        { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 2020': [
+        { value: '6GB', label: '6 GB', priceMultiplier: 1.0 }
+      ],
+      'iPad Pro 11 2018': [
+        { value: '4GB', label: '4 GB', priceMultiplier: 0.95 },
+        { value: '6GB', label: '6 GB', priceMultiplier: 1.0 }
       ],
       'iPad Pro 11': [
         { value: '8GB', label: '8 GB', priceMultiplier: 0.95 },
         { value: '16GB', label: '16 GB', priceMultiplier: 1.0 }
       ],
+
+      // iPad Air - All generations (no visible RAM selection)
+      'iPad Air M2 2024': [],
+      'iPad Air M1 2022': [],
+      'iPad Air 2022': [],
+      'iPad Air 2020': [],
+      'iPad Air 2019': [],
+      'iPad Air': [],
+
+      // iPad Mini - All generations (no visible RAM selection)
+      'iPad Mini 2024': [],
+      'iPad Mini 2021': [],
+      'iPad Mini 2019': [],
+      'iPad Mini': [],
+
+      // iPad standard - All generations (no visible RAM selection)
+      'iPad 10th Gen 2022': [],
+      'iPad 9th Gen 2021': [],
+      'iPad 8th Gen 2020': [],
+      'iPad 7th Gen 2019': [],
+      'iPad 2022': [],
+      'iPad 2021': [],
+      'iPad 2020': [],
+      'iPad 2019': [],
 
       // Default: no RAM selection for standard iPads
       default: []
