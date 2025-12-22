@@ -1,11 +1,16 @@
 // js/accessories.js (FIXED VERSION)
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const s = sessionStorage.getItem('valuationData');
-  if (!s) { window.location.href = 'index.html'; return; }
+  if (!s) {
+    window.location.href = 'index.html'; return; 
+  }
 
   let vd;
-  try { vd = JSON.parse(s); }
-  catch { window.location.href = 'index.html'; return; }
+  try {
+    vd = JSON.parse(s); 
+  } catch {
+    window.location.href = 'index.html'; return; 
+  }
 
   if (typeof vd.priceAfterIssues !== 'number' || isNaN(vd.priceAfterIssues)) {
     window.location.href = 'functional-issues.html'; return;
@@ -46,7 +51,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const evaluationList = document.getElementById('evaluation-summary-list');
 
   // --- NEW: Populate Sidebar Info ---
-  if (evaluationImage && vd.imageUrl) evaluationImage.src = vd.imageUrl;
+  if (evaluationImage && vd.imageUrl) {
+    evaluationImage.src = vd.imageUrl;
+  }
   if (evaluationModel) {
     const fullName = window.getFullModelName ?
       window.getFullModelName(vd.brandName, vd.modelName) :
@@ -75,7 +82,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const noAccessoriesBtn = document.getElementById('noAccessoriesBtn');
 
-  if (!accessoriesGrid || !nextButton) return;
+  if (!accessoriesGrid || !nextButton) {
+    return;
+  }
 
   // Normalize category name
   let category = vd.category || 'DSLR/Lens';
@@ -106,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       { id: 'box', label: 'Original Box', img: 'images/acc-box.svg', bonus: 300 }
     ];
 
-  let selected = new Set(vd.accessories || []);
+  const selected = new Set(vd.accessories || []);
   let noAccessoriesSelected = false; // NEW
 
   function render() {
@@ -131,7 +140,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- NEW: Sidebar Update Function ---
   function updateEvaluationSidebar() {
-    if (!evaluationList) return;
+    if (!evaluationList) {
+      return;
+    }
     evaluationList.innerHTML = ''; // Clear the list
 
     // You can add logic here to show previous steps if needed
@@ -176,14 +187,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         // Fallback to local config bonus value
         const a = accessories.find(x => x.id === id);
-        if (a) bonus += (a.bonus || 0);
+        if (a) {
+          bonus += (a.bonus || 0);
+        }
       }
     });
     const final = Math.round(basePrice + bonus);
     vd.priceAfterAccessories = final;
     vd.accessories = Array.from(selected);
     sessionStorage.setItem('valuationData', JSON.stringify(vd));
-    try { window.updateOfferDrawer?.(vd); } catch { }
+    try {
+      window.updateOfferDrawer?.(vd); 
+    } catch { }
   }
 
   function updateProceedState() {
@@ -195,7 +210,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   accessoriesGrid.addEventListener('click', (e) => {
     const card = e.target.closest('.issue-card');
-    if (!card) return;
+    if (!card) {
+      return;
+    }
     const id = card.dataset.id;
 
     card.classList.toggle('selected');
