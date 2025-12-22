@@ -1,11 +1,23 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const axios = require("axios");
+const twilio = require("twilio");
 
 admin.initializeApp();
 
 const BOT_TOKEN = functions.config().telegram.token;
 const CHAT_ID = functions.config().telegram.chat_id;
+
+// Twilio WhatsApp Config
+const TWILIO_SID = functions.config().twilio?.sid;
+const TWILIO_AUTH = functions.config().twilio?.auth_token;
+const TWILIO_WHATSAPP = functions.config().twilio?.whatsapp_number;
+
+// Initialize Twilio client
+let twilioClient = null;
+if (TWILIO_SID && TWILIO_AUTH) {
+  twilioClient = twilio(TWILIO_SID, TWILIO_AUTH);
+}
 
 // This is the function that will be triggered
 exports.notifyAdminOnNewRequest = functions.firestore
@@ -22,16 +34,10 @@ exports.notifyAdminOnNewRequest = functions.firestore
     // --- Safely get all parts of the data ---
     const customer = request.customer || {};
     const device = request.device || {};
-
-    // ===================================================
-    // THE FIX: Get the new 'schedule' data
-    // ===================================================
     const schedule = request.schedule || {};
-    // ===================================================
-
     const price = request.finalPrice || 0;
 
-    // 2. Format a nice message
+    // 2. Format a nice message for Telegram (admin)
     let message = `🔔 *New Pickup Request!*\n\n`;
     message += `*Customer:*\n`;
     message += `  Name: ${customer.name || "N/A"}\n`;
@@ -40,19 +46,15 @@ exports.notifyAdminOnNewRequest = functions.firestore
       message += `  Alt Phone: ${customer.altPhone}\n`;
     }
     message += `  Address: ${customer.address || "N/A"}\n`;
-    message += `  City: ${customer.city || "N/A"}\n\n`; // Added city
+    message += `  City: ${customer.city || "N/A"}\n\n`;
 
     message += `*Device:*\n`;
-    message += `  Model: ${device.brandName || ""} ${device.modelName || "N/As"}\n`;
+    message += `  Model: ${device.brandName || ""} ${device.modelName || "N/A"}\n`;
     message += `  Final Price: *₹${price.toLocaleString("en-IN")}*\n\n`;
 
-    // ===================================================
-    // THE FIX: Add the schedule info to the message
-    // ===================================================
     message += `*Pickup Slot:*\n`;
     message += `  Date: ${schedule.dateLabel || "Not specified"}\n`;
     message += `  Time: ${schedule.slot || "Not specified"}\n`;
-    // ===================================================
 
     // 3. Send the message using the Telegram API
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -61,7 +63,7 @@ exports.notifyAdminOnNewRequest = functions.firestore
       await axios.post(url, {
         chat_id: CHAT_ID,
         text: message,
-        parse_mode: "Markdown", // This lets us use *bold*
+        parse_mode: "Markdown",
       });
       console.log("Telegram notification sent!");
     } catch (error) {
@@ -107,6 +109,34 @@ exports.notifyAdminOnNewRequest = functions.firestore
         console.log("Email queued for:", customer.email);
       } catch (emailError) {
         console.error("Error queuing email:", emailError);
+      }
+    }
+
+    // --- Send WhatsApp Confirmation to Customer ---
+    if (customer.phone && twilioClient && TWILIO_WHATSAPP) {
+      try {
+        const customerPhone = customer.phone.startsWith("+91")
+          ? customer.phone
+          : `+91${customer.phone.replace(/^0+/, "")}`;
+
+        // Use Twilio Content Template for WhatsApp Business
+        const messageData = {
+          from: TWILIO_WHATSAPP,
+          to: `whatsapp:${customerPhone}`,
+          contentSid: "HXcbb081204a0cb005b6e3d41461ec7807", // worthyten_pickup_confirmed template
+          contentVariables: JSON.stringify({
+            "1": customer.name || "Customer",
+            "2": `${device.brandName || ""} ${device.modelName || ""}`.trim() || "your device",
+            "3": schedule.dateLabel || "To be confirmed",
+            "4": schedule.slot || "To be confirmed",
+            "5": `₹${price.toLocaleString("en-IN")}`
+          }),
+        };
+
+        await twilioClient.messages.create(messageData);
+        console.log("WhatsApp confirmation sent to:", customerPhone);
+      } catch (whatsappError) {
+        console.error("Error sending WhatsApp:", whatsappError.message);
       }
     }
   });
