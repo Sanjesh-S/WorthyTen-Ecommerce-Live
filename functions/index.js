@@ -11,7 +11,7 @@ const CHAT_ID = functions.config().telegram.chat_id;
 exports.notifyAdminOnNewRequest = functions.firestore
   .document("pickupRequests/{requestId}")
   .onCreate(async (snapshot, context) => {
-    
+
     // 1. Get the data from the new document
     const request = snapshot.data();
     if (!request) {
@@ -22,7 +22,7 @@ exports.notifyAdminOnNewRequest = functions.firestore
     // --- Safely get all parts of the data ---
     const customer = request.customer || {};
     const device = request.device || {};
-    
+
     // ===================================================
     // THE FIX: Get the new 'schedule' data
     // ===================================================
@@ -41,7 +41,7 @@ exports.notifyAdminOnNewRequest = functions.firestore
     }
     message += `  Address: ${customer.address || "N/A"}\n`;
     message += `  City: ${customer.city || "N/A"}\n\n`; // Added city
-    
+
     message += `*Device:*\n`;
     message += `  Model: ${device.brandName || ""} ${device.modelName || "N/As"}\n`;
     message += `  Final Price: *₹${price.toLocaleString("en-IN")}*\n\n`;
@@ -66,5 +66,47 @@ exports.notifyAdminOnNewRequest = functions.firestore
       console.log("Telegram notification sent!");
     } catch (error) {
       console.error("Error sending Telegram message:", error);
+    }
+
+    // --- Send Confirmation Email via Firebase Extension ---
+    if (customer.email) {
+      try {
+        const db = admin.firestore();
+        await db.collection("mail").add({
+          to: customer.email,
+          message: {
+            subject: "✅ Pickup Confirmed - WorthyTen",
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+                  <h1 style="color: #fff; margin: 0;">WorthyTen</h1>
+                </div>
+                <div style="padding: 30px; background: #fff;">
+                  <h2 style="color: #4CAF50;">✅ Pickup Confirmed!</h2>
+                  <p>Hi <strong>${customer.name || "there"}</strong>,</p>
+                  <p>Your pickup for <strong>${device.brandName || ""} ${device.modelName || ""}</strong> has been scheduled.</p>
+                  
+                  <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <p><strong>📅 Date:</strong> ${schedule.dateLabel || "To be confirmed"}</p>
+                    <p><strong>⏰ Time:</strong> ${schedule.slot || "To be confirmed"}</p>
+                    <p><strong>💰 Quote:</strong> ₹${price.toLocaleString("en-IN")}</p>
+                  </div>
+                  
+                  <p><strong>📍 Pickup Address:</strong><br>
+                  ${customer.address || ""}, ${customer.city || ""}</p>
+                  
+                  <p style="margin-top: 30px;">Our agent will contact you to confirm. Thank you for choosing WorthyTen! 🙏</p>
+                </div>
+                <div style="background: #333; padding: 20px; text-align: center;">
+                  <p style="color: #fff; margin: 0;">📞 9843010746 | worthyten.com</p>
+                </div>
+              </div>
+            `,
+          },
+        });
+        console.log("Email queued for:", customer.email);
+      } catch (emailError) {
+        console.error("Error queuing email:", emailError);
+      }
     }
   });
