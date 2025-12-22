@@ -11,7 +11,7 @@ const CHAT_ID = functions.config().telegram.chat_id;
 // Twilio WhatsApp Config
 const TWILIO_SID = functions.config().twilio?.sid;
 const TWILIO_AUTH = functions.config().twilio?.auth_token;
-const TWILIO_WHATSAPP = functions.config().twilio?.whatsapp_number;
+const TWILIO_WHATSAPP = functions.config().twilio?.whatsapp_number || functions.config().twilio?.from_number;
 
 // Initialize Twilio client
 let twilioClient = null;
@@ -113,11 +113,20 @@ exports.notifyAdminOnNewRequest = functions.firestore
     }
 
     // --- Send WhatsApp Confirmation to Customer ---
+    console.log("WhatsApp check:", {
+      hasPhone: !!customer.phone,
+      hasTwilioClient: !!twilioClient,
+      hasWhatsAppNumber: !!TWILIO_WHATSAPP,
+      whatsAppNumber: TWILIO_WHATSAPP
+    });
+
     if (customer.phone && twilioClient && TWILIO_WHATSAPP) {
       try {
         const customerPhone = customer.phone.startsWith("+91")
           ? customer.phone
           : `+91${customer.phone.replace(/^0+/, "")}`;
+
+        console.log("Sending WhatsApp to:", customerPhone);
 
         // Use Twilio Content Template for WhatsApp Business
         const messageData = {
@@ -133,10 +142,12 @@ exports.notifyAdminOnNewRequest = functions.firestore
           }),
         };
 
-        await twilioClient.messages.create(messageData);
-        console.log("WhatsApp confirmation sent to:", customerPhone);
+        const result = await twilioClient.messages.create(messageData);
+        console.log("WhatsApp confirmation sent! SID:", result.sid);
       } catch (whatsappError) {
-        console.error("Error sending WhatsApp:", whatsappError.message);
+        console.error("Error sending WhatsApp:", whatsappError.message, whatsappError.code);
       }
+    } else {
+      console.log("WhatsApp skipped - missing config or phone");
     }
   });
