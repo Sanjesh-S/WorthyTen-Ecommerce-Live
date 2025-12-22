@@ -16,14 +16,16 @@
 
     // If elements still not found, wait a bit and try again (header might not be loaded yet)
     if (!globalLoginBtn || !loginBtnSpan) {
-      if (window.Logger) {
-        window.Logger.log("Header elements not found, retrying in 100ms...");
+      // Track retry count to prevent infinite loops on pages without globalLoginBtn
+      updateUserUI.retryCount = (updateUserUI.retryCount || 0) + 1;
+      if (updateUserUI.retryCount < 10) {
+        setTimeout(() => updateUserUI(user), 100);
       }
-      setTimeout(() => {
-        updateUserUI(user);
-      }, 100);
+      // After 10 retries (1 second), give up - element doesn't exist on this page
       return;
     }
+    // Reset retry count on success
+    updateUserUI.retryCount = 0;
 
     if (!user) { // User is logged out
       if (loginBtnSpan) {
