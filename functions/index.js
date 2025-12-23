@@ -128,21 +128,23 @@ exports.notifyAdminOnNewRequest = functions.firestore
 
         console.log("Sending WhatsApp to:", customerPhone);
 
-        // Use Twilio Content Template for WhatsApp Business
-        const messageData = {
-          from: TWILIO_WHATSAPP,
-          to: `whatsapp:${customerPhone}`,
-          contentSid: "HXcbb081204a0cb005b6e3d41461ec7807", // worthyten_pickup_confirmed template
-          contentVariables: JSON.stringify({
-            "1": customer.name || "Customer",
-            "2": `${device.brandName || ""} ${device.modelName || ""}`.trim() || "your device",
-            "3": schedule.dateLabel || "To be confirmed",
-            "4": schedule.slot || "To be confirmed",
-            "5": `₹${price.toLocaleString("en-IN")}`
-          }),
+        // Use Twilio Content Template (required for business-initiated WhatsApp)
+        const contentVars = {
+          "1": customer.name || "Customer",
+          "2": `${device.brandName || ""} ${device.modelName || ""}`.trim() || "your device",
+          "3": schedule.dateLabel || "To be confirmed",
+          "4": schedule.slot || "To be confirmed",
+          "5": price.toLocaleString("en-IN")
         };
 
-        const result = await twilioClient.messages.create(messageData);
+        console.log("Template variables:", contentVars);
+
+        const result = await twilioClient.messages.create({
+          from: TWILIO_WHATSAPP,
+          to: `whatsapp:${customerPhone}`,
+          contentSid: "HXcbb081204a0eb005b6e3d41461ee7807", // worthyten_pickup_confirmed
+          contentVariables: JSON.stringify(contentVars),
+        });
         console.log("WhatsApp confirmation sent! SID:", result.sid);
       } catch (whatsappError) {
         console.error("Error sending WhatsApp:", whatsappError.message, whatsappError.code);

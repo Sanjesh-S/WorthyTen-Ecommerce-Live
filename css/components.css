@@ -224,15 +224,7 @@
     background: var(--surface, #f5f5f5);
 }
 
-/* ========== Dark Mode ========== */
-[data-theme="dark"] .modal-container {
-    background: var(--bg-dark, #1a1a1a);
-}
-
-[data-theme="dark"] .toast {
-    background: var(--bg-dark, #1a1a1a);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
+/* Dark mode removed - light only */
 
 /* ========== Responsive ========== */
 @media (max-width: 480px) {

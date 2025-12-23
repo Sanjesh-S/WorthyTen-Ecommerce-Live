@@ -215,18 +215,7 @@ body .whatsapp-widget {
     color: #fff;
 }
 
-/* ========== Dark Mode Support ========== */
-[data-theme="dark"] .price-locked-status {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] .whatsapp-tooltip {
-    background: #1a1a1a;
-}
-
-[data-theme="dark"] .whatsapp-tooltip::after {
-    border-left-color: #1a1a1a;
-}
+/* Dark mode removed - light only */
 
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
