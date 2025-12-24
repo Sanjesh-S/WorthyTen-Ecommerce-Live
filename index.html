@@ -1,704 +1,866 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light" style="background-color: #ffffff; color-scheme: light;">
+<!doctype html>
+<html lang="en" data-theme="light" style="background-color: #ffffff; color-scheme: light">
+  <head>
+    <meta charset="utf-8" />
+    <!-- CSP headers are configured in firebase.json for production -->
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+      name="viewport"
+    />
+    <title>WorthyTen - Sell Your Device Instantly | Get Best Price</title>
+    <meta
+      name="description"
+      content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience."
+    />
+    <meta
+      name="keywords"
+      content="sell device, sell camera, sell phone, device valuation, instant quote, WorthyTen"
+    />
+    <meta name="author" content="WorthyTen" />
+    <meta name="google-site-verification" content="KynxuD_NWylN4pAFb0qiOTM-aDSIrglKIzRilvBbQyI" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://worthyten.com/" />
+    <meta property="og:title" content="WorthyTen - Sell Your Device Instantly | Get Best Price" />
+    <meta
+      property="og:description"
+      content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience."
+    />
+    <meta property="og:image" content="https://worthyten.com/images/og-image.jpg" />
 
-<head>
-  <meta charset="utf-8" />
-  <!-- CSP headers are configured in firebase.json for production -->
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" name="viewport" />
-  <title>WorthyTen - Sell Your Device Instantly | Get Best Price</title>
-  <meta name="description"
-    content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience." />
-  <meta name="keywords" content="sell device, sell camera, sell phone, device valuation, instant quote, WorthyTen" />
-  <meta name="author" content="WorthyTen" />
-  <meta name="google-site-verification" content="KynxuD_NWylN4pAFb0qiOTM-aDSIrglKIzRilvBbQyI" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://worthyten.com/" />
-  <meta property="og:title" content="WorthyTen - Sell Your Device Instantly | Get Best Price" />
-  <meta property="og:description"
-    content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience." />
-  <meta property="og:image" content="https://worthyten.com/images/og-image.jpg" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://worthyten.com/" />
+    <meta name="twitter:title" content="WorthyTen - Sell Your Device Instantly | Get Best Price" />
+    <meta
+      name="twitter:description"
+      content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience."
+    />
+    <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://worthyten.com/" />
-  <meta name="twitter:title" content="WorthyTen - Sell Your Device Instantly | Get Best Price" />
-  <meta name="twitter:description"
-    content="Sell your old devices instantly on WorthyTen. Get the best price for cameras, phones, and electronics. Fast, secure, and hassle-free device selling experience." />
-  <meta name="twitter:image" content="https://worthyten.com/images/twitter-image.jpg" />
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://worthyten.com/" />
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://worthyten.com/" />
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "WorthyTen",
+        "url": "https://worthyten.com/",
+        "description": "Sell your old devices instantly and get the best price. Fast, secure, and hassle-free device selling experience.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://worthyten.com/?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "WorthyTen",
+        "url": "https://worthyten.com/",
+        "logo": "https://worthyten.com/images/logo.png",
+        "description": "WorthyTen helps you sell your old devices instantly and get the best price. Fast, secure, and hassle-free device selling experience.",
+        "sameAs": []
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Device Selling Service",
+        "provider": {
+          "@type": "Organization",
+          "name": "WorthyTen"
+        },
+        "description": "Sell your old devices instantly and get the best price. We offer free pickup, instant quotes, and secure transactions.",
+        "areaServed": "India",
+        "availableChannel": {
+          "@type": "ServiceChannel",
+          "serviceUrl": "https://worthyten.com/",
+          "serviceType": "Online"
+        }
+      }
+    </script>
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "WorthyTen",
-  "url": "https://worthyten.com/",
-  "description": "Sell your old devices instantly and get the best price. Fast, secure, and hassle-free device selling experience.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://worthyten.com/?search={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "WorthyTen",
-  "url": "https://worthyten.com/",
-  "logo": "https://worthyten.com/images/logo.png",
-  "description": "WorthyTen helps you sell your old devices instantly and get the best price. Fast, secure, and hassle-free device selling experience.",
-  "sameAs": []
-}
-</script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Device Selling Service",
-  "provider": {
-    "@type": "Organization",
-    "name": "WorthyTen"
-  },
-  "description": "Sell your old devices instantly and get the best price. We offer free pickup, instant quotes, and secure transactions.",
-  "areaServed": "India",
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceUrl": "https://worthyten.com/",
-    "serviceType": "Online"
-  }
-}
-</script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/style.css?v=1.3.2" rel="stylesheet" />
+    <link href="css/how-it-works-ultra.css?v=2.1.0" rel="stylesheet" />
+    <link href="css/reviews-faq-ultra.css?v=2.0.0" rel="stylesheet" />
+    <link href="css/loading-skeletons.css?v=1.0.0" rel="stylesheet" />
+    <link href="css/dark-mode.css?v=1.0.0" rel="stylesheet" />
+    <link href="css/animations.css?v=1.0.0" rel="stylesheet" />
+    <link href="css/mobile-ux.css?v=1.0.0" rel="stylesheet" />
+    <link href="css/business-features.css" rel="stylesheet" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#1b4c87" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="WorthyTen" />
+    <script src="js/logger.js"></script>
+    <script src="js/accessibility.js"></script>
+    <script src="js/loading-skeletons.js"></script>
+    <script src="js/theme-toggle.js"></script>
+    <script src="js/pwa-install.js" defer></script>
+    <script src="js/whatsapp-chat.js" defer></script>
+  </head>
 
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&amp;display=swap"
-    rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-  <link href="css/style.css?v=1.3.2" rel="stylesheet" />
-  <link href="css/how-it-works-ultra.css?v=2.1.0" rel="stylesheet" />
-  <link href="css/reviews-faq-ultra.css?v=2.0.0" rel="stylesheet" />
-  <link href="css/loading-skeletons.css?v=1.0.0" rel="stylesheet" />
-  <link href="css/dark-mode.css?v=1.0.0" rel="stylesheet" />
-  <link href="css/animations.css?v=1.0.0" rel="stylesheet" />
-  <link href="css/mobile-ux.css?v=1.0.0" rel="stylesheet" />
-  <link href="css/business-features.css" rel="stylesheet" />
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#1b4c87">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="WorthyTen">
-  <script src="js/logger.js"></script>
-  <script src="js/accessibility.js"></script>
-  <script src="js/loading-skeletons.js"></script>
-  <script src="js/theme-toggle.js"></script>
-  <script src="js/pwa-install.js" defer></script>
-  <script src="js/whatsapp-chat.js" defer></script>
-</head>
+  <body data-step="1">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<body data-step="1">
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Professional Header -->
-  <header class="site-header">
-    <div class="header-container">
-      <div class="header-logo">
-        <a href="index.html" aria-label="WorthyTen Home">
-          <h1 class="logo-text">WorthyTen</h1>
-        </a>
-      </div>
-
-      <nav class="header-nav" aria-label="Main navigation">
-        <ul class="nav-links">
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#reviews">Reviews</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="account.html">My Account</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href="admin-login.html" class="btn-secondary">Admin</a>
-        <a href="#main-content" class="btn-primary">Sell Now</a>
-      </div>
-
-      <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </header>
-
-  <script src="js/header.js"></script>
-  <script src="js/ui.js"></script>
-
-  <main id="main-content" class="main-container">
-
-    <!-- Enhanced Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <i class="fa-solid fa-star"></i>
-          <span>Trusted by 50,000+ sellers</span>
+    <!-- Professional Header -->
+    <header class="site-header">
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="index.html" aria-label="WorthyTen Home">
+            <h1 class="logo-text">WorthyTen</h1>
+          </a>
         </div>
 
-        <h1 class="hero-title">Sell Your Device Instantly</h1>
-        <p class="hero-subtitle">Get the best price for your cameras, phones, and laptops. Fast, secure, and hassle-free
-          with instant quotes.</p>
+        <nav class="header-nav" aria-label="Main navigation">
+          <ul class="nav-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="account.html">My Account</a></li>
+          </ul>
+        </nav>
 
-        <div class="search-bar-container">
-          <div class="search-bar">
-            <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
-            <label for="search-input" class="sr-only">Search for a brand or model</label>
-            <input placeholder="Search for a brand or model (e.g., iPhone 15, Canon 90D)" type="text" id="search-input"
-              aria-label="Search for a brand or model" aria-describedby="search-description" autocomplete="off"
-              aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions" />
-            <span id="search-description" class="sr-only">Search through available device categories, brands, and
-              models</span>
-          </div>
-          <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Search suggestions"
-            style="display: none;"></div>
+        <div class="header-actions">
+          <a href="admin-login.html" class="btn-secondary">Admin</a>
+          <a href="#main-content" class="btn-primary">Sell Now</a>
         </div>
 
-        <div class="hero-features">
-          <div class="hero-feature-item">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>Secure Payment</span>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <script src="js/header.js"></script>
+    <script src="js/ui.js"></script>
+
+    <main id="main-content" class="main-container">
+      <!-- Enhanced Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-star"></i>
+            <span>Trusted by 50,000+ sellers</span>
           </div>
-          <div class="hero-feature-item">
-            <i class="fa-solid fa-truck-fast"></i>
-            <span>Free Pickup</span>
+
+          <h1 class="hero-title">Sell Your Device Instantly</h1>
+          <p class="hero-subtitle">
+            Get the best price for your cameras, phones, and laptops. Fast, secure, and hassle-free
+            with instant quotes.
+          </p>
+
+          <div class="search-bar-container">
+            <div class="search-bar">
+              <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+              <label for="search-input" class="sr-only">Search for a brand or model</label>
+              <input
+                placeholder="Search for a brand or model (e.g., iPhone 15, Canon 90D)"
+                type="text"
+                id="search-input"
+                aria-label="Search for a brand or model"
+                aria-describedby="search-description"
+                autocomplete="off"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="search-suggestions"
+              />
+              <span id="search-description" class="sr-only"
+                >Search through available device categories, brands, and models</span
+              >
+            </div>
+            <div
+              id="search-suggestions"
+              class="search-suggestions"
+              role="listbox"
+              aria-label="Search suggestions"
+              style="display: none"
+            ></div>
           </div>
-          <div class="hero-feature-item">
-            <i class="fa-solid fa-bolt"></i>
-            <span>Instant Quote</span>
+
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Secure Payment</span>
+            </div>
+            <div class="hero-feature-item">
+              <i class="fa-solid fa-truck-fast"></i>
+              <span>Free Pickup</span>
+            </div>
+            <div class="hero-feature-item">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Instant Quote</span>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <div class="brand-divider">
+        <span class="divider-text" id="divider-text">Popular Categories</span>
+      </div>
+
+      <div
+        class="selection-container"
+        id="category-selection"
+        role="region"
+        aria-label="Device category selection"
+      >
+        <div
+          class="category-grid"
+          id="category-grid"
+          role="list"
+          aria-label="Available device categories"
+        ></div>
+      </div>
+
+      <!-- Aria live region for dynamic price updates and notifications -->
+      <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    </main>
+
+    <script src="js/variant-config.js" defer></script>
+    <script src="js/how-it-works-ultra.js?v=2.1.0" defer></script>
+    <script src="js/reviews-faq-ultra.js?v=2.1.0" defer></script>
+
+    <section class="how-works-ultra" id="how-it-works">
+      <!-- Clean Background -->
+      <div class="how-works-bg"></div>
+
+      <div class="how-works-container">
+        <!-- Section Header -->
+        <div class="how-works-header">
+          <span class="section-tag">Simple Process</span>
+          <h2 class="how-works-title">How It Works</h2>
+          <p class="how-works-subtitle">
+            Sell your device in 3 easy steps. Fast, secure, and hassle-free.
+          </p>
+        </div>
+
+        <!-- Steps Grid -->
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card-modern">
+            <div class="step-number-badge">1</div>
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+            </div>
+            <h3 class="step-card-title">Select Your Device</h3>
+            <p class="step-card-desc">
+              Browse 700+ models across cameras, phones, laptops & tablets. Get an instant price
+              quote in seconds.
+            </p>
+            <div class="step-features">
+              <div class="feature-tag"><i class="fa-solid fa-check"></i> 700+ Models</div>
+              <div class="feature-tag"><i class="fa-solid fa-bolt"></i> Instant Quote</div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card-modern featured">
+            <div class="step-number-badge">2</div>
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+            </div>
+            <h3 class="step-card-title">Quick Assessment</h3>
+            <p class="step-card-desc">
+              Answer simple questions about your device's condition. Watch your price update in
+              real-time.
+            </p>
+            <div class="step-features">
+              <div class="feature-tag"><i class="fa-solid fa-check"></i> Real-time Pricing</div>
+              <div class="feature-tag"><i class="fa-solid fa-check"></i> Fair Valuation</div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card-modern">
+            <div class="step-number-badge">3</div>
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+              </div>
+            </div>
+            <h3 class="step-card-title">Get Paid Instantly</h3>
+            <p class="step-card-desc">
+              Free doorstep pickup by our experts. Quick inspection and same-day payment to your
+              account.
+            </p>
+            <div class="step-features">
+              <div class="feature-tag"><i class="fa-solid fa-truck"></i> Free Pickup</div>
+              <div class="feature-tag"><i class="fa-solid fa-clock"></i> Same Day</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="how-works-stats">
+          <div class="hw-stat">
+            <div class="hw-stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="hw-stat-info">
+              <span class="hw-stat-number">50,000+</span>
+              <span class="hw-stat-label">Happy Sellers</span>
+            </div>
+          </div>
+          <div class="hw-stat-divider"></div>
+          <div class="hw-stat">
+            <div class="hw-stat-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="hw-stat-info">
+              <span class="hw-stat-number">4.9/5</span>
+              <span class="hw-stat-label">Rating</span>
+            </div>
+          </div>
+          <div class="hw-stat-divider"></div>
+          <div class="hw-stat">
+            <div class="hw-stat-icon"><i class="fa-solid fa-rupee-sign"></i></div>
+            <div class="hw-stat-info">
+              <span class="hw-stat-number">₹10 Cr+</span>
+              <span class="hw-stat-label">Paid Out</span>
+            </div>
+          </div>
+          <div class="hw-stat-divider"></div>
+          <div class="hw-stat">
+            <div class="hw-stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="hw-stat-info">
+              <span class="hw-stat-number">&lt;10 min</span>
+              <span class="hw-stat-label">Average Time</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="how-works-cta">
+          <a href="#categories" class="start-selling-btn">
+            Start Selling Now
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- ========== GOOGLE REVIEWS SECTION ========== -->
+    <section class="reviews-ultra" id="reviews">
+      <div class="reviews-bg-animated">
+        <div class="review-orb orb-1"></div>
+        <div class="review-orb orb-2"></div>
+        <div class="review-orb orb-3"></div>
+        <div class="faq-grid-pattern"></div>
+      </div>
+
+      <div class="reviews-container">
+        <div class="reviews-header reveal-fade">
+          <!-- Google Branding -->
+          <div class="google-reviews-badge">
+            <svg viewBox="0 0 24 24" width="28" height="28" class="google-logo">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            <span class="google-text">Google Reviews</span>
+            <span class="verified-badge"><i class="fa-solid fa-check-circle"></i> Verified</span>
+          </div>
+          <div class="rating-badge">
+            <span class="rating-stars">⭐⭐⭐⭐⭐</span>
+            <span class="rating-number">4.9/5</span>
+            <span class="rating-count">(150+ reviews)</span>
+          </div>
+          <h2 class="reviews-title">
+            What Our <span class="gradient-text-alt">Customers Say</span>
+          </h2>
+          <p class="reviews-subtitle">Real reviews from verified customers on Google</p>
+        </div>
+
+        <div class="reviews-carousel">
+          <div class="reviews-track">
+            <!-- Review Card 1 - Real Google Review -->
+            <article
+              class="review-card-ultra reveal-scale"
+              onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')"
+            >
+              <div class="card-glow"></div>
+              <div class="google-review-header">
+                <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
+                  <path
+                    fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  />
+                </svg>
+                <span class="review-date">2 weeks ago</span>
+              </div>
+              <div class="review-stars-ultra">★★★★★</div>
+              <div class="review-content-ultra">
+                <p class="review-text">
+                  "Excellent experience! Sold my Canon 5D Mark III here. The staff was very
+                  professional and the payment was instant. Got a much better price than what local
+                  shops offered. Highly recommended for camera sellers!"
+                </p>
+              </div>
+              <div class="review-footer-ultra">
+                <div class="review-avatar-initial">A</div>
+                <div class="review-author-ultra">
+                  <div class="author-name">Arun Kumar</div>
+                  <div class="author-location">Chennai, Tamil Nadu</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Review Card 2 -->
+            <article
+              class="review-card-ultra reveal-scale"
+              onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')"
+            >
+              <div class="card-glow"></div>
+              <div class="google-review-header">
+                <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
+                  <path
+                    fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  />
+                </svg>
+                <span class="review-date">1 month ago</span>
+              </div>
+              <div class="review-stars-ultra">★★★★★</div>
+              <div class="review-content-ultra">
+                <p class="review-text">
+                  "Very trustworthy platform! Sold my Nikon D850 and Sony lenses. The valuation was
+                  fair and transparent. They showed me exactly how the price was calculated. Got
+                  paid on the same day. Will definitely use again!"
+                </p>
+              </div>
+              <div class="review-footer-ultra">
+                <div
+                  class="review-avatar-initial"
+                  style="background: linear-gradient(135deg, #10b981, #059669)"
+                >
+                  P
+                </div>
+                <div class="review-author-ultra">
+                  <div class="author-name">Priya Sundaram</div>
+                  <div class="author-location">Coimbatore, Tamil Nadu</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Review Card 3 -->
+            <article
+              class="review-card-ultra reveal-scale"
+              onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')"
+            >
+              <div class="card-glow"></div>
+              <div class="google-review-header">
+                <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
+                  <path
+                    fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  />
+                </svg>
+                <span class="review-date">3 weeks ago</span>
+              </div>
+              <div class="review-stars-ultra">★★★★★</div>
+              <div class="review-content-ultra">
+                <p class="review-text">
+                  "Best place to sell used cameras in Tamil Nadu! I've sold 3 cameras here over the
+                  past year. Every time the experience has been smooth - from online quote to pickup
+                  to payment. 100% genuine and professional."
+                </p>
+              </div>
+              <div class="review-footer-ultra">
+                <div
+                  class="review-avatar-initial"
+                  style="background: linear-gradient(135deg, #f59e0b, #d97706)"
+                >
+                  R
+                </div>
+                <div class="review-author-ultra">
+                  <div class="author-name">Rajesh Menon</div>
+                  <div class="author-location">Madurai, Tamil Nadu</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Review Card 4 -->
+            <article
+              class="review-card-ultra reveal-scale"
+              onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')"
+            >
+              <div class="card-glow"></div>
+              <div class="google-review-header">
+                <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
+                  <path
+                    fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  />
+                </svg>
+                <span class="review-date">1 week ago</span>
+              </div>
+              <div class="review-stars-ultra">★★★★★</div>
+              <div class="review-content-ultra">
+                <p class="review-text">
+                  "Amazing service! Sold my iPhone 14 Pro and MacBook Air. The pickup was on time,
+                  inspection was quick, and I got paid immediately via UPI. No hidden charges, no
+                  haggling. This is how selling should be!"
+                </p>
+              </div>
+              <div class="review-footer-ultra">
+                <div
+                  class="review-avatar-initial"
+                  style="background: linear-gradient(135deg, #8b5cf6, #7c3aed)"
+                >
+                  S
+                </div>
+                <div class="review-author-ultra">
+                  <div class="author-name">Sanjay Krishnan</div>
+                  <div class="author-location">Trichy, Tamil Nadu</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- View All on Google Button -->
+        <div class="google-reviews-cta">
+          <a
+            href="https://www.google.com/search?q=WorthyTen+Recommerce+reviews"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="google-reviews-btn"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22">
+              <path
+                fill="#fff"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#fff"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#fff"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#fff"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            View All Reviews on Google
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <p class="google-cta-note">Click any review to see it on Google</p>
         </div>
       </div>
     </section>
 
-    <div class="brand-divider"><span class="divider-text" id="divider-text">Popular Categories</span></div>
-
-    <div class="selection-container" id="category-selection" role="region" aria-label="Device category selection">
-      <div class="category-grid" id="category-grid" role="list" aria-label="Available device categories"></div>
-    </div>
-
-    <!-- Aria live region for dynamic price updates and notifications -->
-    <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
-
-
-  </main>
-
-  <script src="js/variant-config.js" defer></script>
-  <script src="js/how-it-works-ultra.js?v=2.1.0" defer></script>
-  <script src="js/reviews-faq-ultra.js?v=2.1.0" defer></script>
-
-  <section class="how-works-ultra" id="how-it-works">
-    <!-- Clean Background -->
-    <div class="how-works-bg"></div>
-
-    <div class="how-works-container">
-      <!-- Section Header -->
-      <div class="how-works-header">
-        <span class="section-tag">Simple Process</span>
-        <h2 class="how-works-title">How It Works</h2>
-        <p class="how-works-subtitle">Sell your device in 3 easy steps. Fast, secure, and hassle-free.</p>
+    <!-- ========== ULTRA FAQ SECTION ========== -->
+    <section class="faq-ultra" id="faq">
+      <div class="faq-bg-elements">
+        <div class="faq-grid-pattern"></div>
       </div>
 
-      <!-- Steps Grid -->
-      <div class="steps-grid">
-        <!-- Step 1 -->
-        <div class="step-card-modern">
-          <div class="step-number-badge">1</div>
-          <div class="step-icon-wrapper">
-            <div class="step-icon">
-              <i class="fa-solid fa-magnifying-glass"></i>
+      <div class="faq-container">
+        <div class="faq-header reveal-fade">
+          <h2 class="faq-title">Questions? <span class="gradient-text-alt">Answered.</span></h2>
+          <p class="faq-subtitle">Everything you need to know about selling with WorthyTen</p>
+        </div>
+
+        <div class="faq-list-ultra">
+          <!-- FAQ Item 1 -->
+          <div class="faq-item-ultra reveal-scale">
+            <div class="faq-question">
+              <div class="faq-q-text">How is the price calculated?</div>
+              <div class="faq-toggle"></div>
             </div>
-          </div>
-          <h3 class="step-card-title">Select Your Device</h3>
-          <p class="step-card-desc">Browse 700+ models across cameras, phones, laptops & tablets. Get an instant price
-            quote in seconds.</p>
-          <div class="step-features">
-            <div class="feature-tag"><i class="fa-solid fa-check"></i> 700+ Models</div>
-            <div class="feature-tag"><i class="fa-solid fa-bolt"></i> Instant Quote</div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-card-modern featured">
-          <div class="step-number-badge">2</div>
-          <div class="step-icon-wrapper">
-            <div class="step-icon">
-              <i class="fa-solid fa-clipboard-check"></i>
-            </div>
-          </div>
-          <h3 class="step-card-title">Quick Assessment</h3>
-          <p class="step-card-desc">Answer simple questions about your device's condition. Watch your price update in
-            real-time.</p>
-          <div class="step-features">
-            <div class="feature-tag"><i class="fa-solid fa-check"></i> Real-time Pricing</div>
-            <div class="feature-tag"><i class="fa-solid fa-check"></i> Fair Valuation</div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-card-modern">
-          <div class="step-number-badge">3</div>
-          <div class="step-icon-wrapper">
-            <div class="step-icon">
-              <i class="fa-solid fa-indian-rupee-sign"></i>
-            </div>
-          </div>
-          <h3 class="step-card-title">Get Paid Instantly</h3>
-          <p class="step-card-desc">Free doorstep pickup by our experts. Quick inspection and same-day payment to your
-            account.</p>
-          <div class="step-features">
-            <div class="feature-tag"><i class="fa-solid fa-truck"></i> Free Pickup</div>
-            <div class="feature-tag"><i class="fa-solid fa-clock"></i> Same Day</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stats Bar -->
-      <div class="how-works-stats">
-        <div class="hw-stat">
-          <div class="hw-stat-icon"><i class="fa-solid fa-users"></i></div>
-          <div class="hw-stat-info">
-            <span class="hw-stat-number">50,000+</span>
-            <span class="hw-stat-label">Happy Sellers</span>
-          </div>
-        </div>
-        <div class="hw-stat-divider"></div>
-        <div class="hw-stat">
-          <div class="hw-stat-icon"><i class="fa-solid fa-star"></i></div>
-          <div class="hw-stat-info">
-            <span class="hw-stat-number">4.9/5</span>
-            <span class="hw-stat-label">Rating</span>
-          </div>
-        </div>
-        <div class="hw-stat-divider"></div>
-        <div class="hw-stat">
-          <div class="hw-stat-icon"><i class="fa-solid fa-rupee-sign"></i></div>
-          <div class="hw-stat-info">
-            <span class="hw-stat-number">₹10 Cr+</span>
-            <span class="hw-stat-label">Paid Out</span>
-          </div>
-        </div>
-        <div class="hw-stat-divider"></div>
-        <div class="hw-stat">
-          <div class="hw-stat-icon"><i class="fa-solid fa-bolt"></i></div>
-          <div class="hw-stat-info">
-            <span class="hw-stat-number">&lt;10 min</span>
-            <span class="hw-stat-label">Average Time</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CTA Button -->
-      <div class="how-works-cta">
-        <a href="#categories" class="start-selling-btn">
-          Start Selling Now
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </div>
-    </div>
-  </section>
-  <!-- ========== GOOGLE REVIEWS SECTION ========== -->
-  <section class="reviews-ultra" id="reviews">
-    <div class="reviews-bg-animated">
-      <div class="review-orb orb-1"></div>
-      <div class="review-orb orb-2"></div>
-      <div class="review-orb orb-3"></div>
-      <div class="faq-grid-pattern"></div>
-    </div>
-
-    <div class="reviews-container">
-      <div class="reviews-header reveal-fade">
-        <!-- Google Branding -->
-        <div class="google-reviews-badge">
-          <svg viewBox="0 0 24 24" width="28" height="28" class="google-logo">
-            <path fill="#4285F4"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-            <path fill="#34A853"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-            <path fill="#FBBC05"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-            <path fill="#EA4335"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-          </svg>
-          <span class="google-text">Google Reviews</span>
-          <span class="verified-badge"><i class="fa-solid fa-check-circle"></i> Verified</span>
-        </div>
-        <div class="rating-badge">
-          <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-          <span class="rating-number">4.9/5</span>
-          <span class="rating-count">(150+ reviews)</span>
-        </div>
-        <h2 class="reviews-title">What Our <span class="gradient-text-alt">Customers Say</span></h2>
-        <p class="reviews-subtitle">Real reviews from verified customers on Google</p>
-      </div>
-
-      <div class="reviews-carousel">
-        <div class="reviews-track">
-          <!-- Review Card 1 - Real Google Review -->
-          <article class="review-card-ultra reveal-scale"
-            onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')">
-            <div class="card-glow"></div>
-            <div class="google-review-header">
-              <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
-                <path fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              <span class="review-date">2 weeks ago</span>
-            </div>
-            <div class="review-stars-ultra">★★★★★</div>
-            <div class="review-content-ultra">
-              <p class="review-text">"Excellent experience! Sold my Canon 5D Mark III here. The staff was very
-                professional and the payment was instant. Got a much better price than what local shops offered. Highly
-                recommended for camera sellers!"</p>
-            </div>
-            <div class="review-footer-ultra">
-              <div class="review-avatar-initial">A</div>
-              <div class="review-author-ultra">
-                <div class="author-name">Arun Kumar</div>
-                <div class="author-location">Chennai, Tamil Nadu</div>
+            <div class="faq-answer">
+              <div class="faq-answer-text">
+                Your base price is derived from recent market data and current demand. As you answer
+                assessment questions, we apply transparent adjustments for condition, functionality,
+                and included accessories. Our AI-powered pricing engine ensures you get the best
+                market value.
               </div>
             </div>
-          </article>
+          </div>
 
-          <!-- Review Card 2 -->
-          <article class="review-card-ultra reveal-scale"
-            onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')">
-            <div class="card-glow"></div>
-            <div class="google-review-header">
-              <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
-                <path fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              <span class="review-date">1 month ago</span>
+          <!-- FAQ Item 2 -->
+          <div class="faq-item-ultra reveal-scale">
+            <div class="faq-question">
+              <div class="faq-q-text">How does pickup and payment work?</div>
+              <div class="faq-toggle"></div>
             </div>
-            <div class="review-stars-ultra">★★★★★</div>
-            <div class="review-content-ultra">
-              <p class="review-text">"Very trustworthy platform! Sold my Nikon D850 and Sony lenses. The valuation was
-                fair and transparent. They showed me exactly how the price was calculated. Got paid on the same day.
-                Will definitely use again!"</p>
-            </div>
-            <div class="review-footer-ultra">
-              <div class="review-avatar-initial" style="background: linear-gradient(135deg, #10b981, #059669);">P</div>
-              <div class="review-author-ultra">
-                <div class="author-name">Priya Sundaram</div>
-                <div class="author-location">Coimbatore, Tamil Nadu</div>
+            <div class="faq-answer">
+              <div class="faq-answer-text">
+                We schedule a free pickup at your convenience - home or office. Our expert inspects
+                the device to verify the condition. Once verified, we transfer the amount instantly
+                to your bank account or UPI within minutes. Same day, guaranteed.
               </div>
             </div>
-          </article>
+          </div>
 
-          <!-- Review Card 3 -->
-          <article class="review-card-ultra reveal-scale"
-            onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')">
-            <div class="card-glow"></div>
-            <div class="google-review-header">
-              <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
-                <path fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              <span class="review-date">3 weeks ago</span>
+          <!-- FAQ Item 3 -->
+          <div class="faq-item-ultra reveal-scale">
+            <div class="faq-question">
+              <div class="faq-q-text">Is my personal data safe?</div>
+              <div class="faq-toggle"></div>
             </div>
-            <div class="review-stars-ultra">★★★★★</div>
-            <div class="review-content-ultra">
-              <p class="review-text">"Best place to sell used cameras in Tamil Nadu! I've sold 3 cameras here over the
-                past year. Every time the experience has been smooth - from online quote to pickup to payment. 100%
-                genuine and professional."</p>
-            </div>
-            <div class="review-footer-ultra">
-              <div class="review-avatar-initial" style="background: linear-gradient(135deg, #f59e0b, #d97706);">R</div>
-              <div class="review-author-ultra">
-                <div class="author-name">Rajesh Menon</div>
-                <div class="author-location">Madurai, Tamil Nadu</div>
+            <div class="faq-answer">
+              <div class="faq-answer-text">
+                Absolutely! We follow industry-standard security protocols. Your personal
+                information is encrypted and never sold to third parties. All devices are
+                factory-reset during inspection if requested. Your privacy is our priority.
               </div>
             </div>
-          </article>
+          </div>
 
-          <!-- Review Card 4 -->
-          <article class="review-card-ultra reveal-scale"
-            onclick="window.open('https://g.co/kgs/YourBusinessID', '_blank')">
-            <div class="card-glow"></div>
-            <div class="google-review-header">
-              <svg viewBox="0 0 24 24" width="20" height="20" class="google-icon-small">
-                <path fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              <span class="review-date">1 week ago</span>
+          <!-- FAQ Item 4 -->
+          <div class="faq-item-ultra reveal-scale">
+            <div class="faq-question">
+              <div class="faq-q-text">What if I'm not happy with the final price?</div>
+              <div class="faq-toggle"></div>
             </div>
-            <div class="review-stars-ultra">★★★★★</div>
-            <div class="review-content-ultra">
-              <p class="review-text">"Amazing service! Sold my iPhone 14 Pro and MacBook Air. The pickup was on time,
-                inspection was quick, and I got paid immediately via UPI. No hidden charges, no haggling. This is how
-                selling should be!"</p>
-            </div>
-            <div class="review-footer-ultra">
-              <div class="review-avatar-initial" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">S</div>
-              <div class="review-author-ultra">
-                <div class="author-name">Sanjay Krishnan</div>
-                <div class="author-location">Trichy, Tamil Nadu</div>
+            <div class="faq-answer">
+              <div class="faq-answer-text">
+                No worries! If the physical inspection reveals any discrepancies from your
+                assessment, we'll explain the revised price. You're free to accept or decline - no
+                pressure, no fees. We only proceed when you're satisfied.
               </div>
             </div>
-          </article>
-        </div>
-      </div>
-
-      <!-- View All on Google Button -->
-      <div class="google-reviews-cta">
-        <a href="https://www.google.com/search?q=WorthyTen+Recommerce+reviews" target="_blank" rel="noopener noreferrer"
-          class="google-reviews-btn">
-          <svg viewBox="0 0 24 24" width="22" height="22">
-            <path fill="#fff"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-            <path fill="#fff"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-            <path fill="#fff"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-            <path fill="#fff"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-          </svg>
-          View All Reviews on Google
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <p class="google-cta-note">Click any review to see it on Google</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== ULTRA FAQ SECTION ========== -->
-  <section class="faq-ultra" id="faq">
-    <div class="faq-bg-elements">
-      <div class="faq-grid-pattern"></div>
-    </div>
-
-    <div class="faq-container">
-      <div class="faq-header reveal-fade">
-        <h2 class="faq-title">Questions? <span class="gradient-text-alt">Answered.</span></h2>
-        <p class="faq-subtitle">Everything you need to know about selling with WorthyTen</p>
-      </div>
-
-      <div class="faq-list-ultra">
-        <!-- FAQ Item 1 -->
-        <div class="faq-item-ultra reveal-scale">
-          <div class="faq-question">
-            <div class="faq-q-text">How is the price calculated?</div>
-            <div class="faq-toggle"></div>
           </div>
-          <div class="faq-answer">
-            <div class="faq-answer-text">
-              Your base price is derived from recent market data and current demand. As you answer assessment questions,
-              we apply transparent adjustments for condition, functionality, and included accessories. Our AI-powered
-              pricing engine ensures you get the best market value.
+
+          <!-- FAQ Item 5 -->
+          <div class="faq-item-ultra reveal-scale">
+            <div class="faq-question">
+              <div class="faq-q-text">Which devices do you accept?</div>
+              <div class="faq-toggle"></div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-text">
+                We accept DSLR cameras, lenses, smartphones, laptops, iPads, and tablets from major
+                brands including Canon, Nikon, Sony, Fujifilm, Apple, Samsung, and more. Check our
+                catalog for your specific model - over 700+ models supported!
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- FAQ Item 2 -->
-        <div class="faq-item-ultra reveal-scale">
-          <div class="faq-question">
-            <div class="faq-q-text">How does pickup and payment work?</div>
-            <div class="faq-toggle"></div>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-text">
-              We schedule a free pickup at your convenience - home or office. Our expert inspects the device to verify
-              the condition. Once verified, we transfer the amount instantly to your bank account or UPI within minutes.
-              Same day, guaranteed.
-            </div>
-          </div>
+        <!-- FAQ CTA -->
+        <div class="faq-cta reveal-fade">
+          <h3 class="faq-cta-title">Still have questions?</h3>
+          <p class="faq-cta-text">Our support team is here to help you</p>
+          <a href="mailto:support@worthyten.com" class="faq-cta-button">
+            <span>Contact Support</span>
+            <span>→</span>
+          </a>
         </div>
+      </div>
+    </section>
 
-        <!-- FAQ Item 3 -->
-        <div class="faq-item-ultra reveal-scale">
-          <div class="faq-question">
-            <div class="faq-q-text">Is my personal data safe?</div>
-            <div class="faq-toggle"></div>
-          </div>
-          <div class="faq-answer">
-            <div class="faq-answer-text">
-              Absolutely! We follow industry-standard security protocols. Your personal information is encrypted and
-              never sold to third parties. All devices are factory-reset during inspection if requested. Your privacy is
-              our priority.
+    <section class="cta-banner">
+      <div class="wrap cta-wrap">
+        <h2>Ready to sell your device?</h2>
+        <p>Get a free quote in under a minute.</p>
+        <a class="cta-button" href="index.html" aria-label="Start selling your device now"
+          >Start Now <span aria-hidden="true">→</span></a
+        >
+      </div>
+    </section>
+    <!-- Professional Footer -->
+    <footer class="site-footer">
+      <div class="footer-main">
+        <div class="footer-container">
+          <!-- Company Info -->
+          <div class="footer-column">
+            <h3 class="footer-logo">WorthyTen</h3>
+            <p class="footer-description">
+              Sell your old devices instantly and get the best price. Fast, secure, and hassle-free
+              device selling experience.
+            </p>
+            <div class="footer-social">
+              <a
+                href="https://www.facebook.com/worthyten"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                class="social-link"
+                ><i class="fa-brands fa-facebook"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/worthytenofficial/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                class="social-link"
+                ><i class="fa-brands fa-instagram"></i
+              ></a>
+              <a
+                href="https://www.youtube.com/@WorthyTen"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                class="social-link"
+                ><i class="fa-brands fa-youtube"></i
+              ></a>
             </div>
           </div>
-        </div>
 
-        <!-- FAQ Item 4 -->
-        <div class="faq-item-ultra reveal-scale">
-          <div class="faq-question">
-            <div class="faq-q-text">What if I'm not happy with the final price?</div>
-            <div class="faq-toggle"></div>
+          <!-- Quick Links -->
+          <div class="footer-column">
+            <h4 class="footer-title">Quick Links</h4>
+            <ul class="footer-links">
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="our-stores.html">Our Stores</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="account.html">My Account</a></li>
+            </ul>
           </div>
-          <div class="faq-answer">
-            <div class="faq-answer-text">
-              No worries! If the physical inspection reveals any discrepancies from your assessment, we'll explain the
-              revised price. You're free to accept or decline - no pressure, no fees. We only proceed when you're
-              satisfied.
-            </div>
-          </div>
-        </div>
 
-        <!-- FAQ Item 5 -->
-        <div class="faq-item-ultra reveal-scale">
-          <div class="faq-question">
-            <div class="faq-q-text">Which devices do you accept?</div>
-            <div class="faq-toggle"></div>
+          <!-- Policies -->
+          <div class="footer-column">
+            <h4 class="footer-title">Policies</h4>
+            <ul class="footer-links">
+              <li><a href="privacy-policy.html">Privacy Policy</a></li>
+              <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+              <li><a href="warranty-policy.html">Warranty Policy</a></li>
+              <li><a href="refund-policy.html">Return/Refund Policy</a></li>
+            </ul>
           </div>
-          <div class="faq-answer">
-            <div class="faq-answer-text">
-              We accept DSLR cameras, lenses, smartphones, laptops, iPads, and tablets from major brands including
-              Canon, Nikon, Sony, Fujifilm, Apple, Samsung, and more. Check our catalog for your specific model - over
-              700+ models supported!
-            </div>
+
+          <!-- Contact -->
+          <div class="footer-column">
+            <h4 class="footer-title">Contact Us</h4>
+            <ul class="footer-contact">
+              <li>
+                <i class="fa-solid fa-envelope"></i>
+                <a href="mailto:support@worthyten.com">support@worthyten.com</a>
+              </li>
+              <li>
+                <i class="fa-solid fa-phone"></i>
+                <a href="tel:+919843010746">+91 98430 10746</a>
+              </li>
+              <li>
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Coimbatore, Tamil Nadu, India</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- FAQ CTA -->
-      <div class="faq-cta reveal-fade">
-        <h3 class="faq-cta-title">Still have questions?</h3>
-        <p class="faq-cta-text">Our support team is here to help you</p>
-        <a href="mailto:support@worthyten.com" class="faq-cta-button">
-          <span>Contact Support</span>
-          <span>→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="cta-banner">
-    <div class="wrap cta-wrap">
-      <h2>Ready to sell your device?</h2>
-      <p>Get a free quote in under a minute.</p>
-      <a class="cta-button" href="index.html" aria-label="Start selling your device now">Start Now <span
-          aria-hidden="true">→</span></a>
-    </div>
-  </section>
-  <!-- Professional Footer -->
-  <footer class="site-footer">
-    <div class="footer-main">
-      <div class="footer-container">
-        <!-- Company Info -->
-        <div class="footer-column">
-          <h3 class="footer-logo">WorthyTen</h3>
-          <p class="footer-description">Sell your old devices instantly and get the best price. Fast, secure, and
-            hassle-free device selling experience.</p>
-          <div class="footer-social">
-            <a href="https://www.facebook.com/worthyten" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-              class="social-link"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://www.instagram.com/worthytenofficial/" target="_blank" rel="noopener noreferrer"
-              aria-label="Instagram" class="social-link"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@WorthyTen" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
-              class="social-link"><i class="fa-brands fa-youtube"></i></a>
-          </div>
-        </div>
-
-        <!-- Quick Links -->
-        <div class="footer-column">
-          <h4 class="footer-title">Quick Links</h4>
-          <ul class="footer-links">
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="our-stores.html">Our Stores</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
-            <li><a href="account.html">My Account</a></li>
-          </ul>
-        </div>
-
-        <!-- Policies -->
-        <div class="footer-column">
-          <h4 class="footer-title">Policies</h4>
-          <ul class="footer-links">
-            <li><a href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="terms-conditions.html">Terms & Conditions</a></li>
-            <li><a href="warranty-policy.html">Warranty Policy</a></li>
-            <li><a href="refund-policy.html">Return/Refund Policy</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact -->
-        <div class="footer-column">
-          <h4 class="footer-title">Contact Us</h4>
-          <ul class="footer-contact">
-            <li>
-              <i class="fa-solid fa-envelope"></i>
-              <a href="mailto:support@worthyten.com">support@worthyten.com</a>
-            </li>
-            <li>
-              <i class="fa-solid fa-phone"></i>
-              <a href="tel:+919843010746">+91 98430 10746</a>
-            </li>
-            <li>
-              <i class="fa-solid fa-location-dot"></i>
-              <span>Coimbatore, Tamil Nadu, India</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <div class="footer-container">
-        <div class="footer-bottom-content">
-          <p class="copyright">© <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.</p>
-          <div class="footer-legal">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms-conditions.html">Terms of Service</a>
-            <a href="warranty-policy.html">Warranty Policy</a>
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="footer-container">
+          <div class="footer-bottom-content">
+            <p class="copyright">
+              © <span id="yearNow"></span> WorthyTen Recommerce Pvt Ltd. All rights reserved.
+            </p>
+            <div class="footer-legal">
+              <a href="privacy-policy.html">Privacy Policy</a>
+              <a href="terms-conditions.html">Terms of Service</a>
+              <a href="warranty-policy.html">Warranty Policy</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </footer>
-  <script src="js/home.js" defer></script>
-  <script src="js/security.js" defer></script>
-  <script src="js/lazy-loading.js"></script>
-  <script src="js/analytics.js" defer></script>
-  <script src="js/error-tracking.js" defer></script>
-  <script src="js/performance.js" defer></script>
-  <script src="js/pwa.js" defer></script>
+    </footer>
+    <script src="js/home.js" defer></script>
+    <script src="js/security.js" defer></script>
+    <script src="js/lazy-loading.js"></script>
+    <script src="js/analytics.js" defer></script>
+    <script src="js/error-tracking.js" defer></script>
+    <script src="js/performance.js" defer></script>
+    <script src="js/pwa.js" defer></script>
 
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"
+    ></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"
+    ></script>
 
-  <script defer src="js/firebase-config.js"></script>
-  <script defer src="js/login.js"></script>
-  <script defer src="js/script.js?v=2.1.0"></script>
-</body>
-
+    <script defer src="js/firebase-config.js"></script>
+    <script defer src="js/login.js"></script>
+    <script defer src="js/script.js?v=2.1.0"></script>
+  </body>
 </html>
